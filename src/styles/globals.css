@@ -1,0 +1,98 @@
+/* Candlelit Theme Variables */
+:root {
+  --burgundy: #3a0d12;
+  --velvet: #5b0f15;
+  --navy: #1a1a2e;
+  --crimson: #8b1538;
+  --gold: #d4af37;
+  --parchment: #f4e4bc;
+}
+
+/* Candlelit Background */
+.candlelit-bg {
+  background: linear-gradient(180deg, var(--burgundy) 0%, var(--velvet) 100%);
+  position: relative;
+  min-height: 100vh;
+}
+
+.candlelit-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/src/assets/noise.png');
+  background-size: 200px 200px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Fallback if noise.png doesn't exist - use CSS pattern */
+@supports not (background-image: url('/src/assets/noise.png')) {
+  .candlelit-bg::before {
+    background-image: 
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  }
+}
+
+/* Velvet Table Surface */
+.velvet-table {
+  background: linear-gradient(135deg, #4a0f1a 0%, #6b1a25 50%, #4a0f1a 100%);
+  position: relative;
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+}
+
+.velvet-table::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+}
+
+/* Gold Text Gradient */
+.gold-text {
+  background: linear-gradient(135deg, #f4e4bc 0%, #d4af37 50%, #b8941f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+/* Parchment Background */
+.parchment-bg {
+  background: linear-gradient(135deg, #f4e4bc 0%, #e8d5a3 100%);
+  background-image: url('/src/assets/parchment.jpg');
+  background-size: cover;
+  background-blend-mode: overlay;
+}
+
+/* Fallback if parchment.jpg doesn't exist */
+@supports not (background-image: url('/src/assets/parchment.jpg')) {
+  .parchment-bg {
+    background: linear-gradient(135deg, #f4e4bc 0%, #e8d5a3 50%, #f0d9a0 100%);
+  }
+}
+
+/* Warm Glow Shadow */
+.glow-warm {
+  box-shadow: 0 0 30px rgba(139, 21, 56, 0.2), 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Perspective */
+.card-perspective {
+  perspective: 1000px;
+}
+
+/* Scroll Lock */
+.scroll-lock {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+

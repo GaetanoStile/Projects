@@ -1,0 +1,147 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { useGameStore } from '@/state/store'
+import Candle from '@/components/Candle'
+
+export default function Dice() {
+  const navigate = useNavigate()
+  const { startGame } = useGameStore()
+  const [isRolling, setIsRolling] = useState(false)
+  const [result, setResult] = useState<number | null>(null)
+  const [canStart, setCanStart] = useState(false)
+
+  const rollDice = () => {
+    if (isRolling) return
+
+    setIsRolling(true)
+    setResult(null)
+    setCanStart(false)
+
+    // Simulate dice roll
+    const rollDuration = 2000
+
+    const rollInterval = setInterval(() => {
+      setResult(Math.floor(Math.random() * 6) + 1)
+    }, 100)
+
+    setTimeout(() => {
+      clearInterval(rollInterval)
+      const finalResult = Math.floor(Math.random() * 6) + 1
+      setResult(finalResult)
+      setIsRolling(false)
+      setCanStart(true)
+    }, rollDuration)
+  }
+
+  const handleStartGame = () => {
+    if (!result || !canStart) return
+
+    // Even = blue (male) goes first, Odd = red (female) goes first
+    const startingPlayer = result % 2 === 0 ? 'blue' : 'red'
+    startGame(startingPlayer)
+    navigate('/game')
+  }
+
+  return (
+    <div className="candlelit-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Candles */}
+      <div className="absolute top-20 left-10 md:left-20">
+        <Candle size={50} />
+      </div>
+      <div className="absolute top-32 right-10 md:right-20">
+        <Candle size={45} />
+      </div>
+
+      <div className="text-center z-10 px-4">
+        <h2 className="text-4xl md:text-6xl font-display gold-text mb-8">
+          Roll the Dice
+        </h2>
+        <p className="text-lg md:text-xl text-gold/80 font-body mb-12">
+          Highest roller goes first
+        </p>
+
+        {/* Dice */}
+        <motion.div
+          className="mb-12"
+          animate={
+            isRolling
+              ? {
+                  rotateX: [0, 360, 720],
+                  rotateY: [0, 360, 720],
+                  rotateZ: [0, 180, 360],
+                  scale: [1, 1.2, 1],
+                }
+              : {}
+          }
+          transition={{
+            duration: 0.6,
+            repeat: isRolling ? Infinity : 0,
+            ease: 'easeInOut',
+          }}
+          style={{
+            willChange: isRolling ? 'transform' : 'auto',
+          }}
+        >
+          <div
+            className="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-parchment to-gold/30 rounded-xl flex items-center justify-center glow-warm"
+            style={{
+              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.3)',
+            }}
+          >
+            {result ? (
+              <span className="text-6xl md:text-8xl font-display text-velvet">
+                {result}
+              </span>
+            ) : (
+              <span className="text-4xl text-gold/50">?</span>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Roll Button */}
+        {!canStart && (
+          <motion.button
+            onClick={rollDice}
+            disabled={isRolling}
+            className="px-8 py-4 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display text-xl rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            whileHover={!isRolling ? { scale: 1.05 } : {}}
+            whileTap={!isRolling ? { scale: 0.95 } : {}}
+            style={{
+              minWidth: '200px',
+              minHeight: '56px',
+            }}
+          >
+            {isRolling ? 'Rolling...' : 'Roll Dice'}
+          </motion.button>
+        )}
+
+        {/* Result and Start Button */}
+        {result && canStart && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6"
+          >
+            <div className="text-2xl md:text-3xl font-display gold-text">
+              {result % 2 === 0 ? 'Blue (Male) goes first!' : 'Red (Female) goes first!'}
+            </div>
+            <motion.button
+              onClick={handleStartGame}
+              className="px-8 py-4 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display text-xl rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                minWidth: '200px',
+                minHeight: '56px',
+              }}
+            >
+              Start Game
+            </motion.button>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  )
+}
+
