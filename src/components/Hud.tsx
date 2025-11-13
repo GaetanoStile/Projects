@@ -12,7 +12,7 @@ export default function Hud() {
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Current Player Chip */}
         <div className="flex items-center gap-3">
-          <span className="text-sm font-body text-velvet uppercase tracking-wider">Current Turn:</span>
+          <span className="text-sm font-body text-[#2d0a0e] uppercase tracking-wider font-semibold">Current Turn:</span>
           <div
             className={`px-4 py-2 rounded-full font-display text-lg ${
               currentPlayer === 'red'
@@ -30,13 +30,13 @@ export default function Hud() {
         {/* Swap Counts */}
         <div className="flex items-center gap-4">
           <div className="text-center">
-            <div className="text-xs font-body text-velvet uppercase tracking-wider mb-1">Red Swaps</div>
-            <div className="text-2xl font-display gold-text">{swapCount.red}</div>
+            <div className="text-xs font-body text-[#2d0a0e] uppercase tracking-wider mb-1 font-semibold">Red Swaps</div>
+            <div className="text-2xl font-display text-[#8b6914] font-bold">{swapCount.red}</div>
           </div>
           <div className="w-px h-8 bg-gold/30" />
           <div className="text-center">
-            <div className="text-xs font-body text-velvet uppercase tracking-wider mb-1">Blue Swaps</div>
-            <div className="text-2xl font-display gold-text">{swapCount.blue}</div>
+            <div className="text-xs font-body text-[#2d0a0e] uppercase tracking-wider mb-1 font-semibold">Blue Swaps</div>
+            <div className="text-2xl font-display text-[#8b6914] font-bold">{swapCount.blue}</div>
           </div>
         </div>
 
@@ -45,12 +45,12 @@ export default function Hud() {
           {blackUnlocked ? (
             <>
               <span className="text-gold text-2xl">🔓</span>
-              <span className="text-sm font-body text-velvet">Black Deck Unlocked</span>
+              <span className="text-sm font-body text-[#2d0a0e] font-semibold">Black Deck Unlocked</span>
             </>
           ) : (
             <>
               <span className="text-gold/50 text-2xl">🔒</span>
-              <span className="text-sm font-body text-velvet/60">Locked (Need 3 swaps)</span>
+              <span className="text-sm font-body text-[#2d0a0e] font-semibold">Locked (Need 3 swaps)</span>
             </>
           )}
         </div>
