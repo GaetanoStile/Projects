@@ -142,10 +142,50 @@ export const useGameStore = create<GameState & GameActions>()(
         usedCardIds: Array.from(state.usedCardIds),
         startingPlayer: state.startingPlayer,
       }),
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: () => (state, error) => {
+        if (error) {
+          // If localStorage is corrupted, reset to initial state
+          console.warn('Failed to rehydrate game state from localStorage, resetting:', error)
+          return initialState
+        }
+        
         if (state) {
-          // Convert array back to Set
-          state.usedCardIds = new Set(state.usedCardIds as unknown as string[])
+          try {
+            // Validate and convert array back to Set
+            if (Array.isArray(state.usedCardIds)) {
+              state.usedCardIds = new Set(state.usedCardIds.filter((id: unknown) => typeof id === 'string'))
+            } else {
+              state.usedCardIds = new Set<string>()
+            }
+            
+            // Validate currentPlayer
+            if (state.currentPlayer !== 'red' && state.currentPlayer !== 'blue') {
+              state.currentPlayer = null
+            }
+            
+            // Validate swapCount structure
+            if (!state.swapCount || typeof state.swapCount !== 'object') {
+              state.swapCount = { red: 0, blue: 0 }
+            } else {
+              state.swapCount = {
+                red: typeof state.swapCount.red === 'number' ? state.swapCount.red : 0,
+                blue: typeof state.swapCount.blue === 'number' ? state.swapCount.blue : 0,
+              }
+            }
+            
+            // Validate blackUnlocked
+            if (typeof state.blackUnlocked !== 'boolean') {
+              state.blackUnlocked = false
+            }
+            
+            // Validate startingPlayer
+            if (state.startingPlayer !== 'red' && state.startingPlayer !== 'blue') {
+              state.startingPlayer = null
+            }
+          } catch (err) {
+            console.warn('Error validating rehydrated state, resetting:', err)
+            return initialState
+          }
         }
       },
     }

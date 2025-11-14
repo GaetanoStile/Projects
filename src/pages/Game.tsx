@@ -8,7 +8,7 @@ import Candle from '@/components/Candle'
 
 export default function Game() {
   const navigate = useNavigate()
-  const { currentPlayer, selectedCard, isModalOpen, setIsModalOpen, resetGame } = useGameStore()
+  const { currentPlayer, selectedCard, isModalOpen, setIsModalOpen, resetGame, endTurn } = useGameStore()
 
   useEffect(() => {
     if (!currentPlayer) {
@@ -18,6 +18,11 @@ export default function Game() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
+  }
+
+  const handleEndTurn = () => {
+    setIsModalOpen(false)
+    endTurn()
   }
 
   const handleEndGame = () => {
@@ -69,18 +74,30 @@ export default function Game() {
           <DeckGrid />
         </div>
 
-        {/* End Game Button */}
-        <div className="text-center">
-          <button
-            onClick={handleEndGame}
-            className="px-6 py-3 bg-velvet/80 text-gold font-body rounded-lg hover:bg-velvet transition-colors"
-            style={{
-              minWidth: '120px',
-              minHeight: '44px',
-            }}
-          >
-            End Game
-          </button>
+        {/* Action Buttons */}
+        <div className="text-center space-y-4">
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={handleEndTurn}
+              className="px-6 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-body rounded-lg hover:from-gold/90 hover:to-gold/70 transition-all font-semibold"
+              style={{
+                minWidth: '140px',
+                minHeight: '44px',
+              }}
+            >
+              End Turn
+            </button>
+            <button
+              onClick={handleEndGame}
+              className="px-6 py-3 bg-velvet/80 text-gold font-body rounded-lg hover:bg-velvet transition-colors"
+              style={{
+                minWidth: '120px',
+                minHeight: '44px',
+              }}
+            >
+              End Game
+            </button>
+          </div>
         </div>
       </div>
 
