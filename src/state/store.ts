@@ -15,6 +15,7 @@ export interface Card {
 interface GameState {
   currentPlayer: PlayerColor | null
   swapCount: { red: number; blue: number }
+  activeSwapCard: { red: boolean; blue: boolean }
   blackUnlocked: boolean
   usedCardIds: Set<string>
   startingPlayer: PlayerColor | null
@@ -26,6 +27,7 @@ interface GameActions {
   startGame: (player: PlayerColor) => void
   drawFrom: (deck: 'A' | 'B' | 'C' | 'D' | 'black', playerColor: PlayerColor, availableCards: Card[]) => Card | null
   applyCardEffects: (card: Card) => void
+  useSwapCard: () => void
   endTurn: () => void
   resetGame: () => void
   setSelectedCard: (card: Card | null) => void
@@ -35,6 +37,7 @@ interface GameActions {
 const initialState: GameState = {
   currentPlayer: null,
   swapCount: { red: 0, blue: 0 },
+  activeSwapCard: { red: false, blue: false },
   blackUnlocked: false,
   usedCardIds: new Set<string>(),
   startingPlayer: null,
@@ -52,6 +55,7 @@ export const useGameStore = create<GameState & GameActions>()(
           currentPlayer: player,
           startingPlayer: player,
           swapCount: { red: 0, blue: 0 },
+          activeSwapCard: { red: false, blue: false },
           blackUnlocked: false,
           usedCardIds: new Set<string>(),
           selectedCard: null,
@@ -97,26 +101,55 @@ export const useGameStore = create<GameState & GameActions>()(
 
       applyCardEffects: (card: Card) => {
         if (card.isSwapCard) {
-          const { currentPlayer, swapCount, blackUnlocked } = get()
+          const { currentPlayer, activeSwapCard } = get()
           if (!currentPlayer) return
 
-          const newSwapCount = { ...swapCount }
-          newSwapCount[currentPlayer] += 1
-
-          // Unlock black deck if current player has 3+ swaps
-          const shouldUnlock = newSwapCount[currentPlayer] >= 3
+          // Mark that the current player has an active swap card (not yet used)
+          const newActiveSwapCard = { ...activeSwapCard }
+          newActiveSwapCard[currentPlayer] = true
 
           set({
-            swapCount: newSwapCount,
-            blackUnlocked: shouldUnlock || blackUnlocked,
+            activeSwapCard: newActiveSwapCard,
           })
         }
+      },
+
+      useSwapCard: () => {
+        const { currentPlayer, swapCount, activeSwapCard, blackUnlocked } = get()
+        if (!currentPlayer || !activeSwapCard[currentPlayer]) return
+
+        // Consume the swap card: increment count and clear active status
+        const newSwapCount = { ...swapCount }
+        newSwapCount[currentPlayer] += 1
+
+        const newActiveSwapCard = { ...activeSwapCard }
+        newActiveSwapCard[currentPlayer] = false
+
+        // Unlock black deck if current player has 3+ swaps
+        const shouldUnlock = newSwapCount[currentPlayer] >= 3
+
+        // End the turn after using swap card
+        set({
+          currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
+          swapCount: newSwapCount,
+          activeSwapCard: newActiveSwapCard,
+          blackUnlocked: shouldUnlock || blackUnlocked,
+          isModalOpen: false,
+        })
       },
 
       endTurn: () => {
         const { currentPlayer } = get()
         if (currentPlayer) {
-          set({ currentPlayer: currentPlayer === 'red' ? 'blue' : 'red' })
+          // Clear active swap card when turn ends
+          const { activeSwapCard } = get()
+          const newActiveSwapCard = { ...activeSwapCard }
+          newActiveSwapCard[currentPlayer] = false
+          
+          set({ 
+            currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
+            activeSwapCard: newActiveSwapCard,
+          })
         }
       },
 
@@ -138,6 +171,7 @@ export const useGameStore = create<GameState & GameActions>()(
       partialize: (state) => ({
         currentPlayer: state.currentPlayer,
         swapCount: state.swapCount,
+        activeSwapCard: state.activeSwapCard,
         blackUnlocked: state.blackUnlocked,
         usedCardIds: Array.from(state.usedCardIds),
         startingPlayer: state.startingPlayer,
@@ -170,6 +204,16 @@ export const useGameStore = create<GameState & GameActions>()(
               state.swapCount = {
                 red: typeof state.swapCount.red === 'number' ? state.swapCount.red : 0,
                 blue: typeof state.swapCount.blue === 'number' ? state.swapCount.blue : 0,
+              }
+            }
+            
+            // Validate activeSwapCard
+            if (!state.activeSwapCard || typeof state.activeSwapCard !== 'object') {
+              state.activeSwapCard = { red: false, blue: false }
+            } else {
+              state.activeSwapCard = {
+                red: typeof state.activeSwapCard.red === 'boolean' ? state.activeSwapCard.red : false,
+                blue: typeof state.activeSwapCard.blue === 'boolean' ? state.activeSwapCard.blue : false,
               }
             }
             
