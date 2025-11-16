@@ -6,7 +6,7 @@ import Candle from '@/components/Candle'
 
 export default function Dice() {
   const navigate = useNavigate()
-  const { startGame } = useGameStore()
+  const { startGame, settings } = useGameStore()
   const [isRolling, setIsRolling] = useState(false)
   const [result, setResult] = useState<number | null>(null)
   const [canStart, setCanStart] = useState(false)
@@ -124,7 +124,9 @@ export default function Dice() {
             className="space-y-6"
           >
             <div className="text-2xl md:text-3xl font-display gold-text">
-              {result % 2 === 0 ? 'Blue (Male) goes first!' : 'Red (Female) goes first!'}
+              {result % 2 === 0 
+                ? `${settings.playerBlueName} goes first!` 
+                : `${settings.playerRedName} goes first!`}
             </div>
             <motion.button
               onClick={handleStartGame}

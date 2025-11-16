@@ -130,6 +130,16 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
 
               {/* Content */}
               <div className="text-center space-y-6">
+                {card.imageDataUrl && (
+                  <div className="mb-4">
+                    <img
+                      src={card.imageDataUrl}
+                      alt={card.title}
+                      className="w-full max-h-48 object-contain rounded-lg border border-gold/30 mx-auto"
+                    />
+                  </div>
+                )}
+                
                 {card.isSwapCard && (
                   <div className="text-gold text-sm font-body uppercase tracking-wider">
                     ✨ Swap Card ✨

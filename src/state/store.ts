@@ -1,37 +1,104 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import cardsData from '@/data/cards.json'
 
-export type PlayerColor = 'red' | 'blue'
+export type DeckLetter = 'A' | 'B' | 'C' | 'D' | 'black'
+export type PlayerColor = 'red' | 'blue' | 'any'
 
 export interface Card {
   id: string
   title: string
   description: string
-  deck: 'A' | 'B' | 'C' | 'D' | 'black'
+  deck: DeckLetter
   playerColor: PlayerColor | 'neutral'
-  isSwapCard: boolean
+  isSwapCard?: boolean
+  isCustom?: boolean
+  imageDataUrl?: string
+}
+
+export interface Settings {
+  playerRedName: string
+  playerBlueName: string
+  includeCustomRed: boolean
+  includeCustomBlue: boolean
 }
 
 interface GameState {
-  currentPlayer: PlayerColor | null
+  currentPlayer: 'red' | 'blue' | null
   swapCount: { red: number; blue: number }
   activeSwapCard: { red: boolean; blue: boolean }
   blackUnlocked: boolean
   usedCardIds: Set<string>
-  startingPlayer: PlayerColor | null
+  startingPlayer: 'red' | 'blue' | null
   selectedCard: Card | null
   isModalOpen: boolean
+  settings: Settings
+  customCards: Card[]
 }
 
 interface GameActions {
-  startGame: (player: PlayerColor) => void
-  drawFrom: (deck: 'A' | 'B' | 'C' | 'D' | 'black', playerColor: PlayerColor, availableCards: Card[]) => Card | null
+  startGame: (player: 'red' | 'blue') => void
+  drawFrom: (deck: DeckLetter, playerColor: 'red' | 'blue', availableCards: Card[]) => Card | null
   applyCardEffects: (card: Card) => void
   useSwapCard: () => void
   endTurn: () => void
   resetGame: () => void
   setSelectedCard: (card: Card | null) => void
   setIsModalOpen: (open: boolean) => void
+  setSettings: (settings: Partial<Settings>) => void
+  addCustomCard: (card: Card) => void
+  deleteCustomCard: (id: string) => void
+  clearCustomCards: () => void
+  mergeDecksForPlayer: (player: 'red' | 'blue') => Card[]
+}
+
+const defaultSettings: Settings = {
+  playerRedName: 'Natalie',
+  playerBlueName: 'Jordan',
+  includeCustomRed: true,
+  includeCustomBlue: true,
+}
+
+// Load settings from localStorage with migration
+const loadSettings = (): Settings => {
+  try {
+    const stored = localStorage.getItem('cg.settings.v2')
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      return {
+        playerRedName: parsed.playerRedName || defaultSettings.playerRedName,
+        playerBlueName: parsed.playerBlueName || defaultSettings.playerBlueName,
+        includeCustomRed: parsed.includeCustomRed !== undefined ? parsed.includeCustomRed : defaultSettings.includeCustomRed,
+        includeCustomBlue: parsed.includeCustomBlue !== undefined ? parsed.includeCustomBlue : defaultSettings.includeCustomBlue,
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to load settings, using defaults:', err)
+  }
+  return defaultSettings
+}
+
+// Load custom cards from localStorage
+const loadCustomCards = (): Card[] => {
+  try {
+    const stored = localStorage.getItem('cg.custom.v2')
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      if (Array.isArray(parsed)) {
+        return parsed.filter((card): card is Card => 
+          card && 
+          typeof card.id === 'string' &&
+          typeof card.title === 'string' &&
+          typeof card.description === 'string' &&
+          ['A', 'B', 'C', 'D', 'black'].includes(card.deck) &&
+          (card.playerColor === 'red' || card.playerColor === 'blue' || card.playerColor === 'any' || card.playerColor === 'neutral')
+        )
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to load custom cards, using empty array:', err)
+  }
+  return []
 }
 
 const initialState: GameState = {
@@ -43,6 +110,8 @@ const initialState: GameState = {
   startingPlayer: null,
   selectedCard: null,
   isModalOpen: false,
+  settings: loadSettings(),
+  customCards: loadCustomCards(),
 }
 
 export const useGameStore = create<GameState & GameActions>()(
@@ -50,7 +119,7 @@ export const useGameStore = create<GameState & GameActions>()(
     (set, get) => ({
       ...initialState,
       
-      startGame: (player: PlayerColor) => {
+      startGame: (player: 'red' | 'blue') => {
         set({
           currentPlayer: player,
           startingPlayer: player,
@@ -63,7 +132,7 @@ export const useGameStore = create<GameState & GameActions>()(
         })
       },
 
-      drawFrom: (deck: 'A' | 'B' | 'C' | 'D' | 'black', playerColor: PlayerColor, availableCards: Card[]) => {
+      drawFrom: (deck: DeckLetter, playerColor: 'red' | 'blue', availableCards: Card[]) => {
         const { usedCardIds } = get()
         
         // Filter cards by deck and player color, exclude used cards
@@ -77,7 +146,7 @@ export const useGameStore = create<GameState & GameActions>()(
           filteredCards = availableCards.filter(
             (card) =>
               card.deck === deck &&
-              (card.playerColor === playerColor || card.playerColor === 'neutral') &&
+              (card.playerColor === playerColor || card.playerColor === 'neutral' || card.playerColor === 'any') &&
               !usedCardIds.has(card.id)
           )
         }
@@ -154,7 +223,16 @@ export const useGameStore = create<GameState & GameActions>()(
       },
 
       resetGame: () => {
-        set(initialState)
+        set({
+          currentPlayer: null,
+          swapCount: { red: 0, blue: 0 },
+          activeSwapCard: { red: false, blue: false },
+          blackUnlocked: false,
+          usedCardIds: new Set<string>(),
+          startingPlayer: null,
+          selectedCard: null,
+          isModalOpen: false,
+        })
       },
 
       setSelectedCard: (card: Card | null) => {
@@ -163,6 +241,70 @@ export const useGameStore = create<GameState & GameActions>()(
 
       setIsModalOpen: (open: boolean) => {
         set({ isModalOpen: open })
+      },
+
+      setSettings: (partialSettings: Partial<Settings>) => {
+        const { settings } = get()
+        const newSettings = { ...settings, ...partialSettings }
+        set({ settings: newSettings })
+        // Persist to localStorage
+        try {
+          localStorage.setItem('cg.settings.v2', JSON.stringify(newSettings))
+        } catch (err) {
+          console.warn('Failed to save settings:', err)
+        }
+      },
+
+      addCustomCard: (card: Card) => {
+        const { customCards } = get()
+        const newCustomCards = [...customCards, card]
+        set({ customCards: newCustomCards })
+        // Persist to localStorage
+        try {
+          localStorage.setItem('cg.custom.v2', JSON.stringify(newCustomCards))
+        } catch (err) {
+          console.warn('Failed to save custom cards:', err)
+        }
+      },
+
+      deleteCustomCard: (id: string) => {
+        const { customCards } = get()
+        const newCustomCards = customCards.filter(card => card.id !== id)
+        set({ customCards: newCustomCards })
+        // Persist to localStorage
+        try {
+          localStorage.setItem('cg.custom.v2', JSON.stringify(newCustomCards))
+        } catch (err) {
+          console.warn('Failed to save custom cards:', err)
+        }
+      },
+
+      clearCustomCards: () => {
+        set({ customCards: [] })
+        try {
+          localStorage.setItem('cg.custom.v2', JSON.stringify([]))
+        } catch (err) {
+          console.warn('Failed to clear custom cards:', err)
+        }
+      },
+
+      mergeDecksForPlayer: (player: 'red' | 'blue') => {
+        const { settings, customCards } = get()
+        const baseCards = cardsData as Card[]
+        
+        // Start with base cards
+        let mergedCards = [...baseCards]
+        
+        // Add custom cards if enabled for this player
+        if ((player === 'red' && settings.includeCustomRed) || (player === 'blue' && settings.includeCustomBlue)) {
+          const playerCustomCards = customCards.filter(card => {
+            // Custom cards can be player-specific or 'any'
+            return card.playerColor === player || card.playerColor === 'any'
+          })
+          mergedCards = [...mergedCards, ...playerCustomCards]
+        }
+        
+        return mergedCards
       },
     }),
     {
@@ -180,7 +322,11 @@ export const useGameStore = create<GameState & GameActions>()(
         if (error) {
           // If localStorage is corrupted, reset to initial state
           console.warn('Failed to rehydrate game state from localStorage, resetting:', error)
-          return initialState
+          return {
+            ...initialState,
+            settings: loadSettings(),
+            customCards: loadCustomCards(),
+          }
         }
         
         if (state) {
@@ -226,13 +372,20 @@ export const useGameStore = create<GameState & GameActions>()(
             if (state.startingPlayer !== 'red' && state.startingPlayer !== 'blue') {
               state.startingPlayer = null
             }
+
+            // Load settings and custom cards from separate storage
+            state.settings = loadSettings()
+            state.customCards = loadCustomCards()
           } catch (err) {
             console.warn('Error validating rehydrated state, resetting:', err)
-            return initialState
+            return {
+              ...initialState,
+              settings: loadSettings(),
+              customCards: loadCustomCards(),
+            }
           }
         }
       },
     }
   )
 )
-

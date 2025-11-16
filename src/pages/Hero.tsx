@@ -36,7 +36,7 @@ export default function Hero() {
         </p>
 
         <motion.button
-          onClick={() => navigate('/dice')}
+          onClick={() => navigate('/settings')}
           className="px-8 py-4 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display text-xl rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

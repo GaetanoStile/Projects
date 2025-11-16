@@ -1,12 +1,14 @@
 import { useMemo } from 'react'
 import { useGameStore, Card } from '@/state/store'
 import CardComponent from './Card'
-import cardsData from '@/data/cards.json'
 
 export default function DeckGrid() {
-  const { currentPlayer, blackUnlocked, usedCardIds, drawFrom, applyCardEffects } = useGameStore()
+  const { currentPlayer, blackUnlocked, usedCardIds, drawFrom, applyCardEffects, mergeDecksForPlayer } = useGameStore()
 
-  const availableCards = useMemo(() => cardsData as Card[], [])
+  const availableCards = useMemo(() => {
+    if (!currentPlayer) return []
+    return mergeDecksForPlayer(currentPlayer)
+  }, [currentPlayer, mergeDecksForPlayer])
 
   const getRemainingCount = (deck: 'A' | 'B' | 'C' | 'D' | 'black', playerColor: 'red' | 'blue') => {
     if (deck === 'black') {
@@ -18,7 +20,7 @@ export default function DeckGrid() {
     return availableCards.filter(
       (card) =>
         card.deck === deck &&
-        (card.playerColor === playerColor || card.playerColor === 'neutral') &&
+        (card.playerColor === playerColor || card.playerColor === 'neutral' || card.playerColor === 'any') &&
         !usedCardIds.has(card.id)
     ).length
   }

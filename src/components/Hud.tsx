@@ -1,7 +1,7 @@
 import { useGameStore } from '@/state/store'
 
 export default function Hud() {
-  const { currentPlayer, swapCount, blackUnlocked } = useGameStore()
+  const { currentPlayer, swapCount, blackUnlocked, settings } = useGameStore()
 
   if (!currentPlayer) {
     return null
@@ -23,7 +23,9 @@ export default function Hud() {
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
             }}
           >
-            {currentPlayer === 'red' ? 'Red' : 'Blue'}
+            {currentPlayer === 'red' 
+              ? `${settings.playerRedName} (Red)` 
+              : `${settings.playerBlueName} (Blue)`}
           </div>
         </div>
 
