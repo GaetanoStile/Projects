@@ -127,7 +127,6 @@ export default function Create() {
                   </label>
                   <input
                     id="cardTitle"
-                    name="title"
                     type="text"
                     {...register('title')}
                     className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
@@ -146,7 +145,6 @@ export default function Create() {
                   </label>
                   <select
                     id="cardPlayerColor"
-                    name="playerColor"
                     {...register('playerColor')}
                     className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                   >
@@ -162,7 +160,6 @@ export default function Create() {
                   </label>
                   <textarea
                     id="cardDescription"
-                    name="description"
                     {...register('description')}
                     rows={4}
                     className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none"
@@ -181,7 +178,6 @@ export default function Create() {
                   </label>
                   <select
                     id="cardDeck"
-                    name="deck"
                     {...register('deck')}
                     className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                   >
@@ -198,7 +194,6 @@ export default function Create() {
                   </label>
                   <input
                     id="cardImage"
-                    name="image"
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
@@ -223,7 +218,6 @@ export default function Create() {
                 <div className="flex items-center gap-3 pt-6">
                   <input
                     id="isSwapCard"
-                    name="isSwapCard"
                     type="checkbox"
                     {...register('isSwapCard')}
                     className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"

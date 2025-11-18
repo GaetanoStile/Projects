@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useGameStore, Card } from '@/state/store'
+import { useGameStore } from '@/state/store'
 import CardComponent from './Card'
 
 export default function DeckGrid() {

@@ -76,7 +76,6 @@ export default function Settings() {
                   </label>
                   <input
                     id="playerRedName"
-                    name="playerRedName"
                     type="text"
                     {...register('playerRedName')}
                     className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
@@ -95,7 +94,6 @@ export default function Settings() {
                   </label>
                   <input
                     id="playerBlueName"
-                    name="playerBlueName"
                     type="text"
                     {...register('playerBlueName')}
                     className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
@@ -112,7 +110,6 @@ export default function Settings() {
                   <label htmlFor="includeCustomRed" className="flex items-center gap-3 cursor-pointer">
                     <input
                       id="includeCustomRed"
-                      name="includeCustomRed"
                       type="checkbox"
                       {...register('includeCustomRed')}
                       className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
@@ -125,7 +122,6 @@ export default function Settings() {
                   <label htmlFor="includeCustomBlue" className="flex items-center gap-3 cursor-pointer">
                     <input
                       id="includeCustomBlue"
-                      name="includeCustomBlue"
                       type="checkbox"
                       {...register('includeCustomBlue')}
                       className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
