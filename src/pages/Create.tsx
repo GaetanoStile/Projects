@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useGameStore, Card, DeckLetter } from '@/state/store'
+import { useAuthStore } from '@/state/authStore'
+import { getSupabaseClient } from '@/lib/supabase/client'
+import { createCard, deleteCard as deleteCloudCard } from '@/lib/supabase/cards'
 import Candle from '@/components/Candle'
 
 const CustomCardSchema = z.object({
@@ -20,8 +23,11 @@ type CustomCardFormData = z.infer<typeof CustomCardSchema>
 
 export default function Create() {
   const navigate = useNavigate()
-  const { customCards, addCustomCard, deleteCustomCard } = useGameStore()
+  const { customCards, addCustomCard, deleteCustomCard, syncCloudCards, cloudCards } = useGameStore()
+  const { mode, user } = useAuthStore()
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [isMigrating, setIsMigrating] = useState(false)
+  const [migrationError, setMigrationError] = useState<string | null>(null)
 
   const {
     register,
@@ -44,7 +50,7 @@ export default function Create() {
 
   const isSwapCard = watch('isSwapCard')
 
-  const onSubmit = (data: CustomCardFormData) => {
+  const onSubmit = async (data: CustomCardFormData) => {
     const newCard: Card = {
       id: `custom-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       title: data.title,
@@ -56,9 +62,86 @@ export default function Create() {
       imageDataUrl: data.imageDataUrl || undefined,
     }
 
+    // Cloud mode: create in Supabase
+    if (mode === 'cloud' && user) {
+      const { client } = getSupabaseClient()
+      if (client) {
+        const cloudCard = await createCard(client, newCard, user.id)
+        if (cloudCard) {
+          // Sync to update local cloudCards state
+          await syncCloudCards()
+          reset()
+          setImagePreview(null)
+          return
+        } else {
+          // Fallback to local if Supabase fails
+          console.warn('Failed to create card in cloud, saving locally')
+        }
+      }
+    }
+
+    // Local mode or fallback
     addCustomCard(newCard)
     reset()
     setImagePreview(null)
+  }
+
+  const handleDelete = async (cardId: string) => {
+    // Cloud mode: delete from Supabase if it's a cloud card
+    if (mode === 'cloud' && user) {
+      const cloudCard = cloudCards.user.find(c => c.id === cardId)
+      if (cloudCard) {
+        const { client } = getSupabaseClient()
+        if (client) {
+          const success = await deleteCloudCard(client, cardId)
+          if (success) {
+            await syncCloudCards()
+            return
+          }
+        }
+      }
+    }
+
+    // Local mode or local card
+    deleteCustomCard(cardId)
+  }
+
+  const handleMigrateLocalCards = async () => {
+    if (mode !== 'cloud' || !user) return
+
+    setIsMigrating(true)
+    setMigrationError(null)
+
+    try {
+      const { client } = getSupabaseClient()
+      if (!client) {
+        setMigrationError('Supabase is not available')
+        return
+      }
+
+      // Get local cards that don't have a Supabase ID (not already in cloud)
+      const localOnlyCards = customCards.filter(card => 
+        !card.id.startsWith('custom-') || !cloudCards.user.some(cc => cc.id === card.id)
+      )
+
+      if (localOnlyCards.length === 0) {
+        setMigrationError('No local cards to migrate')
+        return
+      }
+
+      // Create each card in Supabase
+      for (const card of localOnlyCards) {
+        await createCard(client, card, user.id)
+      }
+
+      // Sync to update state
+      await syncCloudCards()
+    } catch (error) {
+      console.error('Migration error:', error)
+      setMigrationError('Failed to migrate cards. Please try again.')
+    } finally {
+      setIsMigrating(false)
+    }
   }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,13 +160,31 @@ export default function Create() {
   const [filterColor, setFilterColor] = useState<'all' | 'red' | 'blue' | 'any'>('all')
   const [filterDeck, setFilterDeck] = useState<'all' | 'A' | 'B' | 'C' | 'D'>('all')
 
+  // Combine local and cloud cards for display
+  const allCustomCards = useMemo(() => {
+    if (mode === 'cloud') {
+      return [...cloudCards.user, ...customCards.filter(c => 
+        !cloudCards.user.some(cc => cc.id === c.id)
+      )]
+    }
+    return customCards
+  }, [mode, customCards, cloudCards.user])
+
   const filteredCards = useMemo(() => {
-    return customCards.filter(card => {
+    return allCustomCards.filter(card => {
       const colorMatch = filterColor === 'all' || card.playerColor === filterColor
       const deckMatch = filterDeck === 'all' || card.deck === filterDeck
       return colorMatch && deckMatch
     })
-  }, [customCards, filterColor, filterDeck])
+  }, [allCustomCards, filterColor, filterDeck])
+
+  // Check if there are local-only cards to migrate
+  const hasLocalOnlyCards = useMemo(() => {
+    if (mode !== 'cloud') return false
+    return customCards.some(card => 
+      !cloudCards.user.some(cc => cc.id === card.id)
+    )
+  }, [mode, customCards, cloudCards.user])
 
   return (
     <div className="candlelit-bg min-h-screen relative overflow-hidden">
@@ -115,7 +216,45 @@ export default function Create() {
             <p className="text-lg md:text-xl text-gold/80 font-body">
               Add your own cards to personalize the game
             </p>
+            {mode === 'cloud' && user && (
+              <p className="text-sm text-gold/60 font-body mt-2">
+                Cards will be saved to the cloud
+              </p>
+            )}
           </div>
+
+          {/* Migration Button */}
+          {hasLocalOnlyCards && mode === 'cloud' && user && (
+            <motion.div
+              className="mb-6 parchment-bg rounded-lg p-4 glow-warm"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <p className="text-velvet font-body font-semibold mb-1">
+                    Upload local cards to cloud
+                  </p>
+                  <p className="text-sm text-velvet/70 font-body">
+                    You have {customCards.filter(c => !cloudCards.user.some(cc => cc.id === c.id)).length} local card(s) not yet in the cloud
+                  </p>
+                  {migrationError && (
+                    <p className="text-sm text-crimson mt-2">{migrationError}</p>
+                  )}
+                </div>
+                <motion.button
+                  type="button"
+                  onClick={handleMigrateLocalCards}
+                  disabled={isMigrating}
+                  className="px-6 py-2 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  whileHover={!isMigrating ? { scale: 1.05 } : {}}
+                  whileTap={!isMigrating ? { scale: 0.95 } : {}}
+                >
+                  {isMigrating ? 'Uploading...' : 'Upload to Cloud'}
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="mb-12">
@@ -336,7 +475,7 @@ export default function Create() {
                         {card.title}
                       </h3>
                       <button
-                        onClick={() => deleteCustomCard(card.id)}
+                        onClick={() => handleDelete(card.id)}
                         className="ml-2 text-crimson hover:text-red-700 transition-colors"
                         aria-label="Delete card"
                         style={{ minWidth: '32px', minHeight: '32px' }}

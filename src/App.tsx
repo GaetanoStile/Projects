@@ -5,6 +5,7 @@ import Dice from './pages/Dice'
 import Game from './pages/Game'
 import Settings from './pages/Settings'
 import Create from './pages/Create'
+import Admin from './pages/Admin'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/dice" element={<Dice />} />
           <Route path="/game" element={<Game />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </AnimatePresence>
     </BrowserRouter>

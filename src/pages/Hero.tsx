@@ -1,9 +1,20 @@
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Candle from '@/components/Candle'
+import AuthModal from '@/components/AuthModal'
+import { useAuthStore } from '@/state/authStore'
+import { isCloudEnabled } from '@/lib/config'
 
 export default function Hero() {
   const navigate = useNavigate()
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const { initializeAuth, user } = useAuthStore()
+  const cloudEnabled = isCloudEnabled()
+
+  useEffect(() => {
+    initializeAuth()
+  }, [initializeAuth])
 
   return (
     <div className="candlelit-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
@@ -35,19 +46,51 @@ export default function Hero() {
           A romantic card game for two
         </p>
 
-        <motion.button
-          onClick={() => navigate('/settings')}
-          className="px-8 py-4 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display text-xl rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          style={{
-            minWidth: '200px',
-            minHeight: '56px',
-            boxShadow: '0 8px 24px rgba(212, 175, 55, 0.4)',
-          }}
-        >
-          Start Game
-        </motion.button>
+        <div className="flex flex-col items-center gap-4">
+          <motion.button
+            onClick={() => navigate('/settings')}
+            className="px-8 py-4 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display text-xl rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              minWidth: '200px',
+              minHeight: '56px',
+              boxShadow: '0 8px 24px rgba(212, 175, 55, 0.4)',
+            }}
+          >
+            Start Game
+          </motion.button>
+
+          {cloudEnabled && (
+            <>
+              {user ? (
+                <div className="text-sm text-gold/70 font-body">
+                  Logged in as {user.email}
+                  {user.isAdmin && (
+                    <span className="ml-2 px-2 py-1 bg-gold/20 text-gold rounded text-xs">
+                      Admin
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <motion.button
+                  onClick={() => setShowAuthModal(true)}
+                  className="px-6 py-2 text-gold/80 hover:text-gold font-body text-sm transition-colors underline"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Log in to sync cards
+                </motion.button>
+              )}
+            </>
+          )}
+        </div>
+
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onGuestMode={() => setShowAuthModal(false)}
+        />
       </motion.div>
 
       {/* Rose petals effect (optional decorative elements) */}

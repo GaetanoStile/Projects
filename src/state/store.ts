@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import cardsData from '@/data/cards.json'
+import { useAuthStore } from './authStore'
 
 export type DeckLetter = 'A' | 'B' | 'C' | 'D' | 'black'
 export type PlayerColor = 'red' | 'blue' | 'any'
@@ -33,7 +34,9 @@ interface GameState {
   selectedCard: Card | null
   isModalOpen: boolean
   settings: Settings
-  customCards: Card[]
+  customCards: Card[] // Local mode custom cards
+  cloudCards: { global: Card[]; user: Card[] } // Cloud mode cards
+  deckShuffles: Record<DeckLetter, string[]>
 }
 
 interface GameActions {
@@ -50,6 +53,9 @@ interface GameActions {
   deleteCustomCard: (id: string) => void
   clearCustomCards: () => void
   mergeDecksForPlayer: (player: 'red' | 'blue') => Card[]
+  reshuffleAllDecks: () => void
+  setCloudCards: (global: Card[], user: Card[]) => void
+  syncCloudCards: () => Promise<void>
 }
 
 const defaultSettings: Settings = {
@@ -101,6 +107,41 @@ const loadCustomCards = (): Card[] => {
   return []
 }
 
+// Fisher-Yates shuffle algorithm
+const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+// Shuffle a deck and return array of card IDs
+const shuffleDeck = (cards: Card[]): string[] => {
+  return shuffleArray(cards).map(card => card.id)
+}
+
+// Initialize deck shuffles for all decks
+const initializeDeckShuffles = (availableCards: Card[]): Record<DeckLetter, string[]> => {
+  const shuffles: Record<DeckLetter, string[]> = {
+    A: [],
+    B: [],
+    C: [],
+    D: [],
+    black: [],
+  }
+
+  // Shuffle each deck separately
+  const decks: DeckLetter[] = ['A', 'B', 'C', 'D', 'black']
+  decks.forEach(deck => {
+    const deckCards = availableCards.filter(card => card.deck === deck)
+    shuffles[deck] = shuffleDeck(deckCards)
+  })
+
+  return shuffles
+}
+
 const initialState: GameState = {
   currentPlayer: null,
   swapCount: { red: 0, blue: 0 },
@@ -112,6 +153,14 @@ const initialState: GameState = {
   isModalOpen: false,
   settings: loadSettings(),
   customCards: loadCustomCards(),
+  cloudCards: { global: [], user: [] },
+  deckShuffles: {
+    A: [],
+    B: [],
+    C: [],
+    D: [],
+    black: [],
+  },
 }
 
 export const useGameStore = create<GameState & GameActions>()(
@@ -120,6 +169,21 @@ export const useGameStore = create<GameState & GameActions>()(
       ...initialState,
       
       startGame: (player: 'red' | 'blue') => {
+        const { mergeDecksForPlayer } = get()
+        
+        // Get merged cards for both players to ensure all available cards are included
+        const redCards = mergeDecksForPlayer('red')
+        const blueCards = mergeDecksForPlayer('blue')
+        
+        // Combine all unique cards (base + custom for both players)
+        const allCards = [...redCards, ...blueCards]
+        const uniqueCards = Array.from(
+          new Map(allCards.map(card => [card.id, card])).values()
+        )
+        
+        // Initialize deck shuffles
+        const deckShuffles = initializeDeckShuffles(uniqueCards)
+        
         set({
           currentPlayer: player,
           startingPlayer: player,
@@ -129,11 +193,15 @@ export const useGameStore = create<GameState & GameActions>()(
           usedCardIds: new Set<string>(),
           selectedCard: null,
           isModalOpen: false,
+          deckShuffles,
         })
       },
 
       drawFrom: (deck: DeckLetter, playerColor: 'red' | 'blue', availableCards: Card[]) => {
-        const { usedCardIds } = get()
+        const { usedCardIds, deckShuffles } = get()
+        
+        // Get shuffled order for this deck
+        const shuffledOrder = deckShuffles[deck] || []
         
         // Filter cards by deck and player color, exclude used cards
         let filteredCards: Card[]
@@ -155,9 +223,21 @@ export const useGameStore = create<GameState & GameActions>()(
           return null
         }
 
-        // Randomly select a card
-        const randomIndex = Math.floor(Math.random() * filteredCards.length)
-        const selectedCard = filteredCards[randomIndex]
+        // Use shuffled order: find first card in shuffled order that is available and unused
+        let selectedCard: Card | null = null
+        for (const cardId of shuffledOrder) {
+          const card = filteredCards.find(c => c.id === cardId)
+          if (card && !usedCardIds.has(cardId)) {
+            selectedCard = card
+            break
+          }
+        }
+
+        // Fallback to random if shuffled order doesn't have available cards
+        if (!selectedCard) {
+          const randomIndex = Math.floor(Math.random() * filteredCards.length)
+          selectedCard = filteredCards[randomIndex]
+        }
 
         // Mark as used
         const newUsedCardIds = new Set(usedCardIds)
@@ -197,6 +277,10 @@ export const useGameStore = create<GameState & GameActions>()(
         // Unlock black deck if current player has 3+ swaps
         const shouldUnlock = newSwapCount[currentPlayer] >= 3
 
+        // Reshuffle all decks
+        const { reshuffleAllDecks } = get()
+        reshuffleAllDecks()
+
         // End the turn after using swap card
         set({
           currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
@@ -232,6 +316,13 @@ export const useGameStore = create<GameState & GameActions>()(
           startingPlayer: null,
           selectedCard: null,
           isModalOpen: false,
+          deckShuffles: {
+            A: [],
+            B: [],
+            C: [],
+            D: [],
+            black: [],
+          },
         })
       },
 
@@ -289,22 +380,101 @@ export const useGameStore = create<GameState & GameActions>()(
       },
 
       mergeDecksForPlayer: (player: 'red' | 'blue') => {
-        const { settings, customCards } = get()
-        const baseCards = cardsData as Card[]
+        const { settings, customCards, cloudCards } = get()
+        const authState = useAuthStore.getState()
+        const mode = authState.mode
         
-        // Start with base cards
-        let mergedCards = [...baseCards]
+        let baseCards: Card[] = []
+        let userCustomCards: Card[] = []
         
-        // Add custom cards if enabled for this player
-        if ((player === 'red' && settings.includeCustomRed) || (player === 'blue' && settings.includeCustomBlue)) {
-          const playerCustomCards = customCards.filter(card => {
-            // Custom cards can be player-specific or 'any'
-            return card.playerColor === player || card.playerColor === 'any'
-          })
-          mergedCards = [...mergedCards, ...playerCustomCards]
+        // Determine mode: cloud or local
+        if (mode === 'cloud' && cloudCards.global.length > 0) {
+          // Cloud mode: use global cards as base
+          baseCards = [...cloudCards.global]
+          
+          // Add user custom cards if enabled
+          if ((player === 'red' && settings.includeCustomRed) || (player === 'blue' && settings.includeCustomBlue)) {
+            userCustomCards = cloudCards.user.filter(card => {
+              return card.playerColor === player || card.playerColor === 'any'
+            })
+          }
+        } else {
+          // Local mode: use cards.json as base
+          baseCards = cardsData as Card[]
+          
+          // Add local custom cards if enabled
+          if ((player === 'red' && settings.includeCustomRed) || (player === 'blue' && settings.includeCustomBlue)) {
+            userCustomCards = customCards.filter(card => {
+              return card.playerColor === player || card.playerColor === 'any'
+            })
+          }
         }
         
-        return mergedCards
+        return [...baseCards, ...userCustomCards]
+      },
+
+      reshuffleAllDecks: () => {
+        const { usedCardIds, mergeDecksForPlayer } = get()
+        
+        // Get merged cards for both players
+        const redCards = mergeDecksForPlayer('red')
+        const blueCards = mergeDecksForPlayer('blue')
+        
+        // Combine all unique cards
+        const allCards = [...redCards, ...blueCards]
+        const uniqueCards = Array.from(
+          new Map(allCards.map(card => [card.id, card])).values()
+        )
+        
+        // Create new shuffles, but only include unused cards
+        const newShuffles: Record<DeckLetter, string[]> = {
+          A: [],
+          B: [],
+          C: [],
+          D: [],
+          black: [],
+        }
+
+        const decks: DeckLetter[] = ['A', 'B', 'C', 'D', 'black']
+        decks.forEach(deck => {
+          // Get unused cards for this deck
+          const unusedDeckCards = uniqueCards.filter(
+            card => card.deck === deck && !usedCardIds.has(card.id)
+          )
+          // Shuffle only unused cards
+          newShuffles[deck] = shuffleDeck(unusedDeckCards)
+        })
+
+        set({ deckShuffles: newShuffles })
+      },
+
+      setCloudCards: (global: Card[], user: Card[]) => {
+        set({ cloudCards: { global, user } })
+      },
+
+      syncCloudCards: async () => {
+        const authStore = useAuthStore.getState()
+        
+        if (authStore.mode !== 'cloud' || !authStore.user) {
+          return
+        }
+
+        const { getSupabaseClient } = await import('@/lib/supabase/client')
+        const { fetchGlobalCards, fetchUserCards } = await import('@/lib/supabase/cards')
+        
+        const { client } = getSupabaseClient()
+        if (!client) return
+
+        try {
+          const [globalCards, userCards] = await Promise.all([
+            fetchGlobalCards(client),
+            fetchUserCards(client, authStore.user.id),
+          ])
+
+          get().setCloudCards(globalCards, userCards)
+        } catch (error) {
+          console.error('Error syncing cloud cards:', error)
+        }
       },
     }),
     {
@@ -317,6 +487,7 @@ export const useGameStore = create<GameState & GameActions>()(
         blackUnlocked: state.blackUnlocked,
         usedCardIds: Array.from(state.usedCardIds),
         startingPlayer: state.startingPlayer,
+        deckShuffles: state.deckShuffles,
       }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
@@ -371,6 +542,35 @@ export const useGameStore = create<GameState & GameActions>()(
             // Validate startingPlayer
             if (state.startingPlayer !== 'red' && state.startingPlayer !== 'blue') {
               state.startingPlayer = null
+            }
+
+            // Validate deckShuffles
+            if (!state.deckShuffles || typeof state.deckShuffles !== 'object') {
+              state.deckShuffles = {
+                A: [],
+                B: [],
+                C: [],
+                D: [],
+                black: [],
+              }
+            } else {
+              // Ensure all deck keys exist and are arrays
+              const decks: DeckLetter[] = ['A', 'B', 'C', 'D', 'black']
+              const validatedShuffles: Record<DeckLetter, string[]> = {
+                A: [],
+                B: [],
+                C: [],
+                D: [],
+                black: [],
+              }
+              decks.forEach(deck => {
+                if (Array.isArray(state.deckShuffles[deck])) {
+                  validatedShuffles[deck] = state.deckShuffles[deck].filter(
+                    (id: unknown) => typeof id === 'string'
+                  )
+                }
+              })
+              state.deckShuffles = validatedShuffles
             }
 
             // Load settings and custom cards from separate storage
