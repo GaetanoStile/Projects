@@ -15,6 +15,7 @@ interface AuthState {
   user: UserProfile | null
   mode: 'guest' | 'cloud'
   isLoading: boolean
+  isAdmin: boolean
 }
 
 interface AuthActions {
@@ -31,6 +32,7 @@ const initialState: AuthState = {
   user: null,
   mode: 'guest',
   isLoading: true,
+  isAdmin: false,
 }
 
 export const useAuthStore = create<AuthState & AuthActions>()(
@@ -55,7 +57,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
             console.error('Error signing out:', error)
           }
         }
-        set({ user: null, mode: 'guest' })
+        set({ user: null, mode: 'guest', isAdmin: false })
       },
 
       checkAdminStatus: async (userId: string, email: string): Promise<boolean> => {
@@ -125,6 +127,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
               },
               mode: 'cloud',
               isLoading: false,
+              isAdmin,
             })
           } else {
             set({ mode: 'guest', isLoading: false })
@@ -164,6 +167,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
                 isAdmin,
               },
               mode: 'cloud',
+              isAdmin,
             })
           }
 
@@ -203,6 +207,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
                 isAdmin,
               },
               mode: 'cloud',
+              isAdmin,
             })
           }
 

@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { useAuthStore } from '@/state/authStore'
 import { useGameStore, Card, DeckLetter, PlayerColor } from '@/state/store'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { fetchGlobalCards, createGlobalCard, updateGlobalCard, deleteGlobalCard } from '@/lib/supabase/cards'
+import { createGlobalCard, updateGlobalCard, deleteGlobalCard } from '@/lib/supabase/cards'
 import { isCloudEnabled } from '@/lib/config'
 import Candle from '@/components/Candle'
 

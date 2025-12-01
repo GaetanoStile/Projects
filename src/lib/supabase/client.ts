@@ -2,7 +2,6 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { isCloudEnabled } from '../config'
 
 let supabaseClient: SupabaseClient | null = null
-let isSupabaseAvailable = false
 
 /**
  * Initialize Supabase client if environment variables are available
@@ -22,7 +21,6 @@ const initializeSupabase = (): { client: SupabaseClient | null; isSupabaseAvaila
 
   try {
     supabaseClient = createClient(supabaseUrl, supabaseAnonKey)
-    isSupabaseAvailable = true
     return { client: supabaseClient, isSupabaseAvailable: true }
   } catch (error) {
     console.error('Failed to initialize Supabase client:', error)

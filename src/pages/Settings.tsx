@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useGameStore } from '@/state/store'
-import { useAuthStore } from '@/state/authStore'
 import { useCloudCards } from '@/hooks/useCloudCards'
 import Candle from '@/components/Candle'
 
@@ -20,7 +19,6 @@ type SettingsFormData = z.infer<typeof SettingsSchema>
 export default function Settings() {
   const navigate = useNavigate()
   const { settings, setSettings } = useGameStore()
-  const { mode } = useAuthStore()
   
   // Fetch cloud cards when in cloud mode
   useCloudCards()
