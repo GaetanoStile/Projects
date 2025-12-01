@@ -99,7 +99,7 @@ export default function AuthModal({ isOpen, onClose, onGuestMode }: AuthModalPro
             >
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-velvet hover:text-gold transition-colors text-2xl"
+                className="absolute top-4 right-4 text-[#2d0a0e] hover:text-gold transition-colors text-2xl"
                 aria-label="Close"
               >
                 ×
@@ -111,14 +111,14 @@ export default function AuthModal({ isOpen, onClose, onGuestMode }: AuthModalPro
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
-                  <label htmlFor="auth-email" className="block text-velvet font-body font-semibold mb-2 text-left">
+                  <label htmlFor="auth-email" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
                     Email
                   </label>
                   <input
                     id="auth-email"
                     type="email"
                     {...register('email')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
                     placeholder="your@email.com"
                   />
                   {errors.email && (
@@ -127,14 +127,14 @@ export default function AuthModal({ isOpen, onClose, onGuestMode }: AuthModalPro
                 </div>
 
                 <div>
-                  <label htmlFor="auth-password" className="block text-velvet font-body font-semibold mb-2 text-left">
+                  <label htmlFor="auth-password" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
                     Password
                   </label>
                   <input
                     id="auth-password"
                     type="password"
                     {...register('password')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
                     placeholder="••••••"
                   />
                   {errors.password && (
@@ -179,7 +179,7 @@ export default function AuthModal({ isOpen, onClose, onGuestMode }: AuthModalPro
                 >
                   Continue as Guest
                 </motion.button>
-                <p className="text-xs text-velvet/60 text-center mt-2">
+                <p className="text-xs text-[#2d0a0e]/70 text-center mt-2">
                   Play locally without an account
                 </p>
               </div>
