@@ -41,6 +41,7 @@ create table if not exists public.cards (
   player_color text not null check (player_color in ('red','blue','any','neutral')),
   is_swap_card boolean default false,
   is_custom boolean default false,
+  is_enabled boolean default true,
   image_url text,
   created_at timestamptz default now()
 );
@@ -55,6 +56,7 @@ create table if not exists public.cards (
 - `player_color`: Player color restriction - must be one of: 'red', 'blue', 'any', 'neutral'
 - `is_swap_card`: Boolean indicating if this is a swap card
 - `is_custom`: Boolean indicating if this is a custom card (always true for user cards)
+- `is_enabled`: Boolean indicating if the card is enabled (defaults to true). Disabled cards won't appear in gameplay.
 - `image_url`: Optional image URL (data URL or Supabase Storage URL)
 - `created_at`: Timestamp of card creation
 

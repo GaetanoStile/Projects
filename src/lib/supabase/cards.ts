@@ -13,6 +13,7 @@ export interface DatabaseCard {
   player_color: PlayerColor | 'neutral'
   is_swap_card: boolean
   is_custom: boolean
+  is_enabled: boolean
   image_url: string | null
   created_at: string
 }
@@ -28,6 +29,7 @@ const dbCardToCard = (dbCard: DatabaseCard): Card => ({
   playerColor: dbCard.player_color,
   isSwapCard: dbCard.is_swap_card,
   isCustom: dbCard.is_custom,
+  isEnabled: dbCard.is_enabled !== undefined ? dbCard.is_enabled : true,
   imageDataUrl: dbCard.image_url || undefined,
 })
 
@@ -42,6 +44,7 @@ const cardToDbCard = (card: Card, ownerId: string | null = null): Omit<DatabaseC
   player_color: card.playerColor,
   is_swap_card: card.isSwapCard || false,
   is_custom: card.isCustom || false,
+  is_enabled: card.isEnabled !== undefined ? card.isEnabled : true,
   image_url: card.imageDataUrl || null,
 })
 
@@ -142,6 +145,7 @@ export const updateCard = async (
     if (updates.deck !== undefined) updateData.deck = updates.deck
     if (updates.playerColor !== undefined) updateData.player_color = updates.playerColor
     if (updates.isSwapCard !== undefined) updateData.is_swap_card = updates.isSwapCard
+    if (updates.isEnabled !== undefined) updateData.is_enabled = updates.isEnabled
     if (updates.imageDataUrl !== undefined) updateData.image_url = updates.imageDataUrl || null
 
     const { data, error } = await client

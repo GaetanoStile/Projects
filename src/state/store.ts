@@ -15,6 +15,7 @@ export interface Card {
   isSwapCard?: boolean
   isCustom?: boolean
   imageDataUrl?: string
+  isEnabled?: boolean // defaults to true if undefined
 }
 
 export interface Settings {
@@ -37,6 +38,7 @@ interface GameState {
   customCards: Card[] // Local mode custom cards
   cloudCards: { global: Card[]; user: Card[] } // Cloud mode cards
   deckShuffles: Record<DeckLetter, string[]>
+  cardOverrides: Record<string, Partial<Card>> // Stores edits and enabled state for base cards (local mode)
 }
 
 interface GameActions {
@@ -56,6 +58,9 @@ interface GameActions {
   reshuffleAllDecks: () => void
   setCloudCards: (global: Card[], user: Card[]) => void
   syncCloudCards: () => Promise<void>
+  updateCard: (id: string, updates: Partial<Card>) => Promise<void>
+  setCardEnabled: (id: string, enabled: boolean) => Promise<void>
+  resetToDefaultDeck: () => void
 }
 
 const defaultSettings: Settings = {
@@ -105,6 +110,22 @@ const loadCustomCards = (): Card[] => {
     console.warn('Failed to load custom cards, using empty array:', err)
   }
   return []
+}
+
+// Load card overrides from localStorage
+const loadCardOverrides = (): Record<string, Partial<Card>> => {
+  try {
+    const stored = localStorage.getItem('cg.cardOverrides.v3')
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      if (typeof parsed === 'object' && parsed !== null) {
+        return parsed
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to load card overrides, using empty object:', err)
+  }
+  return {}
 }
 
 // Fisher-Yates shuffle algorithm
@@ -161,6 +182,7 @@ const initialState: GameState = {
     D: [],
     black: [],
   },
+  cardOverrides: loadCardOverrides(),
 }
 
 export const useGameStore = create<GameState & GameActions>()(
@@ -380,12 +402,21 @@ export const useGameStore = create<GameState & GameActions>()(
       },
 
       mergeDecksForPlayer: (player: 'red' | 'blue') => {
-        const { settings, customCards, cloudCards } = get()
+        const { settings, customCards, cloudCards, cardOverrides } = get()
         const authState = useAuthStore.getState()
         const mode = authState.mode
         
         let baseCards: Card[] = []
         let userCustomCards: Card[] = []
+        
+        // Helper to apply overrides to a card
+        const applyOverrides = (card: Card): Card => {
+          const override = cardOverrides[card.id]
+          if (override) {
+            return { ...card, ...override }
+          }
+          return card
+        }
         
         // Determine mode: cloud or local
         if (mode === 'cloud' && cloudCards.global.length > 0) {
@@ -399,8 +430,8 @@ export const useGameStore = create<GameState & GameActions>()(
             })
           }
         } else {
-          // Local mode: use cards.json as base
-          baseCards = cardsData as Card[]
+          // Local mode: use cards.json as base, apply overrides
+          baseCards = (cardsData as Card[]).map(applyOverrides)
           
           // Add local custom cards if enabled
           if ((player === 'red' && settings.includeCustomRed) || (player === 'blue' && settings.includeCustomBlue)) {
@@ -410,7 +441,14 @@ export const useGameStore = create<GameState & GameActions>()(
           }
         }
         
-        return [...baseCards, ...userCustomCards]
+        // Combine all cards
+        const allCards = [...baseCards, ...userCustomCards]
+        
+        // Filter out disabled cards (isEnabled === false)
+        // If isEnabled is undefined, treat as true (enabled)
+        const enabledCards = allCards.filter(card => card.isEnabled !== false)
+        
+        return enabledCards
       },
 
       reshuffleAllDecks: () => {
@@ -476,6 +514,106 @@ export const useGameStore = create<GameState & GameActions>()(
           console.error('Error syncing cloud cards:', error)
         }
       },
+
+      updateCard: async (id: string, updates: Partial<Card>) => {
+        const { customCards, cardOverrides, cloudCards } = get()
+        const authStore = useAuthStore.getState()
+        const mode = authStore.mode
+
+        // Check if it's a custom card (local or cloud user card)
+        const isCustomCard = customCards.some(c => c.id === id) || 
+                            (mode === 'cloud' && cloudCards.user.some(c => c.id === id))
+        
+        // Check if it's a global card
+        const isGlobalCard = mode === 'cloud' && cloudCards.global.some(c => c.id === id)
+
+        if (mode === 'cloud' && authStore.user) {
+          // Cloud mode: update Supabase
+          const { getSupabaseClient } = await import('@/lib/supabase/client')
+          const { updateCard: updateCloudCard, updateGlobalCard } = await import('@/lib/supabase/cards')
+          const { client } = getSupabaseClient()
+
+          if (client) {
+            try {
+              if (isCustomCard) {
+                // Update user's custom card
+                await updateCloudCard(client, id, updates)
+                await get().syncCloudCards()
+              } else if (isGlobalCard && authStore.isAdmin) {
+                // Admin can update global cards
+                await updateGlobalCard(client, id, updates)
+                await get().syncCloudCards()
+              } else if (isGlobalCard && !authStore.isAdmin) {
+                // Non-admin trying to edit global card - not allowed
+                console.warn('Only admins can edit global cards')
+                return
+              }
+            } catch (error) {
+              console.error('Error updating card in cloud:', error)
+            }
+          }
+        } else {
+          // Local mode: update cardOverrides or customCards
+          if (isCustomCard) {
+            // Update in customCards array
+            const updatedCustomCards = customCards.map(card => 
+              card.id === id ? { ...card, ...updates } : card
+            )
+            set({ customCards: updatedCustomCards })
+            try {
+              localStorage.setItem('cg.custom.v2', JSON.stringify(updatedCustomCards))
+            } catch (err) {
+              console.warn('Failed to save custom cards:', err)
+            }
+          } else {
+            // Update in cardOverrides for base cards
+            const newOverrides = { ...cardOverrides }
+            if (newOverrides[id]) {
+              newOverrides[id] = { ...newOverrides[id], ...updates }
+            } else {
+              newOverrides[id] = updates
+            }
+            set({ cardOverrides: newOverrides })
+            try {
+              localStorage.setItem('cg.cardOverrides.v3', JSON.stringify(newOverrides))
+            } catch (err) {
+              console.warn('Failed to save card overrides:', err)
+            }
+          }
+        }
+
+        // Trigger re-shuffle if game is active
+        const { currentPlayer } = get()
+        if (currentPlayer) {
+          get().reshuffleAllDecks()
+        }
+      },
+
+      setCardEnabled: async (id: string, enabled: boolean) => {
+        await get().updateCard(id, { isEnabled: enabled })
+      },
+
+      resetToDefaultDeck: () => {
+        const authStore = useAuthStore.getState()
+        if (authStore.mode === 'cloud') {
+          console.warn('resetToDefaultDeck is only available in local mode')
+          return
+        }
+
+        // Clear card overrides
+        set({ cardOverrides: {} })
+        try {
+          localStorage.removeItem('cg.cardOverrides.v3')
+        } catch (err) {
+          console.warn('Failed to clear card overrides:', err)
+        }
+
+        // Trigger re-shuffle if game is active
+        const { currentPlayer } = get()
+        if (currentPlayer) {
+          get().reshuffleAllDecks()
+        }
+      },
     }),
     {
       name: 'couples-game-storage',
@@ -487,7 +625,8 @@ export const useGameStore = create<GameState & GameActions>()(
         blackUnlocked: state.blackUnlocked,
         usedCardIds: Array.from(state.usedCardIds),
         startingPlayer: state.startingPlayer,
-        deckShuffles: state.deckShuffles,
+        cardOverrides: state.cardOverrides,
+        // Do not persist shuffledDecks, as they should be re-shuffled on game start/reset
       }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
@@ -576,12 +715,14 @@ export const useGameStore = create<GameState & GameActions>()(
             // Load settings and custom cards from separate storage
             state.settings = loadSettings()
             state.customCards = loadCustomCards()
+            state.cardOverrides = loadCardOverrides()
           } catch (err) {
             console.warn('Error validating rehydrated state, resetting:', err)
             return {
               ...initialState,
               settings: loadSettings(),
               customCards: loadCustomCards(),
+              cardOverrides: loadCardOverrides(),
             }
           }
         }
