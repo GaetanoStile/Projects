@@ -48,7 +48,7 @@ export default function Create() {
     cardOverrides
   } = useGameStore()
   const { mode, user, isAdmin } = useAuthStore()
-  const [activeTab, setActiveTab] = useState<TabType>('custom')
+  const [activeTab, setActiveTab] = useState<TabType>('all')
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [isMigrating, setIsMigrating] = useState(false)
   const [migrationError, setMigrationError] = useState<string | null>(null)
@@ -779,6 +779,7 @@ export default function Create() {
                         <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Deck</th>
                         <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Performer</th>
                         <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Title</th>
+                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Description</th>
                         <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Tags</th>
                         <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Actions</th>
                       </tr>
@@ -786,7 +787,7 @@ export default function Create() {
                     <tbody>
                       {filteredAllCards.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="text-center py-12 text-velvet font-body">
+                          <td colSpan={7} className="text-center py-12 text-velvet font-body">
                             No cards found matching filters
                           </td>
                         </tr>
@@ -799,9 +800,10 @@ export default function Create() {
                                 checked={card.isEnabled !== false}
                                 onChange={(e) => handleToggleEnabled(card.id, e.target.checked)}
                                 className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20 cursor-pointer"
+                                title={card.isEnabled !== false ? 'Enabled' : 'Disabled'}
                               />
                             </td>
-                            <td className="py-3 px-4 text-velvet font-body">
+                            <td className="py-3 px-4 text-velvet font-body font-semibold">
                               {card.deck}
                             </td>
                             <td className="py-3 px-4 text-velvet font-body">
@@ -810,10 +812,15 @@ export default function Create() {
                             <td className="py-3 px-4">
                               <button
                                 onClick={() => handleEdit(card)}
-                                className="text-velvet font-body hover:text-gold transition-colors text-left"
+                                className="text-velvet font-display font-semibold hover:text-gold transition-colors text-left"
                               >
                                 {card.title}
                               </button>
+                            </td>
+                            <td className="py-3 px-4">
+                              <p className="text-velvet/80 font-body text-sm max-w-md">
+                                {card.description}
+                              </p>
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex flex-wrap gap-1">
