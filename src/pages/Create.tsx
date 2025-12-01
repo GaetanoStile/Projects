@@ -240,24 +240,43 @@ export default function Create() {
     
     // Base cards (from cards.json or cloud global cards)
     if (mode === 'cloud' && cloudCards.global.length > 0) {
-      allCards.push(...cloudCards.global)
+      // In cloud mode, include all global cards (including Deck D)
+      allCards.push(...cloudCards.global.map(card => ({
+        ...card,
+        isEnabled: card.isEnabled !== false // Ensure isEnabled defaults to true
+      })))
     } else {
       // Local mode: get base cards and apply overrides
       const baseCards = (cardsData as Card[]).map(card => {
         const override = cardOverrides[card.id]
-        return override ? { ...card, ...override } : card
+        const mergedCard = override ? { ...card, ...override } : card
+        // Ensure isEnabled defaults to true
+        return {
+          ...mergedCard,
+          isEnabled: mergedCard.isEnabled !== false
+        }
       })
       allCards.push(...baseCards)
     }
 
-    // Custom cards
+    // Custom cards (including any Deck D custom cards)
     if (mode === 'cloud') {
-      allCards.push(...cloudCards.user)
+      allCards.push(...cloudCards.user.map(card => ({
+        ...card,
+        isEnabled: card.isEnabled !== false
+      })))
     } else {
-      allCards.push(...customCards)
+      allCards.push(...customCards.map(card => ({
+        ...card,
+        isEnabled: card.isEnabled !== false
+      })))
     }
 
-    return allCards
+    // Ensure all cards have isEnabled set (default to true)
+    return allCards.map(card => ({
+      ...card,
+      isEnabled: card.isEnabled !== false
+    }))
   }, [mode, cloudCards, customCards, cardOverrides])
 
   // Filtered cards for "All Cards" tab
