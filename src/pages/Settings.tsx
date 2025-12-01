@@ -75,14 +75,14 @@ export default function Settings() {
               {/* Left Column: Names and Toggles */}
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="playerRedName" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                  <label htmlFor="playerRedName" className="block text-gold font-body font-semibold mb-2 text-left">
                     Player 1 Name (Female/Red)
                   </label>
                   <input
                     id="playerRedName"
                     type="text"
                     {...register('playerRedName')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
                     placeholder="Natalie"
                   />
                   {errors.playerRedName && (
@@ -93,14 +93,14 @@ export default function Settings() {
                 </div>
 
                 <div>
-                  <label htmlFor="playerBlueName" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                  <label htmlFor="playerBlueName" className="block text-gold font-body font-semibold mb-2 text-left">
                     Player 2 Name (Male/Blue)
                   </label>
                   <input
                     id="playerBlueName"
                     type="text"
                     {...register('playerBlueName')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
                     placeholder="Jordan"
                   />
                   {errors.playerBlueName && (
@@ -118,7 +118,7 @@ export default function Settings() {
                       {...register('includeCustomRed')}
                       className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
                     />
-                    <span className="text-[#2d0a0e] font-body font-semibold">
+                    <span className="text-gold font-body font-semibold">
                       Include custom cards for Red
                     </span>
                   </label>
@@ -130,7 +130,7 @@ export default function Settings() {
                       {...register('includeCustomBlue')}
                       className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
                     />
-                    <span className="text-[#2d0a0e] font-body font-semibold">
+                    <span className="text-gold font-body font-semibold">
                       Include custom cards for Blue
                     </span>
                   </label>
@@ -140,8 +140,8 @@ export default function Settings() {
               {/* Right Column: Explainer */}
               <div className="space-y-4">
                 <div className="p-4 bg-gold/10 rounded-lg border border-gold/30">
-                  <h3 className="text-[#2d0a0e] font-display text-xl mb-3">How It Works</h3>
-                  <ul className="text-[#2d0a0e] font-body text-sm space-y-2 text-left">
+                  <h3 className="text-gold font-display text-xl mb-3">How It Works</h3>
+                  <ul className="text-gold font-body text-sm space-y-2 text-left">
                     <li>• Custom cards you create will appear in gameplay when toggles are ON</li>
                     <li>• Swap cards unlock the black deck after collecting 3</li>
                     <li>• Cards never repeat within a session</li>

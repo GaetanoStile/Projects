@@ -188,14 +188,14 @@ export default function Admin() {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="admin-title" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                    <label htmlFor="admin-title" className="block text-gold font-body font-semibold mb-2 text-left">
                       Title
                     </label>
                     <input
                       id="admin-title"
                       type="text"
                       {...register('title')}
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                     />
                     {errors.title && (
                       <p className="text-crimson text-sm mt-1 text-left">{errors.title.message}</p>
@@ -203,13 +203,13 @@ export default function Admin() {
                   </div>
 
                   <div>
-                    <label htmlFor="admin-deck" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                    <label htmlFor="admin-deck" className="block text-gold font-body font-semibold mb-2 text-left">
                       Deck
                     </label>
                     <select
                       id="admin-deck"
                       {...register('deck')}
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                     >
                       <option value="A">Deck A</option>
                       <option value="B">Deck B</option>
@@ -224,14 +224,14 @@ export default function Admin() {
                 </div>
 
                 <div>
-                  <label htmlFor="admin-description" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                  <label htmlFor="admin-description" className="block text-gold font-body font-semibold mb-2 text-left">
                     Description
                   </label>
                   <textarea
                     id="admin-description"
                     {...register('description')}
                     rows={3}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                   />
                   {errors.description && (
                     <p className="text-crimson text-sm mt-1 text-left">{errors.description.message}</p>
@@ -240,13 +240,13 @@ export default function Admin() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="admin-player-color" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                    <label htmlFor="admin-player-color" className="block text-gold font-body font-semibold mb-2 text-left">
                       Player Color
                     </label>
                     <select
                       id="admin-player-color"
                       {...register('playerColor')}
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                     >
                       <option value="red">Red</option>
                       <option value="blue">Blue</option>
@@ -266,7 +266,7 @@ export default function Admin() {
                         {...register('isSwapCard')}
                         className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
                       />
-                      <span className="text-[#2d0a0e] font-body font-semibold">
+                      <span className="text-gold font-body font-semibold">
                         Is Swap Card
                       </span>
                     </label>
@@ -302,7 +302,7 @@ export default function Admin() {
               <select
                 value={filterDeck}
                 onChange={(e) => setFilterDeck(e.target.value as 'all' | DeckLetter)}
-                className="px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold"
+                className="px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
               >
                 <option value="all">All Decks</option>
                 <option value="A">Deck A</option>
@@ -314,7 +314,7 @@ export default function Admin() {
               <select
                 value={filterColor}
                 onChange={(e) => setFilterColor(e.target.value as 'all' | PlayerColor | 'neutral')}
-                className="px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold"
+                className="px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
               >
                 <option value="all">All Colors</option>
                 <option value="red">Red</option>
@@ -346,7 +346,7 @@ export default function Admin() {
             </div>
           ) : filteredCards.length === 0 ? (
             <div className="text-center py-12 parchment-bg rounded-lg glow-warm">
-              <p className="text-[#2d0a0e] font-body">No global cards found</p>
+              <p className="text-gold font-body">No global cards found</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -359,7 +359,7 @@ export default function Admin() {
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-[#2d0a0e] font-display text-lg font-semibold">{card.title}</h3>
+                    <h3 className="text-gold font-display text-lg font-semibold">{card.title}</h3>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEdit(card)}
@@ -375,8 +375,8 @@ export default function Admin() {
                       </button>
                     </div>
                   </div>
-                  <p className="text-[#2d0a0e]/90 font-body text-sm mb-2 line-clamp-2">{card.description}</p>
-                  <div className="flex gap-2 text-xs text-[#2d0a0e]/70 font-body">
+                  <p className="text-gold/90 font-body text-sm mb-2 line-clamp-2">{card.description}</p>
+                  <div className="flex gap-2 text-xs text-gold/70 font-body">
                     <span>Deck: {card.deck}</span>
                     <span>•</span>
                     <span>Color: {card.playerColor}</span>

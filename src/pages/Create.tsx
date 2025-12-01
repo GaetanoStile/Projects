@@ -367,10 +367,10 @@ export default function Create() {
             >
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <p className="text-[#2d0a0e] font-body font-semibold mb-1">
+                  <p className="text-gold font-body font-semibold mb-1">
                     Upload local cards to cloud
                   </p>
-                  <p className="text-sm text-[#2d0a0e]/80 font-body">
+                  <p className="text-sm text-gold/80 font-body">
                     You have {customCards.filter(c => !cloudCards.user.some(cc => cc.id === c.id)).length} local card(s) not yet in the cloud
                   </p>
                   {migrationError && (
@@ -399,14 +399,14 @@ export default function Create() {
               </h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="cardTitle" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                  <label htmlFor="cardTitle" className="block text-gold font-body font-semibold mb-2 text-left">
                     Title <span className="text-crimson">*</span>
                   </label>
                   <input
                     id="cardTitle"
                     type="text"
                     {...register('title')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
                     placeholder="Enter card title (2-60 characters)"
                   />
                   {errors.title && (
@@ -417,13 +417,13 @@ export default function Create() {
                 </div>
 
                 <div>
-                  <label htmlFor="cardPlayerColor" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                  <label htmlFor="cardPlayerColor" className="block text-gold font-body font-semibold mb-2 text-left">
                     Player Color
                   </label>
                   <select
                     id="cardPlayerColor"
                     {...register('playerColor')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                   >
                     <option value="any">Any Player</option>
                     <option value="red">Red (Female)</option>
@@ -432,14 +432,14 @@ export default function Create() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="cardDescription" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                  <label htmlFor="cardDescription" className="block text-gold font-body font-semibold mb-2 text-left">
                     Description <span className="text-crimson">*</span>
                   </label>
                   <textarea
                     id="cardDescription"
                     {...register('description')}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none placeholder:text-velvet/50"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none placeholder:text-velvet/50"
                     placeholder="Enter card description (4-240 characters)"
                   />
                   {errors.description && (
@@ -450,13 +450,13 @@ export default function Create() {
                 </div>
 
                 <div>
-                  <label htmlFor="cardDeck" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                  <label htmlFor="cardDeck" className="block text-gold font-body font-semibold mb-2 text-left">
                     Deck
                   </label>
                   <select
                     id="cardDeck"
                     {...register('deck')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                   >
                     <option value="A">Deck A</option>
                     <option value="B">Deck B</option>
@@ -466,7 +466,7 @@ export default function Create() {
                 </div>
 
                 <div>
-                  <label htmlFor="cardImage" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                  <label htmlFor="cardImage" className="block text-gold font-body font-semibold mb-2 text-left">
                     Optional Image
                   </label>
                   <input
@@ -474,7 +474,7 @@ export default function Create() {
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                   />
                   {imagePreview && (
                     <div className="mt-4">
@@ -499,7 +499,7 @@ export default function Create() {
                     {...register('isSwapCard')}
                     className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
                   />
-                  <label htmlFor="isSwapCard" className="text-[#2d0a0e] font-body font-semibold cursor-pointer">
+                  <label htmlFor="isSwapCard" className="text-gold font-body font-semibold cursor-pointer">
                     This is a swap card
                   </label>
                 </div>
@@ -507,7 +507,7 @@ export default function Create() {
 
               {isSwapCard && (
                 <div className="mt-4 p-4 bg-gold/10 border border-gold/30 rounded-lg">
-                  <p className="text-[#2d0a0e] font-body text-sm">
+                  <p className="text-gold font-body text-sm">
                     ⚠️ Warning: Many swap cards will speed up black deck unlock (3 swaps needed)
                   </p>
                 </div>
@@ -546,7 +546,7 @@ export default function Create() {
                 className={`px-6 py-3 font-display text-lg transition-colors ${
                   activeTab === 'custom'
                     ? 'text-gold border-b-2 border-gold'
-                    : 'text-[#2d0a0e]/70 hover:text-[#2d0a0e]'
+                    : 'text-gold/70 hover:text-gold'
                 }`}
               >
                 Custom Only
@@ -556,7 +556,7 @@ export default function Create() {
                 className={`px-6 py-3 font-display text-lg transition-colors ${
                   activeTab === 'all'
                     ? 'text-gold border-b-2 border-gold'
-                    : 'text-[#2d0a0e]/70 hover:text-[#2d0a0e]'
+                    : 'text-gold/70 hover:text-gold'
                 }`}
               >
                 All Cards
@@ -573,13 +573,13 @@ export default function Create() {
                 {/* Filters */}
                 <div className="flex flex-wrap gap-4 mb-6 justify-center">
                   <div>
-                    <label className="block text-[#2d0a0e] font-body font-semibold mb-2 text-sm">
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Filter by Color
                     </label>
                     <select
                       value={filterColor}
                       onChange={(e) => setFilterColor(e.target.value as any)}
-                      className="px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold"
+                      className="px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
                     >
                       <option value="all">All Colors</option>
                       <option value="red">Red</option>
@@ -588,13 +588,13 @@ export default function Create() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[#2d0a0e] font-body font-semibold mb-2 text-sm">
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Filter by Deck
                     </label>
                     <select
                       value={filterDeck}
                       onChange={(e) => setFilterDeck(e.target.value as any)}
-                      className="px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold"
+                      className="px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
                     >
                       <option value="all">All Decks</option>
                       <option value="A">Deck A</option>
@@ -608,7 +608,7 @@ export default function Create() {
                 {/* Cards Grid */}
                 {filteredCustomCards.length === 0 ? (
                   <div className="text-center py-12">
-                    <p className="text-[#2d0a0e] font-body text-lg">
+                    <p className="text-gold font-body text-lg">
                       No custom cards yet. Create your first card above!
                     </p>
                   </div>
@@ -627,7 +627,7 @@ export default function Create() {
                           />
                         )}
                         <div className="flex items-start justify-between mb-2">
-                          <h3 className="text-[#2d0a0e] font-display font-semibold text-lg flex-1">
+                          <h3 className="text-gold font-display font-semibold text-lg flex-1">
                             {card.title}
                           </h3>
                           <button
@@ -654,7 +654,7 @@ export default function Create() {
                           {card.description}
                         </p>
                         <div className="flex flex-wrap gap-2">
-                          <span className="px-2 py-1 bg-gold/20 text-[#2d0a0e] text-xs font-body rounded">
+                          <span className="px-2 py-1 bg-gold/20 text-gold text-xs font-body rounded">
                             Deck {card.deck}
                           </span>
                           <span
@@ -711,13 +711,13 @@ export default function Create() {
                 {/* Filters */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                   <div>
-                    <label className="block text-[#2d0a0e] font-body font-semibold mb-2 text-sm">
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Deck
                     </label>
                     <select
                       value={filterDeck}
                       onChange={(e) => setFilterDeck(e.target.value as 'all' | DeckLetter)}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
                     >
                       <option value="all">All Decks</option>
                       <option value="A">Deck A</option>
@@ -728,13 +728,13 @@ export default function Create() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[#2d0a0e] font-body font-semibold mb-2 text-sm">
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Performer
                     </label>
                     <select
                       value={filterColor}
                       onChange={(e) => setFilterColor(e.target.value as 'all' | PlayerColor | 'neutral')}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
                     >
                       <option value="all">All</option>
                       <option value="red">Red</option>
@@ -744,13 +744,13 @@ export default function Create() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[#2d0a0e] font-body font-semibold mb-2 text-sm">
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Status
                     </label>
                     <select
                       value={filterEnabled}
                       onChange={(e) => setFilterEnabled(e.target.value as 'all' | 'enabled' | 'disabled')}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
                     >
                       <option value="all">All</option>
                       <option value="enabled">Enabled</option>
@@ -758,7 +758,7 @@ export default function Create() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[#2d0a0e] font-body font-semibold mb-2 text-sm">
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Search
                     </label>
                     <input
@@ -766,7 +766,7 @@ export default function Create() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search title/description..."
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold placeholder:text-velvet/50"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold placeholder:text-velvet/50"
                     />
                   </div>
                 </div>
@@ -776,19 +776,19 @@ export default function Create() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gold/30">
-                        <th className="text-left py-3 px-4 text-[#2d0a0e] font-display font-semibold bg-gold/30">Enabled</th>
-                        <th className="text-left py-3 px-4 text-[#2d0a0e] font-display font-semibold bg-gold/30">Deck</th>
-                        <th className="text-left py-3 px-4 text-[#2d0a0e] font-display font-semibold bg-gold/30">Performer</th>
-                        <th className="text-left py-3 px-4 text-[#2d0a0e] font-display font-semibold bg-gold/30">Title</th>
-                        <th className="text-left py-3 px-4 text-[#2d0a0e] font-display font-semibold bg-gold/30">Description</th>
-                        <th className="text-left py-3 px-4 text-[#2d0a0e] font-display font-semibold bg-gold/30">Tags</th>
-                        <th className="text-left py-3 px-4 text-[#2d0a0e] font-display font-semibold bg-gold/30">Actions</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Enabled</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Deck</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Performer</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Title</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Description</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Tags</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredAllCards.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="text-center py-12 text-[#2d0a0e] font-body">
+                          <td colSpan={7} className="text-center py-12 text-gold font-body">
                             No cards found matching filters
                           </td>
                         </tr>
@@ -804,22 +804,22 @@ export default function Create() {
                                 title={card.isEnabled !== false ? 'Enabled' : 'Disabled'}
                               />
                             </td>
-                            <td className="py-3 px-4 text-[#2d0a0e] font-body font-semibold">
+                            <td className="py-3 px-4 text-gold font-body font-semibold">
                               {card.deck}
                             </td>
-                            <td className="py-3 px-4 text-[#2d0a0e] font-body">
+                            <td className="py-3 px-4 text-gold font-body">
                               {card.playerColor === 'red' ? 'Red' : card.playerColor === 'blue' ? 'Blue' : card.playerColor === 'any' ? 'Any' : 'Neutral'}
                             </td>
                             <td className="py-3 px-4">
                               <button
                                 onClick={() => handleEdit(card)}
-                                className="text-[#2d0a0e] font-display font-semibold hover:text-velvet transition-colors text-left"
+                                className="text-gold font-display font-semibold hover:text-velvet transition-colors text-left"
                               >
                                 {card.title}
                               </button>
                             </td>
                             <td className="py-3 px-4">
-                              <p className="text-[#2d0a0e] font-body text-sm max-w-md">
+                              <p className="text-gold font-body text-sm max-w-md">
                                 {card.description}
                               </p>
                             </td>
@@ -907,7 +907,7 @@ export default function Create() {
                           setShowEditModal(false)
                           setEditingCard(null)
                         }}
-                        className="text-[#2d0a0e] hover:text-gold transition-colors text-2xl"
+                        className="text-gold hover:text-gold transition-colors text-2xl"
                       >
                         ×
                       </button>
@@ -916,14 +916,14 @@ export default function Create() {
                     <form onSubmit={editForm.handleSubmit(handleEditSubmit)} className="space-y-4">
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="edit-title" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                          <label htmlFor="edit-title" className="block text-gold font-body font-semibold mb-2 text-left">
                             Title
                           </label>
                           <input
                             id="edit-title"
                             type="text"
                             {...editForm.register('title')}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                           />
                           {editForm.formState.errors.title && (
                             <p className="text-crimson text-sm mt-1 text-left">
@@ -933,13 +933,13 @@ export default function Create() {
                         </div>
 
                         <div>
-                          <label htmlFor="edit-deck" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                          <label htmlFor="edit-deck" className="block text-gold font-body font-semibold mb-2 text-left">
                             Deck
                           </label>
                           <select
                             id="edit-deck"
                             {...editForm.register('deck')}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                           >
                             <option value="A">Deck A</option>
                             <option value="B">Deck B</option>
@@ -951,14 +951,14 @@ export default function Create() {
                       </div>
 
                       <div>
-                        <label htmlFor="edit-description" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                        <label htmlFor="edit-description" className="block text-gold font-body font-semibold mb-2 text-left">
                           Description
                         </label>
                         <textarea
                           id="edit-description"
                           {...editForm.register('description')}
                           rows={4}
-                          className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none"
+                          className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none"
                         />
                         {editForm.formState.errors.description && (
                           <p className="text-crimson text-sm mt-1 text-left">
@@ -969,13 +969,13 @@ export default function Create() {
 
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="edit-player-color" className="block text-[#2d0a0e] font-body font-semibold mb-2 text-left">
+                          <label htmlFor="edit-player-color" className="block text-gold font-body font-semibold mb-2 text-left">
                             Player Color
                           </label>
                           <select
                             id="edit-player-color"
                             {...editForm.register('playerColor')}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-[#2d0a0e] font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                           >
                             <option value="red">Red</option>
                             <option value="blue">Blue</option>

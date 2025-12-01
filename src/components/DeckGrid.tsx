@@ -96,7 +96,7 @@ export default function DeckGrid() {
             <p className="text-lg md:text-xl font-display gold-text mb-2">
               All decks are empty!
             </p>
-            <p className="text-sm md:text-base text-[#2d0a0e] font-body">
+            <p className="text-sm md:text-base text-gold font-body">
               Switch players or end the game
             </p>
           </div>

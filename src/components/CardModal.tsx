@@ -150,7 +150,7 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                   {card.title}
                 </h2>
                 
-                <p id="card-modal-description" className="text-lg md:text-xl text-[#2d0a0e] font-body leading-relaxed">
+                <p id="card-modal-description" className="text-lg md:text-xl text-gold font-body leading-relaxed">
                   {card.description}
                 </p>
               </div>
