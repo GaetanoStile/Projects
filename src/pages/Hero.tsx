@@ -42,7 +42,7 @@ export default function Hero() {
         <h1 className="text-6xl md:text-8xl font-display gold-text mb-6">
           Couples Game
         </h1>
-        <p className="text-xl md:text-2xl text-gold/80 font-body mb-12 max-w-2xl mx-auto">
+        <p className="text-xl md:text-2xl text-white/90 font-body mb-12 max-w-2xl mx-auto">
           A romantic card game for two
         </p>
 
@@ -76,7 +76,7 @@ export default function Hero() {
           {cloudEnabled && (
             <>
               {user ? (
-                <div className="text-sm text-gold/70 font-body">
+                <div className="text-sm text-white/90 font-body">
                   Logged in as {user.email}
                   {user.isAdmin && (
                     <span className="ml-2 px-2 py-1 bg-gold/20 text-gold rounded text-xs">
@@ -87,7 +87,7 @@ export default function Hero() {
               ) : (
                 <motion.button
                   onClick={() => setShowAuthModal(true)}
-                  className="px-6 py-2 text-gold/80 hover:text-gold font-body text-sm transition-colors underline"
+                  className="px-6 py-2 text-white/90 hover:text-white font-body text-sm transition-colors underline"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

@@ -62,7 +62,7 @@ export default function Game() {
           <h1 className="text-4xl md:text-6xl font-display gold-text mb-4">
             Couples Game
           </h1>
-          <p className="text-lg md:text-xl text-gold/80 font-body">
+          <p className="text-lg md:text-xl text-white/90 font-body">
             {currentPlayer === 'red' ? 'Red player' : 'Blue player'} - Choose a deck
           </p>
         </div>

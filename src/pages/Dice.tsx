@@ -57,7 +57,7 @@ export default function Dice() {
         <h2 className="text-4xl md:text-6xl font-display gold-text mb-8">
           Roll the Dice
         </h2>
-        <p className="text-lg md:text-xl text-gold/80 font-body mb-12">
+        <p className="text-lg md:text-xl text-white/90 font-body mb-12">
           Highest roller goes first
         </p>
 

@@ -82,7 +82,7 @@ export default function Settings() {
                     id="playerRedName"
                     type="text"
                     {...register('playerRedName')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
                     placeholder="Natalie"
                   />
                   {errors.playerRedName && (
@@ -100,7 +100,7 @@ export default function Settings() {
                     id="playerBlueName"
                     type="text"
                     {...register('playerBlueName')}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-velvet font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
                     placeholder="Jordan"
                   />
                   {errors.playerBlueName && (

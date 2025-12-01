@@ -161,7 +161,7 @@ export default function Admin() {
               <h1 className="text-4xl md:text-6xl font-display gold-text mb-2">
                 Admin Panel
               </h1>
-              <p className="text-lg text-gold/80 font-body">
+              <p className="text-lg text-white/90 font-body">
                 Manage global cards
               </p>
             </div>
@@ -342,7 +342,7 @@ export default function Admin() {
           {/* Cards List */}
           {isLoading ? (
             <div className="text-center py-12">
-              <p className="text-gold/80 font-body">Loading cards...</p>
+              <p className="text-white/90 font-body">Loading cards...</p>
             </div>
           ) : filteredCards.length === 0 ? (
             <div className="text-center py-12 parchment-bg rounded-lg glow-warm">

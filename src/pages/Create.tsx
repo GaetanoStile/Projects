@@ -348,11 +348,11 @@ export default function Create() {
             <h1 className="text-4xl md:text-6xl font-display gold-text mb-4">
               Card Manager
             </h1>
-            <p className="text-lg md:text-xl text-gold/80 font-body">
+            <p className="text-lg md:text-xl text-white/90 font-body">
               Create, edit, and manage all cards
             </p>
             {mode === 'cloud' && user && (
-              <p className="text-sm text-gold/60 font-body mt-2">
+              <p className="text-sm text-white/80 font-body mt-2">
                 {isAdmin ? 'Admin mode: You can edit global cards' : 'Cards will be saved to the cloud'}
               </p>
             )}
@@ -776,13 +776,13 @@ export default function Create() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gold/30">
-                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Enabled</th>
-                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Deck</th>
-                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Performer</th>
-                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Title</th>
-                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Description</th>
-                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Tags</th>
-                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold">Actions</th>
+                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold bg-gold/20">Enabled</th>
+                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold bg-gold/20">Deck</th>
+                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold bg-gold/20">Performer</th>
+                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold bg-gold/20">Title</th>
+                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold bg-gold/20">Description</th>
+                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold bg-gold/20">Tags</th>
+                        <th className="text-left py-3 px-4 text-velvet font-display font-semibold bg-gold/20">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -819,7 +819,7 @@ export default function Create() {
                               </button>
                             </td>
                             <td className="py-3 px-4">
-                              <p className="text-velvet/80 font-body text-sm max-w-md">
+                              <p className="text-velvet/90 font-body text-sm max-w-md">
                                 {card.description}
                               </p>
                             </td>
