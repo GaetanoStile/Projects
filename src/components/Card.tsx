@@ -1,5 +1,20 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import type { DeckLetter, PlayerColor } from '@/state/store'
+
+// Import red deck card back images
+import redDeckA from '@/assets/card-backs/red-deck-a.png'
+import redDeckB from '@/assets/card-backs/red-deck-b.png'
+import redDeckC from '@/assets/card-backs/red-deck-c.png'
+import redDeckD from '@/assets/card-backs/red-deck-d.png'
+
+// Mapping for red deck card backs
+const redDeckBacks: Record<'A' | 'B' | 'C' | 'D', string> = {
+  A: redDeckA,
+  B: redDeckB,
+  C: redDeckC,
+  D: redDeckD,
+}
 
 interface CardProps {
   letter: string
@@ -7,9 +22,19 @@ interface CardProps {
   disabled?: boolean
   remainingCount?: number
   isBlack?: boolean
+  playerColor?: PlayerColor | 'neutral' | 'any'
+  deck?: DeckLetter
 }
 
-export default function Card({ letter, onClick, disabled = false, remainingCount, isBlack = false }: CardProps) {
+export default function Card({ 
+  letter, 
+  onClick, 
+  disabled = false, 
+  remainingCount, 
+  isBlack = false,
+  playerColor,
+  deck
+}: CardProps) {
   const [isFlipped, setIsFlipped] = useState(false)
 
   const handleClick = () => {
@@ -20,6 +45,16 @@ export default function Card({ letter, onClick, disabled = false, remainingCount
       setIsFlipped(false)
     }, 450)
   }
+
+  // Determine if we should use a custom PNG card back
+  const useCustomCardBack = 
+    playerColor === 'red' && 
+    deck && 
+    (deck === 'A' || deck === 'B' || deck === 'C' || deck === 'D') &&
+    redDeckBacks[deck]
+
+  // Get the card back image if applicable
+  const cardBackImage = useCustomCardBack ? redDeckBacks[deck as 'A' | 'B' | 'C' | 'D'] : null
 
   return (
     <motion.div
@@ -44,12 +79,53 @@ export default function Card({ letter, onClick, disabled = false, remainingCount
           transformStyle: 'preserve-3d',
         }}
       >
-        {/* Card Front */}
+        {/* Card Back (showing by default) */}
         <div
           className="absolute inset-0 w-full h-full"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
+          }}
+        >
+          {useCustomCardBack && cardBackImage ? (
+            // Custom PNG card back for red decks A-D
+            <div className="w-full h-full rounded-lg relative overflow-hidden">
+              <img
+                src={cardBackImage}
+                alt={`${deck} deck card back`}
+                className="w-full h-full object-cover"
+                style={{
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+                }}
+              />
+              {/* Remaining count overlay */}
+              {remainingCount !== undefined && remainingCount > 0 && (
+                <div className="absolute bottom-2 right-2 bg-black/60 text-gold text-xs font-body px-2 py-1 rounded">
+                  {remainingCount}
+                </div>
+              )}
+            </div>
+          ) : (
+            // Default card back (for blue decks, black deck, or fallback)
+            <div className="w-full h-full rounded-lg bg-gradient-to-br from-parchment to-gold/20 flex items-center justify-center relative">
+              <div className="text-2xl text-gold">✨</div>
+              {/* Remaining count */}
+              {remainingCount !== undefined && remainingCount > 0 && (
+                <div className="absolute bottom-2 right-2 text-xs text-gold/80 font-body">
+                  {remainingCount}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Card Front (revealed when flipped) */}
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
           }}
         >
           <div
@@ -73,31 +149,9 @@ export default function Card({ letter, onClick, disabled = false, remainingCount
             >
               {letter}
             </span>
-
-            {/* Remaining count */}
-            {remainingCount !== undefined && remainingCount > 0 && (
-              <div className="absolute bottom-2 right-2 text-xs text-gold/80 font-body">
-                {remainingCount}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Card Back (flipped) */}
-        <div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)',
-          }}
-        >
-          <div className="w-full h-full rounded-lg bg-gradient-to-br from-parchment to-gold/20 flex items-center justify-center">
-            <div className="text-2xl text-gold">✨</div>
           </div>
         </div>
       </motion.div>
     </motion.div>
   )
 }
-

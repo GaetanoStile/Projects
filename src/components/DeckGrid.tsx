@@ -64,6 +64,8 @@ export default function DeckGrid() {
               onClick={() => handleDeckClick(deck)}
               disabled={isDisabled}
               remainingCount={remaining}
+              playerColor={currentPlayer}
+              deck={deck}
             />
           )
         })}
@@ -78,6 +80,7 @@ export default function DeckGrid() {
                 disabled={getRemainingCount('black', currentPlayer) === 0}
                 remainingCount={getRemainingCount('black', currentPlayer)}
                 isBlack={true}
+                deck="black"
               />
               {getRemainingCount('black', currentPlayer) === 0 && (
                 <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-velvet text-gold text-xs px-3 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
@@ -105,4 +108,3 @@ export default function DeckGrid() {
     </div>
   )
 }
-

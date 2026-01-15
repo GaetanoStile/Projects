@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useGameStore } from '@/state/store'
+import { useGameStore, SessionMode } from '@/state/store'
 import { useCloudCards } from '@/hooks/useCloudCards'
 import Candle from '@/components/Candle'
 
@@ -12,20 +13,34 @@ const SettingsSchema = z.object({
   playerBlueName: z.string().trim().min(1).max(24),
   includeCustomRed: z.boolean(),
   includeCustomBlue: z.boolean(),
+  sessionMode: z.enum(['romantic', 'balanced', 'spicy', 'wild']),
 })
 
 type SettingsFormData = z.infer<typeof SettingsSchema>
 
 export default function Settings() {
   const navigate = useNavigate()
-  const { settings, setSettings } = useGameStore()
+  const { 
+    settings, 
+    setSettings, 
+    setSessionMode,
+    presets,
+    savePreset,
+    loadPreset,
+    deletePreset,
+    cardOverrides
+  } = useGameStore()
   
   // Fetch cloud cards when in cloud mode
   useCloudCards()
 
+  const [showSavePresetModal, setShowSavePresetModal] = useState(false)
+  const [presetName, setPresetName] = useState('')
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SettingsFormData>({
     resolver: zodResolver(SettingsSchema),
@@ -34,16 +49,71 @@ export default function Settings() {
       playerBlueName: settings.playerBlueName,
       includeCustomRed: settings.includeCustomRed,
       includeCustomBlue: settings.includeCustomBlue,
+      sessionMode: settings.sessionMode || 'balanced',
     },
   })
+
+  const currentSessionMode = watch('sessionMode')
 
   const onSubmit = (data: SettingsFormData) => {
     setSettings(data)
     navigate('/dice')
   }
 
+  const handleSavePreset = () => {
+    if (!presetName.trim()) {
+      alert('Please enter a preset name')
+      return
+    }
+
+    // Get disabled card IDs from overrides
+    const disabledCardIds = Object.keys(cardOverrides).filter(
+      id => cardOverrides[id].isEnabled === false
+    )
+
+    savePreset({
+      name: presetName.trim(),
+      sessionMode: currentSessionMode || 'balanced',
+      includeCustomRed: settings.includeCustomRed,
+      includeCustomBlue: settings.includeCustomBlue,
+      disabledCardIds,
+    })
+
+    setPresetName('')
+    setShowSavePresetModal(false)
+  }
+
+  const handleLoadPreset = (presetId: string) => {
+    if (!confirm('This will apply preset settings and disable/enable cards. Continue?')) {
+      return
+    }
+    loadPreset(presetId)
+  }
+
+  const handleDeletePreset = (presetId: string) => {
+    if (!confirm('Delete this preset?')) {
+      return
+    }
+    deletePreset(presetId)
+  }
+
+  const getModeDescription = (mode: SessionMode): string => {
+    switch (mode) {
+      case 'romantic':
+        return 'Soft and medium intensity only. Excludes domination, submission, and toys.'
+      case 'balanced':
+        return 'Soft, medium, and hot intensity. A well-rounded experience.'
+      case 'spicy':
+        return 'Medium and hot intensity. More adventurous.'
+      case 'wild':
+        return 'Hot and wild intensity only. Maximum intensity.'
+      default:
+        return ''
+    }
+  }
+
   return (
-    <div className="candlelit-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="candlelit-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden py-12">
       {/* Candles */}
       <div className="absolute top-20 left-10 md:left-20">
         <Candle size={50} />
@@ -135,6 +205,29 @@ export default function Settings() {
                     </span>
                   </label>
                 </div>
+
+                {/* Session Mode Selector */}
+                <div>
+                  <label htmlFor="sessionMode" className="block text-gold font-body font-semibold mb-2 text-left">
+                    Session Mode
+                  </label>
+                  <select
+                    id="sessionMode"
+                    {...register('sessionMode')}
+                    onChange={(e) => {
+                      setSessionMode(e.target.value as SessionMode)
+                    }}
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                  >
+                    <option value="romantic">Romantic</option>
+                    <option value="balanced">Balanced</option>
+                    <option value="spicy">Spicy</option>
+                    <option value="wild">Wild</option>
+                  </select>
+                  <p className="text-gold/80 text-sm mt-2 text-left">
+                    {getModeDescription(currentSessionMode || 'balanced')}
+                  </p>
+                </div>
               </div>
 
               {/* Right Column: Explainer */}
@@ -146,6 +239,7 @@ export default function Settings() {
                     <li>• Swap cards unlock the black deck after collecting 3</li>
                     <li>• Cards never repeat within a session</li>
                     <li>• Each player has decks A, B, C, and D</li>
+                    <li>• Session mode filters cards by intensity and tags</li>
                   </ul>
                 </div>
                 <div className="pt-4">
@@ -159,6 +253,74 @@ export default function Settings() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Presets Section */}
+          <div className="parchment-bg rounded-2xl p-8 md:p-12 glow-warm mb-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
+              <h2 className="text-2xl md:text-3xl font-display gold-text mb-4 sm:mb-0">
+                Presets
+              </h2>
+              <motion.button
+                type="button"
+                onClick={() => setShowSavePresetModal(true)}
+                className="px-6 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Save Current as Preset
+              </motion.button>
+            </div>
+
+            {presets.length === 0 ? (
+              <p className="text-gold/80 font-body text-center py-8">
+                No presets saved yet. Save your current configuration to create one.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {presets.map((preset) => (
+                  <div
+                    key={preset.id}
+                    className="p-4 bg-white/90 rounded-lg border-2 border-gold/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                  >
+                    <div className="flex-1">
+                      <h3 className="text-gold font-display font-semibold text-lg mb-1">
+                        {preset.name}
+                      </h3>
+                      <div className="flex flex-wrap gap-2 text-sm text-gold/80 font-body">
+                        <span>Mode: {preset.sessionMode}</span>
+                        <span>•</span>
+                        <span>{preset.disabledCardIds.length} disabled cards</span>
+                        <span>•</span>
+                        <span>
+                          Custom: {preset.includeCustomRed ? 'Red' : ''} {preset.includeCustomBlue ? 'Blue' : ''}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <motion.button
+                        type="button"
+                        onClick={() => handleLoadPreset(preset.id)}
+                        className="px-4 py-2 bg-gold/20 text-gold font-body rounded-lg hover:bg-gold/30 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Load
+                      </motion.button>
+                      <motion.button
+                        type="button"
+                        onClick={() => handleDeletePreset(preset.id)}
+                        className="px-4 py-2 bg-crimson/20 text-crimson font-body rounded-lg hover:bg-crimson/30 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Delete
+                      </motion.button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Buttons */}
@@ -192,7 +354,81 @@ export default function Settings() {
           </div>
         </form>
       </motion.div>
+
+      {/* Save Preset Modal */}
+      <AnimatePresence>
+        {showSavePresetModal && (
+          <>
+            <motion.div
+              className="fixed inset-0 bg-black/60 z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setShowSavePresetModal(false)
+                setPresetName('')
+              }}
+            />
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <motion.div
+                className="parchment-bg rounded-2xl p-8 md:p-12 glow-warm max-w-md w-full"
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
+              >
+                <h2 className="text-2xl font-display gold-text mb-4">
+                  Save Preset
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="presetName" className="block text-gold font-body font-semibold mb-2 text-left">
+                      Preset Name
+                    </label>
+                    <input
+                      id="presetName"
+                      type="text"
+                      value={presetName}
+                      onChange={(e) => setPresetName(e.target.value)}
+                      placeholder="Enter preset name..."
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="flex gap-4">
+                    <motion.button
+                      type="button"
+                      onClick={handleSavePreset}
+                      className="flex-1 px-6 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Save
+                    </motion.button>
+                    <motion.button
+                      type="button"
+                      onClick={() => {
+                        setShowSavePresetModal(false)
+                        setPresetName('')
+                      }}
+                      className="flex-1 px-6 py-3 bg-velvet/80 text-gold font-body rounded-lg hover:bg-velvet transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Cancel
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
-

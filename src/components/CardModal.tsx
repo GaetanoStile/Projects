@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Card } from '@/state/store'
+import { useGameStore } from '@/state/store'
+import { useAuthStore } from '@/state/authStore'
 
 interface CardModalProps {
   card: Card | null
@@ -11,6 +13,25 @@ interface CardModalProps {
 export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const optionsPanelRef = useRef<HTMLDivElement>(null)
+  const [showOptions, setShowOptions] = useState(false)
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
+  
+  const { 
+    removeCardFromSession, 
+    setCardEnabled, 
+    toggleFavorite,
+    cloudCards
+  } = useGameStore()
+  const { mode, isAdmin } = useAuthStore()
+
+  // Reset options panel when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setShowOptions(false)
+      setFeedbackMessage(null)
+    }
+  }, [isOpen])
 
   useEffect(() => {
     if (isOpen) {
@@ -22,7 +43,11 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
       // ESC key handler
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
-          onClose()
+          if (showOptions) {
+            setShowOptions(false)
+          } else {
+            onClose()
+          }
         }
       }
       
@@ -35,14 +60,14 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
     } else {
       document.body.classList.remove('scroll-lock')
     }
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, showOptions])
 
-  // Focus trap: keep focus within modal
+  // Focus trap: keep focus within modal or options panel
   useEffect(() => {
     if (!isOpen || !modalRef.current) return
 
-    const modal = modalRef.current
-    const focusableElements = modal.querySelectorAll(
+    const container = showOptions && optionsPanelRef.current ? optionsPanelRef.current : modalRef.current
+    const focusableElements = container.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     )
     const firstElement = focusableElements[0] as HTMLElement
@@ -64,9 +89,46 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
       }
     }
 
-    modal.addEventListener('keydown', handleTab)
-    return () => modal.removeEventListener('keydown', handleTab)
-  }, [isOpen])
+    container.addEventListener('keydown', handleTab)
+    return () => container.removeEventListener('keydown', handleTab)
+  }, [isOpen, showOptions])
+
+  const handleRemoveFromSession = () => {
+    if (!card) return
+    removeCardFromSession(card.id)
+    setFeedbackMessage('Removed for this session')
+    setShowOptions(false)
+    setTimeout(() => setFeedbackMessage(null), 3000)
+  }
+
+  const handleDisableGlobally = async () => {
+    if (!card) return
+
+    // Check permissions
+    const isGlobalCard = mode === 'cloud' && cloudCards.global.some(c => c.id === card.id)
+
+    if (mode === 'cloud' && isGlobalCard && !isAdmin) {
+      // Non-admin trying to disable global card - fallback to session removal
+      setFeedbackMessage('Global disable requires admin. Removed for this session instead.')
+      handleRemoveFromSession()
+      return
+    }
+
+    if (!confirm('This will permanently disable this card. Continue?')) {
+      return
+    }
+
+    await setCardEnabled(card.id, false)
+    setFeedbackMessage('Card disabled globally')
+    setShowOptions(false)
+    setTimeout(() => setFeedbackMessage(null), 3000)
+  }
+
+  const handleToggleFavorite = async () => {
+    if (!card) return
+    await toggleFavorite(card.id)
+    setShowOptions(false)
+  }
 
   return (
     <AnimatePresence>
@@ -128,6 +190,91 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                 </svg>
               </button>
 
+              {/* Options button */}
+              <button
+                onClick={() => setShowOptions(!showOptions)}
+                className="absolute top-4 right-16 w-10 h-10 flex items-center justify-center text-gold/70 hover:text-gold transition-colors rounded-full hover:bg-gold/10"
+                style={{ minWidth: '44px', minHeight: '44px' }}
+                aria-label="Card options"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="1" />
+                  <circle cx="12" cy="5" r="1" />
+                  <circle cx="12" cy="19" r="1" />
+                </svg>
+              </button>
+
+              {/* Feedback message */}
+              {feedbackMessage && (
+                <motion.div
+                  className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-gold/90 text-velvet px-4 py-2 rounded-lg text-sm font-body z-10"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  {feedbackMessage}
+                </motion.div>
+              )}
+
+              {/* Options Panel */}
+              <AnimatePresence>
+                {showOptions && (
+                  <motion.div
+                    ref={optionsPanelRef}
+                    className="absolute top-16 right-4 parchment-bg rounded-lg p-4 border-2 border-gold/30 shadow-lg z-20 min-w-[200px]"
+                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="space-y-2">
+                      <button
+                        onClick={handleRemoveFromSession}
+                        className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors"
+                      >
+                        Remove for this session
+                      </button>
+                      <button
+                        onClick={handleDisableGlobally}
+                        className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors"
+                      >
+                        Disable globally
+                      </button>
+                      <button
+                        onClick={handleToggleFavorite}
+                        className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors flex items-center gap-2"
+                      >
+                        {card.isFavorite ? (
+                          <>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            Unfavorite
+                          </>
+                        ) : (
+                          <>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            Favorite ⭐
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* Content */}
               <div className="text-center space-y-6">
                 {card.imageDataUrl && (
@@ -161,4 +308,3 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
     </AnimatePresence>
   )
 }
-

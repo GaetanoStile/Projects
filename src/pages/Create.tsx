@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useGameStore, Card, DeckLetter, PlayerColor } from '@/state/store'
+import { useGameStore, Card, DeckLetter, PlayerColor, AVAILABLE_TAGS, Tag, Intensity } from '@/state/store'
 import { useAuthStore } from '@/state/authStore'
 import { getSupabaseClient } from '@/lib/supabase/client'
 import { createCard, deleteCard as deleteCloudCard } from '@/lib/supabase/cards'
@@ -28,6 +28,9 @@ const EditCardSchema = z.object({
   deck: z.enum(['A', 'B', 'C', 'D', 'black']),
   isSwapCard: z.boolean().optional().default(false),
   isEnabled: z.boolean().optional().default(true),
+  isFavorite: z.boolean().optional().default(false),
+  intensity: z.enum(['soft', 'medium', 'hot', 'wild']).optional(),
+  tags: z.array(z.string()).optional().default([]),
 })
 
 type CustomCardFormData = z.infer<typeof CustomCardSchema>
@@ -60,6 +63,8 @@ export default function Create() {
   const [filterDeck, setFilterDeck] = useState<'all' | DeckLetter>('all')
   const [filterColor, setFilterColor] = useState<'all' | PlayerColor | 'neutral'>('all')
   const [filterEnabled, setFilterEnabled] = useState<'all' | 'enabled' | 'disabled'>('all')
+  const [filterIntensity, setFilterIntensity] = useState<'all' | Intensity>('all')
+  const [filterTag, setFilterTag] = useState<'all' | Tag>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
   const {
@@ -161,6 +166,9 @@ export default function Create() {
       deck: card.deck,
       isSwapCard: card.isSwapCard || false,
       isEnabled: card.isEnabled !== false,
+      isFavorite: card.isFavorite || false,
+      intensity: card.intensity || 'medium',
+      tags: card.tags || [],
     })
     setShowEditModal(true)
   }
@@ -175,6 +183,9 @@ export default function Create() {
       deck: data.deck as DeckLetter,
       isSwapCard: data.isSwapCard || false,
       isEnabled: data.isEnabled !== false,
+      isFavorite: data.isFavorite || false,
+      intensity: data.intensity,
+      tags: data.tags && data.tags.length > 0 ? data.tags as Tag[] : undefined,
     }
 
     await updateCard(editingCard.id, updates)
@@ -184,6 +195,11 @@ export default function Create() {
 
   const handleToggleEnabled = async (cardId: string, enabled: boolean) => {
     await setCardEnabled(cardId, enabled)
+  }
+
+  const handleToggleFavorite = async (cardId: string) => {
+    const { toggleFavorite } = useGameStore.getState()
+    await toggleFavorite(cardId)
   }
 
   const handleMigrateLocalCards = async () => {
@@ -288,14 +304,20 @@ export default function Create() {
         filterEnabled === 'all' || 
         (filterEnabled === 'enabled' && card.isEnabled !== false) ||
         (filterEnabled === 'disabled' && card.isEnabled === false)
+      const intensityMatch = 
+        filterIntensity === 'all' || 
+        (card.intensity || 'medium') === filterIntensity
+      const tagMatch = 
+        filterTag === 'all' || 
+        (card.tags || []).includes(filterTag)
       const searchMatch = 
         !searchQuery ||
         card.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         card.description.toLowerCase().includes(searchQuery.toLowerCase())
       
-      return deckMatch && colorMatch && enabledMatch && searchMatch
+      return deckMatch && colorMatch && enabledMatch && intensityMatch && tagMatch && searchMatch
     })
-  }, [getAllCards, filterDeck, filterColor, filterEnabled, searchQuery])
+  }, [getAllCards, filterDeck, filterColor, filterEnabled, filterIntensity, filterTag, searchQuery])
 
   // Custom cards for "Custom Only" tab
   const allCustomCards = useMemo(() => {
@@ -728,7 +750,7 @@ export default function Create() {
                 </div>
 
                 {/* Filters */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
                   <div>
                     <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Deck
@@ -778,6 +800,37 @@ export default function Create() {
                   </div>
                   <div>
                     <label className="block text-gold font-body font-semibold mb-2 text-sm">
+                      Intensity
+                    </label>
+                    <select
+                      value={filterIntensity}
+                      onChange={(e) => setFilterIntensity(e.target.value as 'all' | Intensity)}
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
+                    >
+                      <option value="all">All</option>
+                      <option value="soft">Soft</option>
+                      <option value="medium">Medium</option>
+                      <option value="hot">Hot</option>
+                      <option value="wild">Wild</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
+                      Tag
+                    </label>
+                    <select
+                      value={filterTag}
+                      onChange={(e) => setFilterTag(e.target.value as 'all' | Tag)}
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
+                    >
+                      <option value="all">All</option>
+                      {AVAILABLE_TAGS.map(tag => (
+                        <option key={tag} value={tag}>{tag}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Search
                     </label>
                     <input
@@ -796,8 +849,10 @@ export default function Create() {
                     <thead>
                       <tr className="border-b border-gold/30">
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Enabled</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">⭐</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Deck</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Performer</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Intensity</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Title</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Description</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Tags</th>
@@ -807,7 +862,7 @@ export default function Create() {
                     <tbody>
                       {filteredAllCards.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="text-center py-12 text-gold font-body">
+                          <td colSpan={9} className="text-center py-12 text-gold font-body">
                             No cards found matching filters
                           </td>
                         </tr>
@@ -823,11 +878,38 @@ export default function Create() {
                                 title={card.isEnabled !== false ? 'Enabled' : 'Disabled'}
                               />
                             </td>
+                            <td className="py-3 px-4">
+                              <button
+                                onClick={() => handleToggleFavorite(card.id)}
+                                className="text-gold hover:text-gold/70 transition-colors"
+                                title={card.isFavorite ? 'Unfavorite' : 'Favorite'}
+                              >
+                                {card.isFavorite ? (
+                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                  </svg>
+                                ) : (
+                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                  </svg>
+                                )}
+                              </button>
+                            </td>
                             <td className="py-3 px-4 text-gold font-body font-semibold">
                               {card.deck}
                             </td>
                             <td className="py-3 px-4 text-gold font-body">
                               {card.playerColor === 'red' ? 'Red' : card.playerColor === 'blue' ? 'Blue' : card.playerColor === 'any' ? 'Any' : 'Neutral'}
+                            </td>
+                            <td className="py-3 px-4">
+                              <span className={`px-2 py-1 text-xs font-body rounded ${
+                                (card.intensity || 'medium') === 'soft' ? 'bg-green-600 text-white' :
+                                (card.intensity || 'medium') === 'medium' ? 'bg-yellow-600 text-white' :
+                                (card.intensity || 'medium') === 'hot' ? 'bg-orange-600 text-white' :
+                                'bg-red-600 text-white'
+                              }`}>
+                                {(card.intensity || 'medium').charAt(0).toUpperCase() + (card.intensity || 'medium').slice(1)}
+                              </span>
                             </td>
                             <td className="py-3 px-4">
                               <button
@@ -858,6 +940,11 @@ export default function Create() {
                                     Base
                                   </span>
                                 )}
+                                {(card.tags || []).map(tag => (
+                                  <span key={tag} className="px-2 py-1 bg-purple-600 text-white text-xs font-body rounded">
+                                    {tag}
+                                  </span>
+                                ))}
                               </div>
                             </td>
                             <td className="py-3 px-4">
@@ -1003,28 +1090,82 @@ export default function Create() {
                           </select>
                         </div>
 
-                        <div className="flex items-center gap-4 pt-6">
-                          <label className="flex items-center gap-3 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              {...editForm.register('isSwapCard')}
-                              className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
-                            />
-                            <span className="text-velvet font-body font-semibold">
-                              Swap Card
-                            </span>
+                        <div>
+                          <label htmlFor="edit-intensity" className="block text-gold font-body font-semibold mb-2 text-left">
+                            Intensity
                           </label>
-                          <label className="flex items-center gap-3 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              {...editForm.register('isEnabled')}
-                              className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
-                            />
-                            <span className="text-velvet font-body font-semibold">
-                              Enabled
-                            </span>
-                          </label>
+                          <select
+                            id="edit-intensity"
+                            {...editForm.register('intensity')}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                          >
+                            <option value="soft">Soft</option>
+                            <option value="medium">Medium</option>
+                            <option value="hot">Hot</option>
+                            <option value="wild">Wild</option>
+                          </select>
                         </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-gold font-body font-semibold mb-2 text-left">
+                          Tags
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {AVAILABLE_TAGS.map(tag => {
+                            const currentTags = editForm.watch('tags') || []
+                            const isSelected = currentTags.includes(tag)
+                            return (
+                              <label key={tag} className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={(e) => {
+                                    const newTags = e.target.checked
+                                      ? [...currentTags, tag]
+                                      : currentTags.filter(t => t !== tag)
+                                    editForm.setValue('tags', newTags)
+                                  }}
+                                  className="w-4 h-4 text-gold border-gold/30 rounded focus:ring-gold/20"
+                                />
+                                <span className="text-gold font-body text-sm">{tag}</span>
+                              </label>
+                            )
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-4 pt-6">
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            {...editForm.register('isSwapCard')}
+                            className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
+                          />
+                          <span className="text-velvet font-body font-semibold">
+                            Swap Card
+                          </span>
+                        </label>
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            {...editForm.register('isEnabled')}
+                            className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
+                          />
+                          <span className="text-velvet font-body font-semibold">
+                            Enabled
+                          </span>
+                        </label>
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            {...editForm.register('isFavorite')}
+                            className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
+                          />
+                          <span className="text-velvet font-body font-semibold">
+                            ⭐ Favorite
+                          </span>
+                        </label>
                       </div>
 
                       {!canEditCard(editingCard) && (

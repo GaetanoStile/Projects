@@ -42,6 +42,9 @@ create table if not exists public.cards (
   is_swap_card boolean default false,
   is_custom boolean default false,
   is_enabled boolean default true,
+  is_favorite boolean default false,
+  intensity text check (intensity in ('soft', 'medium', 'hot', 'wild')) default 'medium',
+  tags text[] default '{}',
   image_url text,
   created_at timestamptz default now()
 );
@@ -57,8 +60,21 @@ create table if not exists public.cards (
 - `is_swap_card`: Boolean indicating if this is a swap card
 - `is_custom`: Boolean indicating if this is a custom card (always true for user cards)
 - `is_enabled`: Boolean indicating if the card is enabled (defaults to true). Disabled cards won't appear in gameplay.
+- `is_favorite`: Boolean indicating if the card is favorited (defaults to false)
+- `intensity`: Intensity level - must be one of: 'soft', 'medium', 'hot', 'wild' (defaults to 'medium')
+- `tags`: Array of tags (defaults to empty array). Valid tags: 'kissing', 'massage', 'teasing', 'oral', 'toys', 'domination', 'submission', 'romantic', 'roleplay'
 - `image_url`: Optional image URL (data URL or Supabase Storage URL)
 - `created_at`: Timestamp of card creation
+
+**Migration SQL (for existing databases):**
+
+```sql
+-- Add new columns for metadata
+ALTER TABLE public.cards
+ADD COLUMN IF NOT EXISTS is_favorite boolean DEFAULT false,
+ADD COLUMN IF NOT EXISTS intensity text CHECK (intensity IN ('soft', 'medium', 'hot', 'wild')) DEFAULT 'medium',
+ADD COLUMN IF NOT EXISTS tags text[] DEFAULT '{}';
+```
 
 **RLS Policies:**
 - Global cards (`owner_id is null`): Readable by everyone
@@ -94,6 +110,12 @@ create index if not exists idx_cards_global on public.cards(owner_id) where owne
 
 -- Index for deck filtering
 create index if not exists idx_cards_deck on public.cards(deck);
+
+-- Index for intensity filtering
+create index if not exists idx_cards_intensity on public.cards(intensity);
+
+-- Index for tags (GIN index for array searches)
+create index if not exists idx_cards_tags on public.cards using gin(tags);
 ```
 
 ## Row Level Security (RLS)
@@ -179,4 +201,5 @@ create policy "Admins can manage global cards"
 - The app will automatically create a `users_profile` row when a user signs up
 - Global cards should be seeded manually or via the Admin panel
 - Local cards from V2 can be migrated to cloud via the "Upload to Cloud" button in the Create page
-
+- The new metadata fields (`is_favorite`, `intensity`, `tags`) are optional and backward compatible
+- Cards without metadata will default to: `is_favorite = false`, `intensity = 'medium'`, `tags = []`

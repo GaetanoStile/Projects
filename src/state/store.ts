@@ -5,6 +5,40 @@ import { useAuthStore } from './authStore'
 
 export type DeckLetter = 'A' | 'B' | 'C' | 'D' | 'black'
 export type PlayerColor = 'red' | 'blue' | 'any'
+export type SessionMode = 'romantic' | 'balanced' | 'spicy' | 'wild'
+export type Intensity = 'soft' | 'medium' | 'hot' | 'wild'
+
+// Controlled tags list
+export const AVAILABLE_TAGS = [
+  'kissing',
+  'massage',
+  'teasing',
+  'oral',
+  'toys',
+  'domination',
+  'submission',
+  'romantic',
+  'roleplay'
+] as const
+
+export type Tag = typeof AVAILABLE_TAGS[number]
+
+// Session mode rules
+const MODE_RULES: Record<SessionMode, { allowedIntensity?: Intensity[], excludedTags?: Tag[] }> = {
+  romantic: {
+    allowedIntensity: ['soft', 'medium'],
+    excludedTags: ['domination', 'submission', 'toys']
+  },
+  balanced: {
+    allowedIntensity: ['soft', 'medium', 'hot']
+  },
+  spicy: {
+    allowedIntensity: ['medium', 'hot']
+  },
+  wild: {
+    allowedIntensity: ['hot', 'wild']
+  }
+}
 
 export interface Card {
   id: string
@@ -16,6 +50,9 @@ export interface Card {
   isCustom?: boolean
   imageDataUrl?: string
   isEnabled?: boolean // defaults to true if undefined
+  isFavorite?: boolean // defaults to false if undefined
+  intensity?: Intensity // defaults to 'medium' if undefined
+  tags?: Tag[] // defaults to [] if undefined
 }
 
 export interface Settings {
@@ -23,6 +60,18 @@ export interface Settings {
   playerBlueName: string
   includeCustomRed: boolean
   includeCustomBlue: boolean
+  sessionMode: SessionMode // defaults to 'balanced'
+}
+
+export interface Preset {
+  id: string
+  name: string
+  sessionMode: SessionMode
+  includeCustomRed: boolean
+  includeCustomBlue: boolean
+  disabledCardIds: string[]
+  preferredTags?: Tag[]
+  excludedTags?: Tag[]
 }
 
 interface GameState {
@@ -39,6 +88,8 @@ interface GameState {
   cloudCards: { global: Card[]; user: Card[] } // Cloud mode cards
   deckShuffles: Record<DeckLetter, string[]>
   cardOverrides: Record<string, Partial<Card>> // Stores edits and enabled state for base cards (local mode)
+  sessionDisabledCardIds: Set<string> // NOT persisted, resets on game reset/end
+  presets: Preset[] // Persisted in localStorage
 }
 
 interface GameActions {
@@ -61,6 +112,12 @@ interface GameActions {
   updateCard: (id: string, updates: Partial<Card>) => Promise<void>
   setCardEnabled: (id: string, enabled: boolean) => Promise<void>
   resetToDefaultDeck: () => void
+  removeCardFromSession: (id: string) => void
+  toggleFavorite: (id: string) => Promise<void>
+  setSessionMode: (mode: SessionMode) => void
+  savePreset: (preset: Omit<Preset, 'id'>) => void
+  loadPreset: (presetId: string) => void
+  deletePreset: (presetId: string) => void
 }
 
 const defaultSettings: Settings = {
@@ -68,6 +125,7 @@ const defaultSettings: Settings = {
   playerBlueName: 'Jordan',
   includeCustomRed: true,
   includeCustomBlue: true,
+  sessionMode: 'balanced',
 }
 
 // Load settings from localStorage with migration
@@ -81,6 +139,7 @@ const loadSettings = (): Settings => {
         playerBlueName: parsed.playerBlueName || defaultSettings.playerBlueName,
         includeCustomRed: parsed.includeCustomRed !== undefined ? parsed.includeCustomRed : defaultSettings.includeCustomRed,
         includeCustomBlue: parsed.includeCustomBlue !== undefined ? parsed.includeCustomBlue : defaultSettings.includeCustomBlue,
+        sessionMode: parsed.sessionMode || defaultSettings.sessionMode,
       }
     }
   } catch (err) {
@@ -126,6 +185,30 @@ const loadCardOverrides = (): Record<string, Partial<Card>> => {
     console.warn('Failed to load card overrides, using empty object:', err)
   }
   return {}
+}
+
+// Load presets from localStorage
+const loadPresets = (): Preset[] => {
+  try {
+    const stored = localStorage.getItem('cg.presets.v1')
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      if (Array.isArray(parsed)) {
+        return parsed.filter((preset): preset is Preset =>
+          preset &&
+          typeof preset.id === 'string' &&
+          typeof preset.name === 'string' &&
+          ['romantic', 'balanced', 'spicy', 'wild'].includes(preset.sessionMode) &&
+          typeof preset.includeCustomRed === 'boolean' &&
+          typeof preset.includeCustomBlue === 'boolean' &&
+          Array.isArray(preset.disabledCardIds)
+        )
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to load presets, using empty array:', err)
+  }
+  return []
 }
 
 // Fisher-Yates shuffle algorithm
@@ -183,6 +266,8 @@ const initialState: GameState = {
     black: [],
   },
   cardOverrides: loadCardOverrides(),
+  sessionDisabledCardIds: new Set<string>(),
+  presets: loadPresets(),
 }
 
 export const useGameStore = create<GameState & GameActions>()(
@@ -216,6 +301,7 @@ export const useGameStore = create<GameState & GameActions>()(
           selectedCard: null,
           isModalOpen: false,
           deckShuffles,
+          sessionDisabledCardIds: new Set<string>(), // Clear session-disabled cards on game start
         })
       },
 
@@ -345,6 +431,7 @@ export const useGameStore = create<GameState & GameActions>()(
             D: [],
             black: [],
           },
+          sessionDisabledCardIds: new Set<string>(), // Clear session-disabled cards on reset
         })
       },
 
@@ -402,7 +489,7 @@ export const useGameStore = create<GameState & GameActions>()(
       },
 
       mergeDecksForPlayer: (player: 'red' | 'blue') => {
-        const { settings, customCards, cloudCards, cardOverrides } = get()
+        const { settings, customCards, cloudCards, cardOverrides, sessionDisabledCardIds } = get()
         const authState = useAuthStore.getState()
         const mode = authState.mode
         
@@ -448,7 +535,38 @@ export const useGameStore = create<GameState & GameActions>()(
         // If isEnabled is undefined, treat as true (enabled)
         const enabledCards = allCards.filter(card => card.isEnabled !== false)
         
-        return enabledCards
+        // Filter out session-disabled cards
+        const sessionEnabledCards = enabledCards.filter(card => !sessionDisabledCardIds.has(card.id))
+        
+        // Apply session mode filtering
+        const sessionMode = settings.sessionMode || 'balanced'
+        const modeRules = MODE_RULES[sessionMode]
+        
+        const modeFilteredCards = sessionEnabledCards.filter(card => {
+          // Black deck ignores mode filtering
+          if (card.deck === 'black') {
+            return true
+          }
+          
+          // Check intensity
+          const cardIntensity = card.intensity || 'medium'
+          if (modeRules.allowedIntensity && !modeRules.allowedIntensity.includes(cardIntensity)) {
+            return false
+          }
+          
+          // Check excluded tags
+          const cardTags = card.tags || []
+          if (modeRules.excludedTags) {
+            const hasExcludedTag = cardTags.some(tag => modeRules.excludedTags!.includes(tag))
+            if (hasExcludedTag) {
+              return false
+            }
+          }
+          
+          return true
+        })
+        
+        return modeFilteredCards
       },
 
       reshuffleAllDecks: () => {
@@ -614,6 +732,116 @@ export const useGameStore = create<GameState & GameActions>()(
           get().reshuffleAllDecks()
         }
       },
+
+      removeCardFromSession: (id: string) => {
+        const { sessionDisabledCardIds } = get()
+        const newSessionDisabled = new Set(sessionDisabledCardIds)
+        newSessionDisabled.add(id)
+        set({ sessionDisabledCardIds: newSessionDisabled })
+      },
+
+      toggleFavorite: async (id: string) => {
+        const { customCards, cardOverrides, cloudCards } = get()
+        const authStore = useAuthStore.getState()
+        const mode = authStore.mode
+
+        // Find current favorite state
+        let currentFavorite = false
+        const isCustomCard = customCards.some(c => c.id === id) || 
+                            (mode === 'cloud' && cloudCards.user.some(c => c.id === id))
+
+        if (isCustomCard) {
+          const card = customCards.find(c => c.id === id) || 
+                      (mode === 'cloud' ? cloudCards.user.find(c => c.id === id) : null)
+          currentFavorite = card?.isFavorite === true
+        } else {
+          const baseCard = mode === 'cloud' 
+            ? cloudCards.global.find(c => c.id === id)
+            : (cardsData as Card[]).find(c => c.id === id)
+          const override = cardOverrides[id]
+          currentFavorite = override?.isFavorite !== undefined 
+            ? override.isFavorite === true 
+            : (baseCard?.isFavorite === true)
+        }
+
+        // Toggle favorite
+        await get().updateCard(id, { isFavorite: !currentFavorite })
+      },
+
+      setSessionMode: (mode: SessionMode) => {
+        get().setSettings({ sessionMode: mode })
+      },
+
+      savePreset: (preset: Omit<Preset, 'id'>) => {
+        const { presets } = get()
+        const newPreset: Preset = {
+          ...preset,
+          id: `preset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        }
+        const updatedPresets = [...presets, newPreset]
+        set({ presets: updatedPresets })
+        try {
+          localStorage.setItem('cg.presets.v1', JSON.stringify(updatedPresets))
+        } catch (err) {
+          console.warn('Failed to save presets:', err)
+        }
+      },
+
+      loadPreset: (presetId: string) => {
+        const { presets } = get()
+        const preset = presets.find(p => p.id === presetId)
+        if (!preset) {
+          console.warn('Preset not found:', presetId)
+          return
+        }
+
+        // Update settings
+        get().setSettings({
+          sessionMode: preset.sessionMode,
+          includeCustomRed: preset.includeCustomRed,
+          includeCustomBlue: preset.includeCustomBlue,
+        })
+
+        // Apply disabled cards to overrides
+        const { cardOverrides } = get()
+        const newOverrides = { ...cardOverrides }
+        
+        // Set isEnabled: false for cards in preset.disabledCardIds
+        preset.disabledCardIds.forEach(cardId => {
+          if (newOverrides[cardId]) {
+            newOverrides[cardId] = { ...newOverrides[cardId], isEnabled: false }
+          } else {
+            newOverrides[cardId] = { isEnabled: false }
+          }
+        })
+
+        // Note: We don't restore enabled state for cards not in disabledCardIds
+        // This is intentional - presets only set disabled cards, not re-enable everything
+
+        set({ cardOverrides: newOverrides })
+        try {
+          localStorage.setItem('cg.cardOverrides.v3', JSON.stringify(newOverrides))
+        } catch (err) {
+          console.warn('Failed to save card overrides:', err)
+        }
+
+        // Trigger re-shuffle if game is active
+        const { currentPlayer } = get()
+        if (currentPlayer) {
+          get().reshuffleAllDecks()
+        }
+      },
+
+      deletePreset: (presetId: string) => {
+        const { presets } = get()
+        const updatedPresets = presets.filter(p => p.id !== presetId)
+        set({ presets: updatedPresets })
+        try {
+          localStorage.setItem('cg.presets.v1', JSON.stringify(updatedPresets))
+        } catch (err) {
+          console.warn('Failed to save presets:', err)
+        }
+      },
     }),
     {
       name: 'couples-game-storage',
@@ -626,7 +854,8 @@ export const useGameStore = create<GameState & GameActions>()(
         usedCardIds: Array.from(state.usedCardIds),
         startingPlayer: state.startingPlayer,
         cardOverrides: state.cardOverrides,
-        // Do not persist shuffledDecks, as they should be re-shuffled on game start/reset
+        // Do not persist shuffledDecks, sessionDisabledCardIds, or presets here
+        // presets are persisted separately in localStorage
       }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
@@ -636,6 +865,7 @@ export const useGameStore = create<GameState & GameActions>()(
             ...initialState,
             settings: loadSettings(),
             customCards: loadCustomCards(),
+            presets: loadPresets(),
           }
         }
         
@@ -712,10 +942,14 @@ export const useGameStore = create<GameState & GameActions>()(
               state.deckShuffles = validatedShuffles
             }
 
-            // Load settings and custom cards from separate storage
+            // Initialize sessionDisabledCardIds (not persisted)
+            state.sessionDisabledCardIds = new Set<string>()
+
+            // Load settings, custom cards, card overrides, and presets from separate storage
             state.settings = loadSettings()
             state.customCards = loadCustomCards()
             state.cardOverrides = loadCardOverrides()
+            state.presets = loadPresets()
           } catch (err) {
             console.warn('Error validating rehydrated state, resetting:', err)
             return {
@@ -723,6 +957,7 @@ export const useGameStore = create<GameState & GameActions>()(
               settings: loadSettings(),
               customCards: loadCustomCards(),
               cardOverrides: loadCardOverrides(),
+              presets: loadPresets(),
             }
           }
         }

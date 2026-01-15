@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js'
-import { Card, DeckLetter, PlayerColor } from '@/state/store'
+import { Card, DeckLetter, PlayerColor, Tag, AVAILABLE_TAGS } from '@/state/store'
 
 /**
  * Database card interface (matches Supabase schema)
@@ -14,6 +14,9 @@ export interface DatabaseCard {
   is_swap_card: boolean
   is_custom: boolean
   is_enabled: boolean
+  is_favorite: boolean
+  intensity: string | null
+  tags: string[] | null
   image_url: string | null
   created_at: string
 }
@@ -30,6 +33,13 @@ const dbCardToCard = (dbCard: DatabaseCard): Card => ({
   isSwapCard: dbCard.is_swap_card,
   isCustom: dbCard.is_custom,
   isEnabled: dbCard.is_enabled !== undefined ? dbCard.is_enabled : true,
+  isFavorite: dbCard.is_favorite !== undefined ? dbCard.is_favorite : false,
+  intensity: dbCard.intensity && ['soft', 'medium', 'hot', 'wild'].includes(dbCard.intensity) 
+    ? dbCard.intensity as 'soft' | 'medium' | 'hot' | 'wild'
+    : undefined,
+  tags: dbCard.tags && Array.isArray(dbCard.tags) 
+    ? dbCard.tags.filter((tag): tag is Tag => AVAILABLE_TAGS.includes(tag as Tag))
+    : undefined,
   imageDataUrl: dbCard.image_url || undefined,
 })
 
@@ -45,6 +55,9 @@ const cardToDbCard = (card: Card, ownerId: string | null = null): Omit<DatabaseC
   is_swap_card: card.isSwapCard || false,
   is_custom: card.isCustom || false,
   is_enabled: card.isEnabled !== undefined ? card.isEnabled : true,
+  is_favorite: card.isFavorite !== undefined ? card.isFavorite : false,
+  intensity: card.intensity || null,
+  tags: card.tags && card.tags.length > 0 ? (card.tags as string[]) : null,
   image_url: card.imageDataUrl || null,
 })
 
@@ -146,6 +159,9 @@ export const updateCard = async (
     if (updates.playerColor !== undefined) updateData.player_color = updates.playerColor
     if (updates.isSwapCard !== undefined) updateData.is_swap_card = updates.isSwapCard
     if (updates.isEnabled !== undefined) updateData.is_enabled = updates.isEnabled
+    if (updates.isFavorite !== undefined) updateData.is_favorite = updates.isFavorite
+    if (updates.intensity !== undefined) updateData.intensity = updates.intensity || null
+    if (updates.tags !== undefined) updateData.tags = updates.tags && updates.tags.length > 0 ? updates.tags : null
     if (updates.imageDataUrl !== undefined) updateData.image_url = updates.imageDataUrl || null
 
     const { data, error } = await client
@@ -243,4 +259,3 @@ export const deleteGlobalCard = async (
 ): Promise<boolean> => {
   return deleteCard(client, cardId)
 }
-
