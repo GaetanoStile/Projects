@@ -14,6 +14,9 @@ import blueDeckB from '@/assets/card-backs/blue-deck-b.png'
 import blueDeckC from '@/assets/card-backs/blue-deck-c.png'
 import blueDeckD from '@/assets/card-backs/blue-deck-d.png'
 
+// Import black deck card back image
+import blackDeckBack from '@/assets/card-backs/black-deck-back.png'
+
 // Mapping for red deck card backs
 const redDeckBacks: Record<'A' | 'B' | 'C' | 'D', string> = {
   A: redDeckA,
@@ -65,6 +68,7 @@ export default function Card({
 
   // Get the card back image based on player color and deck
   const cardBackImage: string | null = (() => {
+    if (deck === 'black') return blackDeckBack
     if (!isStandardDeck || !deck) return null
     const deckKey = deck as 'A' | 'B' | 'C' | 'D'
     if (playerColor === 'red' && redDeckBacks[deckKey]) return redDeckBacks[deckKey]
