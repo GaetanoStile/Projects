@@ -5,8 +5,6 @@ import { useAuthStore } from './authStore'
 
 export type DeckLetter = 'A' | 'B' | 'C' | 'D' | 'black'
 export type PlayerColor = 'red' | 'blue' | 'any'
-export type SessionMode = 'romantic' | 'balanced' | 'spicy' | 'wild'
-export type Intensity = 'soft' | 'medium' | 'hot' | 'wild'
 
 // Controlled tags list
 export const AVAILABLE_TAGS = [
@@ -23,23 +21,6 @@ export const AVAILABLE_TAGS = [
 
 export type Tag = typeof AVAILABLE_TAGS[number]
 
-// Session mode rules
-const MODE_RULES: Record<SessionMode, { allowedIntensity?: Intensity[], excludedTags?: Tag[] }> = {
-  romantic: {
-    allowedIntensity: ['soft', 'medium'],
-    excludedTags: ['domination', 'submission', 'toys']
-  },
-  balanced: {
-    allowedIntensity: ['soft', 'medium', 'hot']
-  },
-  spicy: {
-    allowedIntensity: ['medium', 'hot']
-  },
-  wild: {
-    allowedIntensity: ['hot', 'wild']
-  }
-}
-
 export interface Card {
   id: string
   title: string
@@ -51,7 +32,6 @@ export interface Card {
   imageDataUrl?: string
   isEnabled?: boolean // defaults to true if undefined
   isFavorite?: boolean // defaults to false if undefined
-  intensity?: Intensity // defaults to 'medium' if undefined
   tags?: Tag[] // defaults to [] if undefined
 }
 
@@ -60,18 +40,14 @@ export interface Settings {
   playerBlueName: string
   includeCustomRed: boolean
   includeCustomBlue: boolean
-  sessionMode: SessionMode // defaults to 'balanced'
 }
 
 export interface Preset {
   id: string
   name: string
-  sessionMode: SessionMode
   includeCustomRed: boolean
   includeCustomBlue: boolean
   disabledCardIds: string[]
-  preferredTags?: Tag[]
-  excludedTags?: Tag[]
 }
 
 interface GameState {
@@ -114,7 +90,6 @@ interface GameActions {
   resetToDefaultDeck: () => void
   removeCardFromSession: (id: string) => void
   toggleFavorite: (id: string) => Promise<void>
-  setSessionMode: (mode: SessionMode) => void
   savePreset: (preset: Omit<Preset, 'id'>) => void
   loadPreset: (presetId: string) => void
   deletePreset: (presetId: string) => void
@@ -125,7 +100,6 @@ const defaultSettings: Settings = {
   playerBlueName: 'Jordan',
   includeCustomRed: true,
   includeCustomBlue: true,
-  sessionMode: 'balanced',
 }
 
 // Load settings from localStorage with migration
@@ -139,7 +113,6 @@ const loadSettings = (): Settings => {
         playerBlueName: parsed.playerBlueName || defaultSettings.playerBlueName,
         includeCustomRed: parsed.includeCustomRed !== undefined ? parsed.includeCustomRed : defaultSettings.includeCustomRed,
         includeCustomBlue: parsed.includeCustomBlue !== undefined ? parsed.includeCustomBlue : defaultSettings.includeCustomBlue,
-        sessionMode: parsed.sessionMode || defaultSettings.sessionMode,
       }
     }
   } catch (err) {
@@ -198,7 +171,6 @@ const loadPresets = (): Preset[] => {
           preset &&
           typeof preset.id === 'string' &&
           typeof preset.name === 'string' &&
-          ['romantic', 'balanced', 'spicy', 'wild'].includes(preset.sessionMode) &&
           typeof preset.includeCustomRed === 'boolean' &&
           typeof preset.includeCustomBlue === 'boolean' &&
           Array.isArray(preset.disabledCardIds)
@@ -538,35 +510,7 @@ export const useGameStore = create<GameState & GameActions>()(
         // Filter out session-disabled cards
         const sessionEnabledCards = enabledCards.filter(card => !sessionDisabledCardIds.has(card.id))
         
-        // Apply session mode filtering
-        const sessionMode = settings.sessionMode || 'balanced'
-        const modeRules = MODE_RULES[sessionMode]
-        
-        const modeFilteredCards = sessionEnabledCards.filter(card => {
-          // Black deck ignores mode filtering
-          if (card.deck === 'black') {
-            return true
-          }
-          
-          // Check intensity - only filter if the card has an explicit intensity set
-          // Cards without intensity are always included (they come from base cards.json)
-          if (card.intensity && modeRules.allowedIntensity && !modeRules.allowedIntensity.includes(card.intensity)) {
-            return false
-          }
-          
-          // Check excluded tags
-          const cardTags = card.tags || []
-          if (modeRules.excludedTags) {
-            const hasExcludedTag = cardTags.some(tag => modeRules.excludedTags!.includes(tag))
-            if (hasExcludedTag) {
-              return false
-            }
-          }
-          
-          return true
-        })
-        
-        return modeFilteredCards
+        return sessionEnabledCards
       },
 
       reshuffleAllDecks: () => {
@@ -768,10 +712,6 @@ export const useGameStore = create<GameState & GameActions>()(
         await get().updateCard(id, { isFavorite: !currentFavorite })
       },
 
-      setSessionMode: (mode: SessionMode) => {
-        get().setSettings({ sessionMode: mode })
-      },
-
       savePreset: (preset: Omit<Preset, 'id'>) => {
         const { presets } = get()
         const newPreset: Preset = {
@@ -797,7 +737,6 @@ export const useGameStore = create<GameState & GameActions>()(
 
         // Update settings
         get().setSettings({
-          sessionMode: preset.sessionMode,
           includeCustomRed: preset.includeCustomRed,
           includeCustomBlue: preset.includeCustomBlue,
         })

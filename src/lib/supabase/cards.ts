@@ -34,9 +34,6 @@ const dbCardToCard = (dbCard: DatabaseCard): Card => ({
   isCustom: dbCard.is_custom,
   isEnabled: dbCard.is_enabled !== undefined ? dbCard.is_enabled : true,
   isFavorite: dbCard.is_favorite !== undefined ? dbCard.is_favorite : false,
-  intensity: dbCard.intensity && ['soft', 'medium', 'hot', 'wild'].includes(dbCard.intensity) 
-    ? dbCard.intensity as 'soft' | 'medium' | 'hot' | 'wild'
-    : undefined,
   tags: dbCard.tags && Array.isArray(dbCard.tags) 
     ? dbCard.tags.filter((tag): tag is Tag => AVAILABLE_TAGS.includes(tag as Tag))
     : undefined,
@@ -56,7 +53,7 @@ const cardToDbCard = (card: Card, ownerId: string | null = null): Omit<DatabaseC
   is_custom: card.isCustom || false,
   is_enabled: card.isEnabled !== undefined ? card.isEnabled : true,
   is_favorite: card.isFavorite !== undefined ? card.isFavorite : false,
-  intensity: card.intensity || null,
+  intensity: null,
   tags: card.tags && card.tags.length > 0 ? (card.tags as string[]) : null,
   image_url: card.imageDataUrl || null,
 })
@@ -160,7 +157,6 @@ export const updateCard = async (
     if (updates.isSwapCard !== undefined) updateData.is_swap_card = updates.isSwapCard
     if (updates.isEnabled !== undefined) updateData.is_enabled = updates.isEnabled
     if (updates.isFavorite !== undefined) updateData.is_favorite = updates.isFavorite
-    if (updates.intensity !== undefined) updateData.intensity = updates.intensity || null
     if (updates.tags !== undefined) updateData.tags = updates.tags && updates.tags.length > 0 ? updates.tags : null
     if (updates.imageDataUrl !== undefined) updateData.image_url = updates.imageDataUrl || null
 

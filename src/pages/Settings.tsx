@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useGameStore, SessionMode } from '@/state/store'
+import { useGameStore } from '@/state/store'
 import { useCloudCards } from '@/hooks/useCloudCards'
 import Candle from '@/components/Candle'
 
@@ -13,7 +13,6 @@ const SettingsSchema = z.object({
   playerBlueName: z.string().trim().min(1).max(24),
   includeCustomRed: z.boolean(),
   includeCustomBlue: z.boolean(),
-  sessionMode: z.enum(['romantic', 'balanced', 'spicy', 'wild']),
 })
 
 type SettingsFormData = z.infer<typeof SettingsSchema>
@@ -23,7 +22,6 @@ export default function Settings() {
   const { 
     settings, 
     setSettings, 
-    setSessionMode,
     presets,
     savePreset,
     loadPreset,
@@ -40,7 +38,6 @@ export default function Settings() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<SettingsFormData>({
     resolver: zodResolver(SettingsSchema),
@@ -49,11 +46,8 @@ export default function Settings() {
       playerBlueName: settings.playerBlueName,
       includeCustomRed: settings.includeCustomRed,
       includeCustomBlue: settings.includeCustomBlue,
-      sessionMode: settings.sessionMode || 'balanced',
     },
   })
-
-  const currentSessionMode = watch('sessionMode')
 
   const onSubmit = (data: SettingsFormData) => {
     setSettings(data)
@@ -73,7 +67,6 @@ export default function Settings() {
 
     savePreset({
       name: presetName.trim(),
-      sessionMode: currentSessionMode || 'balanced',
       includeCustomRed: settings.includeCustomRed,
       includeCustomBlue: settings.includeCustomBlue,
       disabledCardIds,
@@ -95,21 +88,6 @@ export default function Settings() {
       return
     }
     deletePreset(presetId)
-  }
-
-  const getModeDescription = (mode: SessionMode): string => {
-    switch (mode) {
-      case 'romantic':
-        return 'Soft and medium intensity only. Excludes domination, submission, and toys.'
-      case 'balanced':
-        return 'Soft, medium, and hot intensity. A well-rounded experience.'
-      case 'spicy':
-        return 'Medium and hot intensity. More adventurous.'
-      case 'wild':
-        return 'Hot and wild intensity only. Maximum intensity.'
-      default:
-        return ''
-    }
   }
 
   return (
@@ -205,30 +183,6 @@ export default function Settings() {
                     </span>
                   </label>
                 </div>
-
-                {/* Session Mode Selector */}
-                <div>
-                  <label htmlFor="sessionMode" className="block text-gold font-body font-semibold mb-2 text-left">
-                    Session Mode
-                  </label>
-                  <select
-                    id="sessionMode"
-                    {...register('sessionMode', {
-                      onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
-                        setSessionMode(e.target.value as SessionMode)
-                      }
-                    })}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
-                  >
-                    <option value="romantic">Romantic</option>
-                    <option value="balanced">Balanced</option>
-                    <option value="spicy">Spicy</option>
-                    <option value="wild">Wild</option>
-                  </select>
-                  <p className="text-gold/80 text-sm mt-2 text-left">
-                    {getModeDescription(currentSessionMode || 'balanced')}
-                  </p>
-                </div>
               </div>
 
               {/* Right Column: Explainer */}
@@ -240,7 +194,7 @@ export default function Settings() {
                     <li>• Swap cards unlock the black deck after collecting 3</li>
                     <li>• Cards never repeat within a session</li>
                     <li>• Each player has decks A, B, C, and D</li>
-                    <li>• Session mode filters cards by intensity and tags</li>
+                    <li>• Disable cards in the Card Manager to exclude them</li>
                   </ul>
                 </div>
                 <div className="pt-4">
@@ -289,8 +243,6 @@ export default function Settings() {
                         {preset.name}
                       </h3>
                       <div className="flex flex-wrap gap-2 text-sm text-gold/80 font-body">
-                        <span>Mode: {preset.sessionMode}</span>
-                        <span>•</span>
                         <span>{preset.disabledCardIds.length} disabled cards</span>
                         <span>•</span>
                         <span>

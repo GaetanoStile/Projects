@@ -6,17 +6,17 @@ export default function DeckGrid() {
   const { currentPlayer, blackUnlocked, usedCardIds, drawFrom, applyCardEffects, mergeDecksForPlayer } = useGameStore()
   
   // Subscribe to all state that mergeDecksForPlayer depends on so memo recomputes
-  const settings = useGameStore(s => s.settings)
   const cardOverrides = useGameStore(s => s.cardOverrides)
   const customCards = useGameStore(s => s.customCards)
   const cloudCards = useGameStore(s => s.cloudCards)
   const sessionDisabledCardIds = useGameStore(s => s.sessionDisabledCardIds)
+  const settings = useGameStore(s => s.settings)
 
   const availableCards = useMemo(() => {
     if (!currentPlayer) return []
     return mergeDecksForPlayer(currentPlayer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlayer, mergeDecksForPlayer, settings, cardOverrides, customCards, cloudCards, sessionDisabledCardIds])
+  }, [currentPlayer, mergeDecksForPlayer, cardOverrides, customCards, cloudCards, sessionDisabledCardIds, settings])
 
   const getRemainingCount = (deck: 'A' | 'B' | 'C' | 'D' | 'black', playerColor: 'red' | 'blue') => {
     if (deck === 'black') {

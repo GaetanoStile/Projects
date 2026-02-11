@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useGameStore, Card, DeckLetter, PlayerColor, AVAILABLE_TAGS, Tag, Intensity } from '@/state/store'
+import { useGameStore, Card, DeckLetter, PlayerColor, AVAILABLE_TAGS, Tag } from '@/state/store'
 import { useAuthStore } from '@/state/authStore'
 import { getSupabaseClient } from '@/lib/supabase/client'
 import { createCard, deleteCard as deleteCloudCard } from '@/lib/supabase/cards'
@@ -29,7 +29,6 @@ const EditCardSchema = z.object({
   isSwapCard: z.boolean().optional().default(false),
   isEnabled: z.boolean().optional().default(true),
   isFavorite: z.boolean().optional().default(false),
-  intensity: z.enum(['soft', 'medium', 'hot', 'wild']).optional(),
   tags: z.array(z.string()).optional().default([]),
 })
 
@@ -63,7 +62,6 @@ export default function Create() {
   const [filterDeck, setFilterDeck] = useState<'all' | DeckLetter>('all')
   const [filterColor, setFilterColor] = useState<'all' | PlayerColor | 'neutral'>('all')
   const [filterEnabled, setFilterEnabled] = useState<'all' | 'enabled' | 'disabled'>('all')
-  const [filterIntensity, setFilterIntensity] = useState<'all' | Intensity>('all')
   const [filterTag, setFilterTag] = useState<'all' | Tag>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -167,7 +165,6 @@ export default function Create() {
       isSwapCard: card.isSwapCard || false,
       isEnabled: card.isEnabled !== false,
       isFavorite: card.isFavorite || false,
-      intensity: card.intensity || 'medium',
       tags: card.tags || [],
     })
     setShowEditModal(true)
@@ -184,7 +181,6 @@ export default function Create() {
       isSwapCard: data.isSwapCard || false,
       isEnabled: data.isEnabled !== false,
       isFavorite: data.isFavorite || false,
-      intensity: data.intensity,
       tags: data.tags && data.tags.length > 0 ? data.tags as Tag[] : undefined,
     }
 
@@ -304,9 +300,6 @@ export default function Create() {
         filterEnabled === 'all' || 
         (filterEnabled === 'enabled' && card.isEnabled !== false) ||
         (filterEnabled === 'disabled' && card.isEnabled === false)
-      const intensityMatch = 
-        filterIntensity === 'all' || 
-        (card.intensity || 'medium') === filterIntensity
       const tagMatch = 
         filterTag === 'all' || 
         (card.tags || []).includes(filterTag)
@@ -315,9 +308,9 @@ export default function Create() {
         card.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         card.description.toLowerCase().includes(searchQuery.toLowerCase())
       
-      return deckMatch && colorMatch && enabledMatch && intensityMatch && tagMatch && searchMatch
+      return deckMatch && colorMatch && enabledMatch && tagMatch && searchMatch
     })
-  }, [getAllCards, filterDeck, filterColor, filterEnabled, filterIntensity, filterTag, searchQuery])
+  }, [getAllCards, filterDeck, filterColor, filterEnabled, filterTag, searchQuery])
 
   // Custom cards for "Custom Only" tab
   const allCustomCards = useMemo(() => {
@@ -750,7 +743,7 @@ export default function Create() {
                 </div>
 
                 {/* Filters */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
                   <div>
                     <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Deck
@@ -800,22 +793,6 @@ export default function Create() {
                   </div>
                   <div>
                     <label className="block text-gold font-body font-semibold mb-2 text-sm">
-                      Intensity
-                    </label>
-                    <select
-                      value={filterIntensity}
-                      onChange={(e) => setFilterIntensity(e.target.value as 'all' | Intensity)}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
-                    >
-                      <option value="all">All</option>
-                      <option value="soft">Soft</option>
-                      <option value="medium">Medium</option>
-                      <option value="hot">Hot</option>
-                      <option value="wild">Wild</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Tag
                     </label>
                     <select
@@ -852,7 +829,6 @@ export default function Create() {
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">⭐</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Deck</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Performer</th>
-                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Intensity</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Title</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Description</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Tags</th>
@@ -862,7 +838,7 @@ export default function Create() {
                     <tbody>
                       {filteredAllCards.length === 0 ? (
                         <tr>
-                          <td colSpan={9} className="text-center py-12 text-gold font-body">
+                          <td colSpan={8} className="text-center py-12 text-gold font-body">
                             No cards found matching filters
                           </td>
                         </tr>
@@ -900,16 +876,6 @@ export default function Create() {
                             </td>
                             <td className="py-3 px-4 text-gold font-body">
                               {card.playerColor === 'red' ? 'Red' : card.playerColor === 'blue' ? 'Blue' : card.playerColor === 'any' ? 'Any' : 'Neutral'}
-                            </td>
-                            <td className="py-3 px-4">
-                              <span className={`px-2 py-1 text-xs font-body rounded ${
-                                (card.intensity || 'medium') === 'soft' ? 'bg-green-600 text-white' :
-                                (card.intensity || 'medium') === 'medium' ? 'bg-yellow-600 text-white' :
-                                (card.intensity || 'medium') === 'hot' ? 'bg-orange-600 text-white' :
-                                'bg-red-600 text-white'
-                              }`}>
-                                {(card.intensity || 'medium').charAt(0).toUpperCase() + (card.intensity || 'medium').slice(1)}
-                              </span>
                             </td>
                             <td className="py-3 px-4">
                               <button
@@ -1073,38 +1039,20 @@ export default function Create() {
                         )}
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label htmlFor="edit-player-color" className="block text-gold font-body font-semibold mb-2 text-left">
-                            Player Color
-                          </label>
-                          <select
-                            id="edit-player-color"
-                            {...editForm.register('playerColor')}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
-                          >
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="any">Any</option>
-                            <option value="neutral">Neutral</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label htmlFor="edit-intensity" className="block text-gold font-body font-semibold mb-2 text-left">
-                            Intensity
-                          </label>
-                          <select
-                            id="edit-intensity"
-                            {...editForm.register('intensity')}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
-                          >
-                            <option value="soft">Soft</option>
-                            <option value="medium">Medium</option>
-                            <option value="hot">Hot</option>
-                            <option value="wild">Wild</option>
-                          </select>
-                        </div>
+                      <div>
+                        <label htmlFor="edit-player-color" className="block text-gold font-body font-semibold mb-2 text-left">
+                          Player Color
+                        </label>
+                        <select
+                          id="edit-player-color"
+                          {...editForm.register('playerColor')}
+                          className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                        >
+                          <option value="red">Red</option>
+                          <option value="blue">Blue</option>
+                          <option value="any">Any</option>
+                          <option value="neutral">Neutral</option>
+                        </select>
                       </div>
 
                       <div>
