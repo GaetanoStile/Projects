@@ -548,9 +548,9 @@ export const useGameStore = create<GameState & GameActions>()(
             return true
           }
           
-          // Check intensity
-          const cardIntensity = card.intensity || 'medium'
-          if (modeRules.allowedIntensity && !modeRules.allowedIntensity.includes(cardIntensity)) {
+          // Check intensity - only filter if the card has an explicit intensity set
+          // Cards without intensity are always included (they come from base cards.json)
+          if (card.intensity && modeRules.allowedIntensity && !modeRules.allowedIntensity.includes(card.intensity)) {
             return false
           }
           

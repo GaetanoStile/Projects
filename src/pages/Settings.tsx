@@ -213,10 +213,11 @@ export default function Settings() {
                   </label>
                   <select
                     id="sessionMode"
-                    {...register('sessionMode')}
-                    onChange={(e) => {
-                      setSessionMode(e.target.value as SessionMode)
-                    }}
+                    {...register('sessionMode', {
+                      onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
+                        setSessionMode(e.target.value as SessionMode)
+                      }
+                    })}
                     className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                   >
                     <option value="romantic">Romantic</option>
