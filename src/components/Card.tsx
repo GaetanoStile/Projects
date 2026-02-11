@@ -8,12 +8,26 @@ import redDeckB from '@/assets/card-backs/red-deck-b.png'
 import redDeckC from '@/assets/card-backs/red-deck-c.png'
 import redDeckD from '@/assets/card-backs/red-deck-d.png'
 
+// Import blue deck card back images
+import blueDeckA from '@/assets/card-backs/blue-deck-a.png'
+import blueDeckB from '@/assets/card-backs/blue-deck-b.png'
+import blueDeckC from '@/assets/card-backs/blue-deck-c.png'
+import blueDeckD from '@/assets/card-backs/blue-deck-d.png'
+
 // Mapping for red deck card backs
 const redDeckBacks: Record<'A' | 'B' | 'C' | 'D', string> = {
   A: redDeckA,
   B: redDeckB,
   C: redDeckC,
   D: redDeckD,
+}
+
+// Mapping for blue deck card backs
+const blueDeckBacks: Record<'A' | 'B' | 'C' | 'D', string> = {
+  A: blueDeckA,
+  B: blueDeckB,
+  C: blueDeckC,
+  D: blueDeckD,
 }
 
 interface CardProps {
@@ -46,15 +60,19 @@ export default function Card({
     }, 450)
   }
 
-  // Determine if we should use a custom PNG card back
-  const useCustomCardBack = 
-    playerColor === 'red' && 
-    deck && 
-    (deck === 'A' || deck === 'B' || deck === 'C' || deck === 'D') &&
-    redDeckBacks[deck]
+  // Determine if this is a standard deck (A-D) that has custom card backs
+  const isStandardDeck = deck === 'A' || deck === 'B' || deck === 'C' || deck === 'D'
 
-  // Get the card back image if applicable
-  const cardBackImage = useCustomCardBack ? redDeckBacks[deck as 'A' | 'B' | 'C' | 'D'] : null
+  // Get the card back image based on player color and deck
+  const cardBackImage: string | null = (() => {
+    if (!isStandardDeck || !deck) return null
+    const deckKey = deck as 'A' | 'B' | 'C' | 'D'
+    if (playerColor === 'red' && redDeckBacks[deckKey]) return redDeckBacks[deckKey]
+    if (playerColor === 'blue' && blueDeckBacks[deckKey]) return blueDeckBacks[deckKey]
+    return null
+  })()
+
+  const useCustomCardBack = !!cardBackImage
 
   return (
     <motion.div
@@ -88,11 +106,11 @@ export default function Card({
           }}
         >
           {useCustomCardBack && cardBackImage ? (
-            // Custom PNG card back for red decks A-D
+            // Custom PNG card back for red/blue decks A-D
             <div className="w-full h-full rounded-lg relative overflow-hidden">
               <img
                 src={cardBackImage}
-                alt={`${deck} deck card back`}
+                alt={`${playerColor} ${deck} deck card back`}
                 className="w-full h-full object-cover"
                 style={{
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
@@ -106,7 +124,7 @@ export default function Card({
               )}
             </div>
           ) : (
-            // Default card back (for blue decks, black deck, or fallback)
+            // Default card back (for black deck or fallback)
             <div className="w-full h-full rounded-lg bg-gradient-to-br from-parchment to-gold/20 flex items-center justify-center relative">
               <div className="text-2xl text-gold">✨</div>
               {/* Remaining count */}
