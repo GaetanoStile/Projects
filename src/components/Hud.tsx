@@ -52,7 +52,7 @@ export default function Hud() {
           ) : (
             <>
               <span className="text-gold/50 text-2xl">🔒</span>
-              <span className="text-sm font-body text-gold font-semibold">Locked (Need 3 swaps)</span>
+              <span className="text-sm font-body text-gold font-semibold">Locked (Need 2 swaps)</span>
             </>
           )}
         </div>

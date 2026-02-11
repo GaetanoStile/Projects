@@ -542,7 +542,7 @@ export default function Create() {
               {isSwapCard && (
                 <div className="mt-4 p-4 bg-gold/10 border border-gold/30 rounded-lg">
                   <p className="text-gold font-body text-sm">
-                    ⚠️ Warning: Many swap cards will speed up black deck unlock (3 swaps needed)
+                    ⚠️ Warning: Many swap cards will speed up black deck unlock (2 swaps needed)
                   </p>
                 </div>
               )}

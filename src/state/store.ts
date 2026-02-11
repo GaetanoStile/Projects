@@ -354,8 +354,8 @@ export const useGameStore = create<GameState & GameActions>()(
         const newActiveSwapCard = { ...activeSwapCard }
         newActiveSwapCard[currentPlayer] = false
 
-        // Unlock black deck if current player has 3+ swaps
-        const shouldUnlock = newSwapCount[currentPlayer] >= 3
+        // Unlock black deck if current player has 2+ swaps
+        const shouldUnlock = newSwapCount[currentPlayer] >= 2
 
         // Reshuffle all decks
         const { reshuffleAllDecks } = get()

@@ -191,7 +191,7 @@ export default function Settings() {
                   <h3 className="text-gold font-display text-xl mb-3">How It Works</h3>
                   <ul className="text-gold font-body text-sm space-y-2 text-left">
                     <li>• Custom cards you create will appear in gameplay when toggles are ON</li>
-                    <li>• Swap cards unlock the black deck after collecting 3</li>
+                    <li>• Swap cards unlock the black deck after collecting 2</li>
                     <li>• Cards never repeat within a session</li>
                     <li>• Each player has decks A, B, C, and D</li>
                     <li>• Disable cards in the Card Manager to exclude them</li>
