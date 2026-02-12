@@ -355,9 +355,8 @@ export const useGameStore = create<GameState & GameActions>()(
         const { reshuffleAllDecks } = get()
         reshuffleAllDecks()
 
-        // End the turn after using swap card
+        // Keep the current player's turn so they can use the black deck if they qualify
         set({
-          currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
           swapCount: newSwapCount,
           activeSwapCard: newActiveSwapCard,
           isModalOpen: false,
