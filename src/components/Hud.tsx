@@ -1,7 +1,7 @@
 import { useGameStore } from '@/state/store'
 
 export default function Hud() {
-  const { currentPlayer, swapCount, settings } = useGameStore()
+  const { currentPlayer, swapCount, swapInventory, settings } = useGameStore()
 
   if (!currentPlayer) {
     return null
@@ -32,16 +32,16 @@ export default function Hud() {
           </div>
         </div>
 
-        {/* Swap Counts */}
+        {/* Swap Card Inventory */}
         <div className="flex items-center gap-4">
           <div className="text-center">
-            <div className="text-xs font-body text-gold uppercase tracking-wider mb-1 font-semibold">Red Swaps</div>
-            <div className="text-2xl font-display text-[#8b6914] font-bold">{swapCount.red}</div>
+            <div className="text-xs font-body text-gold uppercase tracking-wider mb-1 font-semibold">Red Swap Cards</div>
+            <div className="text-2xl font-display text-[#8b6914] font-bold">{swapInventory.red}</div>
           </div>
           <div className="w-px h-8 bg-gold/30" />
           <div className="text-center">
-            <div className="text-xs font-body text-gold uppercase tracking-wider mb-1 font-semibold">Blue Swaps</div>
-            <div className="text-2xl font-display text-[#8b6914] font-bold">{swapCount.blue}</div>
+            <div className="text-xs font-body text-gold uppercase tracking-wider mb-1 font-semibold">Blue Swap Cards</div>
+            <div className="text-2xl font-display text-[#8b6914] font-bold">{swapInventory.blue}</div>
           </div>
         </div>
 

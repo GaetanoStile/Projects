@@ -53,7 +53,7 @@ export interface Preset {
 interface GameState {
   currentPlayer: 'red' | 'blue' | null
   swapCount: { red: number; blue: number }
-  activeSwapCard: { red: boolean; blue: boolean }
+  swapInventory: { red: number; blue: number }
   usedCardIds: Set<string>
   startingPlayer: 'red' | 'blue' | null
   selectedCard: Card | null
@@ -72,7 +72,6 @@ interface GameActions {
   drawFrom: (deck: DeckLetter, playerColor: 'red' | 'blue', availableCards: Card[]) => Card | null
   applyCardEffects: (card: Card) => void
   useSwapCard: () => void
-  endTurn: () => void
   resetGame: () => void
   setSelectedCard: (card: Card | null) => void
   setIsModalOpen: (open: boolean) => void
@@ -220,7 +219,7 @@ const initializeDeckShuffles = (availableCards: Card[]): Record<DeckLetter, stri
 const initialState: GameState = {
   currentPlayer: null,
   swapCount: { red: 0, blue: 0 },
-  activeSwapCard: { red: false, blue: false },
+  swapInventory: { red: 0, blue: 0 },
   usedCardIds: new Set<string>(),
   startingPlayer: null,
   selectedCard: null,
@@ -265,7 +264,7 @@ export const useGameStore = create<GameState & GameActions>()(
           currentPlayer: player,
           startingPlayer: player,
           swapCount: { red: 0, blue: 0 },
-          activeSwapCard: { red: false, blue: false },
+          swapInventory: { red: 0, blue: 0 },
           usedCardIds: new Set<string>(),
           selectedCard: null,
           isModalOpen: false,
@@ -327,62 +326,49 @@ export const useGameStore = create<GameState & GameActions>()(
 
       applyCardEffects: (card: Card) => {
         if (card.isSwapCard) {
-          const { currentPlayer, activeSwapCard } = get()
+          const { currentPlayer, swapInventory } = get()
           if (!currentPlayer) return
 
-          // Mark that the current player has an active swap card (not yet used)
-          const newActiveSwapCard = { ...activeSwapCard }
-          newActiveSwapCard[currentPlayer] = true
+          // Add swap card to the current player's inventory
+          const newInventory = { ...swapInventory }
+          newInventory[currentPlayer] += 1
 
           set({
-            activeSwapCard: newActiveSwapCard,
+            swapInventory: newInventory,
           })
         }
       },
 
       useSwapCard: () => {
-        const { currentPlayer, swapCount, activeSwapCard } = get()
-        if (!currentPlayer || !activeSwapCard[currentPlayer]) return
+        const { currentPlayer, swapCount, swapInventory } = get()
+        if (!currentPlayer || swapInventory[currentPlayer] < 1) return
 
-        // Consume the swap card: increment count and clear active status
+        // Consume one swap card from inventory
+        const newInventory = { ...swapInventory }
+        newInventory[currentPlayer] -= 1
+
+        // Increment lifetime swap count (used for black deck access tracking)
         const newSwapCount = { ...swapCount }
         newSwapCount[currentPlayer] += 1
-
-        const newActiveSwapCard = { ...activeSwapCard }
-        newActiveSwapCard[currentPlayer] = false
 
         // Reshuffle all decks
         const { reshuffleAllDecks } = get()
         reshuffleAllDecks()
 
-        // Keep the current player's turn so they can use the black deck if they qualify
+        // Switch turn to the other player
         set({
           swapCount: newSwapCount,
-          activeSwapCard: newActiveSwapCard,
+          swapInventory: newInventory,
+          currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
           isModalOpen: false,
         })
-      },
-
-      endTurn: () => {
-        const { currentPlayer } = get()
-        if (currentPlayer) {
-          // Clear active swap card when turn ends
-          const { activeSwapCard } = get()
-          const newActiveSwapCard = { ...activeSwapCard }
-          newActiveSwapCard[currentPlayer] = false
-          
-          set({ 
-            currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
-            activeSwapCard: newActiveSwapCard,
-          })
-        }
       },
 
       resetGame: () => {
         set({
           currentPlayer: null,
           swapCount: { red: 0, blue: 0 },
-          activeSwapCard: { red: false, blue: false },
+          swapInventory: { red: 0, blue: 0 },
           usedCardIds: new Set<string>(),
           startingPlayer: null,
           selectedCard: null,
@@ -779,7 +765,7 @@ export const useGameStore = create<GameState & GameActions>()(
       partialize: (state) => ({
         currentPlayer: state.currentPlayer,
         swapCount: state.swapCount,
-        activeSwapCard: state.activeSwapCard,
+        swapInventory: state.swapInventory,
         usedCardIds: Array.from(state.usedCardIds),
         startingPlayer: state.startingPlayer,
         cardOverrides: state.cardOverrides,
@@ -822,13 +808,13 @@ export const useGameStore = create<GameState & GameActions>()(
               }
             }
             
-            // Validate activeSwapCard
-            if (!state.activeSwapCard || typeof state.activeSwapCard !== 'object') {
-              state.activeSwapCard = { red: false, blue: false }
+            // Validate swapInventory
+            if (!state.swapInventory || typeof state.swapInventory !== 'object') {
+              state.swapInventory = { red: 0, blue: 0 }
             } else {
-              state.activeSwapCard = {
-                red: typeof state.activeSwapCard.red === 'boolean' ? state.activeSwapCard.red : false,
-                blue: typeof state.activeSwapCard.blue === 'boolean' ? state.activeSwapCard.blue : false,
+              state.swapInventory = {
+                red: typeof state.swapInventory.red === 'number' ? state.swapInventory.red : 0,
+                blue: typeof state.swapInventory.blue === 'number' ? state.swapInventory.blue : 0,
               }
             }
             

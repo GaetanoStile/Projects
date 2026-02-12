@@ -8,7 +8,7 @@ import Candle from '@/components/Candle'
 
 export default function Game() {
   const navigate = useNavigate()
-  const { currentPlayer, selectedCard, isModalOpen, setIsModalOpen, resetGame, useSwapCard, activeSwapCard, endTurn } = useGameStore()
+  const { currentPlayer, selectedCard, isModalOpen, setIsModalOpen, resetGame, useSwapCard, swapInventory } = useGameStore()
 
   useEffect(() => {
     if (!currentPlayer) {
@@ -22,10 +22,6 @@ export default function Game() {
 
   const handleUseSwapCard = () => {
     useSwapCard()
-  }
-
-  const handleEndTurn = () => {
-    endTurn()
   }
 
   const handleEndGame = () => {
@@ -80,7 +76,7 @@ export default function Game() {
         {/* Action Buttons */}
         <div className="text-center space-y-4">
           <div className="flex gap-4 justify-center flex-wrap">
-            {currentPlayer && activeSwapCard[currentPlayer] && (
+            {currentPlayer && swapInventory[currentPlayer] >= 1 && (
               <button
                 onClick={handleUseSwapCard}
                 className="px-6 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-body rounded-lg hover:from-gold/90 hover:to-gold/70 transition-all font-semibold"
@@ -89,19 +85,9 @@ export default function Game() {
                   minHeight: '44px',
                 }}
               >
-                Use Swap Card
+                Use Swap Card ({swapInventory[currentPlayer]})
               </button>
             )}
-            <button
-              onClick={handleEndTurn}
-              className="px-6 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-body rounded-lg hover:from-gold/90 hover:to-gold/70 transition-all font-semibold"
-              style={{
-                minWidth: '160px',
-                minHeight: '44px',
-              }}
-            >
-              End Turn
-            </button>
             <button
               onClick={handleEndGame}
               className="px-6 py-3 bg-velvet/80 text-gold font-body rounded-lg hover:bg-velvet transition-colors"
