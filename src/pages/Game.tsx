@@ -4,7 +4,7 @@ import { useGameStore } from '@/state/store'
 import DeckGrid from '@/components/DeckGrid'
 import CardModal from '@/components/CardModal'
 import Hud from '@/components/Hud'
-import Candle from '@/components/Candle'
+import gameplayBackground from '@/assets/gameplay-background.png'
 
 export default function Game() {
   const navigate = useNavigate()
@@ -36,21 +36,15 @@ export default function Game() {
   }
 
   return (
-    <div className="candlelit-bg min-h-screen relative overflow-hidden">
-      {/* Background Candles */}
-      <div className="absolute top-10 left-5 md:left-10 opacity-30">
-        <Candle size={40} />
-      </div>
-      <div className="absolute top-20 right-5 md:right-10 opacity-30">
-        <Candle size={35} />
-      </div>
-      <div className="absolute bottom-20 left-1/4 opacity-30">
-        <Candle size={38} />
-      </div>
-      <div className="absolute bottom-10 right-1/4 opacity-30">
-        <Candle size={42} />
-      </div>
-
+    <div
+      className="min-h-screen relative overflow-hidden"
+      style={{
+        backgroundImage: `url(${gameplayBackground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-8 md:py-12">
         {/* Header */}
@@ -68,8 +62,8 @@ export default function Game() {
           <Hud />
         </div>
 
-        {/* Velvet Table Surface */}
-        <div className="velvet-table rounded-2xl p-8 md:p-12 mb-8">
+        {/* Card Table Surface */}
+        <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-8 md:p-12 mb-8">
           <DeckGrid />
         </div>
 
