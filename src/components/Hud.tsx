@@ -1,11 +1,14 @@
 import { useGameStore } from '@/state/store'
 
 export default function Hud() {
-  const { currentPlayer, swapCount, blackUnlocked, settings } = useGameStore()
+  const { currentPlayer, swapCount, settings } = useGameStore()
 
   if (!currentPlayer) {
     return null
   }
+
+  // Per-player black deck access
+  const blackAccessible = swapCount[currentPlayer] >= 2
 
   return (
     <div className="parchment-bg rounded-lg p-4 md:p-6 glow-warm">
@@ -42,17 +45,17 @@ export default function Hud() {
           </div>
         </div>
 
-        {/* Black Deck Status */}
+        {/* Black Deck Status (per-player) */}
         <div className="flex items-center gap-2">
-          {blackUnlocked ? (
+          {blackAccessible ? (
             <>
               <span className="text-gold text-2xl">🔓</span>
-              <span className="text-sm font-body text-gold font-semibold">Black Deck Unlocked</span>
+              <span className="text-sm font-body text-gold font-semibold">Black Deck Available</span>
             </>
           ) : (
             <>
               <span className="text-gold/50 text-2xl">🔒</span>
-              <span className="text-sm font-body text-gold font-semibold">Locked (Need 2 swaps)</span>
+              <span className="text-sm font-body text-gold font-semibold">Need 2 swaps to unlock Black Deck</span>
             </>
           )}
         </div>

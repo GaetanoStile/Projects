@@ -3,7 +3,7 @@ import { useGameStore } from '@/state/store'
 import CardComponent from './Card'
 
 export default function DeckGrid() {
-  const { currentPlayer, blackUnlocked, usedCardIds, drawFrom, applyCardEffects, mergeDecksForPlayer } = useGameStore()
+  const { currentPlayer, swapCount, usedCardIds, drawFrom, applyCardEffects, mergeDecksForPlayer } = useGameStore()
   
   // Subscribe to all state that mergeDecksForPlayer depends on so memo recomputes
   const cardOverrides = useGameStore(s => s.cardOverrides)
@@ -11,6 +11,9 @@ export default function DeckGrid() {
   const cloudCards = useGameStore(s => s.cloudCards)
   const sessionDisabledCardIds = useGameStore(s => s.sessionDisabledCardIds)
   const settings = useGameStore(s => s.settings)
+
+  // Per-player black deck access: current player needs 2+ swap cards
+  const blackAccessible = currentPlayer ? swapCount[currentPlayer] >= 2 : false
 
   const availableCards = useMemo(() => {
     if (!currentPlayer) return []
@@ -36,8 +39,8 @@ export default function DeckGrid() {
   const handleDeckClick = (deck: 'A' | 'B' | 'C' | 'D' | 'black') => {
     if (!currentPlayer) return
     
-    // Guard: Don't allow drawing from black deck if locked
-    if (deck === 'black' && !blackUnlocked) {
+    // Guard: Don't allow drawing from black deck if player hasn't earned access
+    if (deck === 'black' && !blackAccessible) {
       return
     }
 
@@ -55,7 +58,7 @@ export default function DeckGrid() {
   
   // Check if all main decks are exhausted
   const allDecksExhausted = decks.every(deck => getRemainingCount(deck, currentPlayer) === 0)
-  const blackDeckRemaining = blackUnlocked ? getRemainingCount('black', currentPlayer) : 0
+  const blackDeckRemaining = blackAccessible ? getRemainingCount('black', currentPlayer) : 0
   const allDecksEmpty = allDecksExhausted && blackDeckRemaining === 0
 
   return (
@@ -78,8 +81,8 @@ export default function DeckGrid() {
           )
         })}
 
-        {/* Black Deck - shown in center when unlocked */}
-        {blackUnlocked && (
+        {/* Black Deck - shown when current player has 2+ swap cards */}
+        {blackAccessible && (
           <div className="col-span-2 md:col-span-4 flex justify-center">
             <div className="relative group">
               <CardComponent

@@ -54,7 +54,6 @@ interface GameState {
   currentPlayer: 'red' | 'blue' | null
   swapCount: { red: number; blue: number }
   activeSwapCard: { red: boolean; blue: boolean }
-  blackUnlocked: boolean
   usedCardIds: Set<string>
   startingPlayer: 'red' | 'blue' | null
   selectedCard: Card | null
@@ -222,7 +221,6 @@ const initialState: GameState = {
   currentPlayer: null,
   swapCount: { red: 0, blue: 0 },
   activeSwapCard: { red: false, blue: false },
-  blackUnlocked: false,
   usedCardIds: new Set<string>(),
   startingPlayer: null,
   selectedCard: null,
@@ -268,7 +266,6 @@ export const useGameStore = create<GameState & GameActions>()(
           startingPlayer: player,
           swapCount: { red: 0, blue: 0 },
           activeSwapCard: { red: false, blue: false },
-          blackUnlocked: false,
           usedCardIds: new Set<string>(),
           selectedCard: null,
           isModalOpen: false,
@@ -344,7 +341,7 @@ export const useGameStore = create<GameState & GameActions>()(
       },
 
       useSwapCard: () => {
-        const { currentPlayer, swapCount, activeSwapCard, blackUnlocked } = get()
+        const { currentPlayer, swapCount, activeSwapCard } = get()
         if (!currentPlayer || !activeSwapCard[currentPlayer]) return
 
         // Consume the swap card: increment count and clear active status
@@ -353,9 +350,6 @@ export const useGameStore = create<GameState & GameActions>()(
 
         const newActiveSwapCard = { ...activeSwapCard }
         newActiveSwapCard[currentPlayer] = false
-
-        // Unlock black deck if current player has 2+ swaps
-        const shouldUnlock = newSwapCount[currentPlayer] >= 2
 
         // Reshuffle all decks
         const { reshuffleAllDecks } = get()
@@ -366,7 +360,6 @@ export const useGameStore = create<GameState & GameActions>()(
           currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
           swapCount: newSwapCount,
           activeSwapCard: newActiveSwapCard,
-          blackUnlocked: shouldUnlock || blackUnlocked,
           isModalOpen: false,
         })
       },
@@ -391,7 +384,6 @@ export const useGameStore = create<GameState & GameActions>()(
           currentPlayer: null,
           swapCount: { red: 0, blue: 0 },
           activeSwapCard: { red: false, blue: false },
-          blackUnlocked: false,
           usedCardIds: new Set<string>(),
           startingPlayer: null,
           selectedCard: null,
@@ -789,7 +781,6 @@ export const useGameStore = create<GameState & GameActions>()(
         currentPlayer: state.currentPlayer,
         swapCount: state.swapCount,
         activeSwapCard: state.activeSwapCard,
-        blackUnlocked: state.blackUnlocked,
         usedCardIds: Array.from(state.usedCardIds),
         startingPlayer: state.startingPlayer,
         cardOverrides: state.cardOverrides,
@@ -840,11 +831,6 @@ export const useGameStore = create<GameState & GameActions>()(
                 red: typeof state.activeSwapCard.red === 'boolean' ? state.activeSwapCard.red : false,
                 blue: typeof state.activeSwapCard.blue === 'boolean' ? state.activeSwapCard.blue : false,
               }
-            }
-            
-            // Validate blackUnlocked
-            if (typeof state.blackUnlocked !== 'boolean') {
-              state.blackUnlocked = false
             }
             
             // Validate startingPlayer
