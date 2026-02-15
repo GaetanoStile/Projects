@@ -157,7 +157,7 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                   aria-labelledby="card-modal-title"
                   aria-describedby="card-modal-description"
                   className={`rounded-2xl max-w-md w-full relative pointer-events-auto ${
-                    isBlackDeck ? 'parchment-bg glow-warm p-8 md:p-12' : 'p-0'
+                    isBlackDeck ? 'parchment-bg glow-warm p-8 md:p-12' : ''
                   }`}
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -165,17 +165,15 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                   transition={{ duration: 0.3 }}
                   style={{
                     boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                    // Non-black decks: card front as background that stretches with content
+                    ...(!isBlackDeck ? {
+                      backgroundImage: `url(${cardFrontImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    } : {}),
                   }}
                 >
-                  {/* Card front image -- drives modal size for non-black decks */}
-                  {!isBlackDeck && (
-                    <img
-                      src={cardFrontImage}
-                      alt=""
-                      aria-hidden="true"
-                      className="w-full h-auto rounded-2xl block"
-                    />
-                  )}
 
                   {/* Ornate corners (black deck only) */}
                   {isBlackDeck && (
@@ -304,12 +302,13 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                     )}
                   </AnimatePresence>
 
-                  {/* Content -- overlaid on card front image for non-black, normal flow for black */}
-                  <div className={`text-center space-y-6 ${
-                    isBlackDeck
-                      ? 'relative z-[1]'
-                      : 'absolute inset-0 z-[1] flex flex-col items-center justify-center p-8 md:p-12'
-                  }`}>
+                  {/* Content -- normal flow for both; background-image stretches for non-black */}
+                  <div
+                    className={`text-center space-y-4 relative z-[1] flex flex-col items-center justify-center ${
+                      isBlackDeck ? '' : 'p-8 md:p-10'
+                    }`}
+                    style={!isBlackDeck ? { minHeight: '480px' } : undefined}
+                  >
                     {card.imageDataUrl && (
                       <div className="mb-4">
                         <img
@@ -332,7 +331,7 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                     
                     <h2
                       id="card-modal-title"
-                      className={`text-3xl md:text-4xl font-display ${
+                      className={`text-2xl md:text-3xl font-display ${
                         isBlackDeck ? 'gold-text' : 'text-stone-900'
                       }`}
                     >
@@ -341,7 +340,7 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                     
                     <p
                       id="card-modal-description"
-                      className={`text-lg md:text-xl font-body leading-relaxed ${
+                      className={`text-base md:text-lg font-body leading-relaxed ${
                         isBlackDeck ? 'text-gold' : 'text-stone-800'
                       }`}
                     >
