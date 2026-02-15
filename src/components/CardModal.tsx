@@ -156,7 +156,7 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                   aria-modal="true"
                   aria-labelledby="card-modal-title"
                   aria-describedby="card-modal-description"
-                  className={`rounded-2xl max-w-md w-full relative pointer-events-auto ${
+                  className={`rounded-2xl max-w-lg w-full relative pointer-events-auto ${
                     isBlackDeck ? 'parchment-bg glow-warm p-8 md:p-12' : ''
                   }`}
                   initial={{ opacity: 0, scale: 0.96 }}
@@ -305,9 +305,9 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                   {/* Content -- normal flow for both; background-image stretches for non-black */}
                   <div
                     className={`text-center space-y-4 relative z-[1] flex flex-col items-center justify-center ${
-                      isBlackDeck ? '' : 'p-8 md:p-10'
+                      isBlackDeck ? '' : 'px-6 py-8 md:px-8 md:py-10'
                     }`}
-                    style={!isBlackDeck ? { minHeight: '480px' } : undefined}
+                    style={!isBlackDeck ? { minHeight: '480px', overflowWrap: 'break-word', wordBreak: 'break-word' } : undefined}
                   >
                     {card.imageDataUrl && (
                       <div className="mb-4">
