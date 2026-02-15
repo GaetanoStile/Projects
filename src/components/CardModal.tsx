@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Card } from '@/state/store'
 import { useGameStore } from '@/state/store'
 import { useAuthStore } from '@/state/authStore'
+import cardFrontImage from '@/assets/card-front.png'
 
 interface CardModalProps {
   card: Card | null
@@ -145,163 +146,209 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
 
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-            <motion.div
-              ref={modalRef}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="card-modal-title"
-              aria-describedby="card-modal-description"
-              className="parchment-bg rounded-2xl p-8 md:p-12 max-w-md w-full relative pointer-events-auto glow-warm"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-              }}
-            >
-              {/* Ornate corners */}
-              <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-gold/60 rounded-tl-lg" />
-              <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-gold/60 rounded-tr-lg" />
-              <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-gold/60 rounded-bl-lg" />
-              <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-gold/60 rounded-br-lg" />
-
-              {/* Close button */}
-              <button
-                ref={closeButtonRef}
-                onClick={onClose}
-                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gold hover:text-crimson transition-colors rounded-full hover:bg-gold/10"
-                style={{ minWidth: '44px', minHeight: '44px' }}
-                aria-label="Close modal"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-
-              {/* Options button */}
-              <button
-                onClick={() => setShowOptions(!showOptions)}
-                className="absolute top-4 right-16 w-10 h-10 flex items-center justify-center text-gold/70 hover:text-gold transition-colors rounded-full hover:bg-gold/10"
-                style={{ minWidth: '44px', minHeight: '44px' }}
-                aria-label="Card options"
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="1" />
-                  <circle cx="12" cy="5" r="1" />
-                  <circle cx="12" cy="19" r="1" />
-                </svg>
-              </button>
-
-              {/* Feedback message */}
-              {feedbackMessage && (
+            {(() => {
+              // Use card front image for all decks except black
+              const isBlackDeck = card.deck === 'black'
+              return (
                 <motion.div
-                  className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-gold/90 text-velvet px-4 py-2 rounded-lg text-sm font-body z-10"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
+                  ref={modalRef}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="card-modal-title"
+                  aria-describedby="card-modal-description"
+                  className={`rounded-2xl max-w-md w-full relative pointer-events-auto ${
+                    isBlackDeck ? 'parchment-bg glow-warm p-8 md:p-12' : 'p-0'
+                  }`}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                  }}
                 >
-                  {feedbackMessage}
-                </motion.div>
-              )}
-
-              {/* Options Panel */}
-              <AnimatePresence>
-                {showOptions && (
-                  <motion.div
-                    ref={optionsPanelRef}
-                    className="absolute top-16 right-4 parchment-bg rounded-lg p-4 border-2 border-gold/30 shadow-lg z-20 min-w-[200px]"
-                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="space-y-2">
-                      <button
-                        onClick={handleRemoveFromSession}
-                        className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors"
-                      >
-                        Remove for this session
-                      </button>
-                      <button
-                        onClick={handleDisableGlobally}
-                        className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors"
-                      >
-                        Disable globally
-                      </button>
-                      <button
-                        onClick={handleToggleFavorite}
-                        className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors flex items-center gap-2"
-                      >
-                        {card.isFavorite ? (
-                          <>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                            </svg>
-                            Unfavorite
-                          </>
-                        ) : (
-                          <>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                            </svg>
-                            Favorite ⭐
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Content */}
-              <div className="text-center space-y-6">
-                {card.imageDataUrl && (
-                  <div className="mb-4">
+                  {/* Card front image background for non-black decks */}
+                  {!isBlackDeck && (
                     <img
-                      src={card.imageDataUrl}
-                      alt={card.title}
-                      className="w-full max-h-48 object-contain rounded-lg border border-gold/30 mx-auto"
+                      src={cardFrontImage}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover rounded-2xl"
                     />
+                  )}
+
+                  {/* Ornate corners (black deck only) */}
+                  {isBlackDeck && (
+                    <>
+                      <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-gold/60 rounded-tl-lg" />
+                      <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-gold/60 rounded-tr-lg" />
+                      <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-gold/60 rounded-bl-lg" />
+                      <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-gold/60 rounded-br-lg" />
+                    </>
+                  )}
+
+                  {/* Close button */}
+                  <button
+                    ref={closeButtonRef}
+                    onClick={onClose}
+                    className={`absolute top-4 right-4 w-10 h-10 flex items-center justify-center transition-colors rounded-full z-10 ${
+                      isBlackDeck
+                        ? 'text-gold hover:text-crimson hover:bg-gold/10'
+                        : 'text-stone-700 hover:text-black hover:bg-black/10'
+                    }`}
+                    style={{ minWidth: '44px', minHeight: '44px' }}
+                    aria-label="Close modal"
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+
+                  {/* Options button */}
+                  <button
+                    onClick={() => setShowOptions(!showOptions)}
+                    className={`absolute top-4 right-16 w-10 h-10 flex items-center justify-center transition-colors rounded-full z-10 ${
+                      isBlackDeck
+                        ? 'text-gold/70 hover:text-gold hover:bg-gold/10'
+                        : 'text-stone-600 hover:text-black hover:bg-black/10'
+                    }`}
+                    style={{ minWidth: '44px', minHeight: '44px' }}
+                    aria-label="Card options"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="1" />
+                      <circle cx="12" cy="5" r="1" />
+                      <circle cx="12" cy="19" r="1" />
+                    </svg>
+                  </button>
+
+                  {/* Feedback message */}
+                  {feedbackMessage && (
+                    <motion.div
+                      className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-gold/90 text-velvet px-4 py-2 rounded-lg text-sm font-body z-10"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                    >
+                      {feedbackMessage}
+                    </motion.div>
+                  )}
+
+                  {/* Options Panel */}
+                  <AnimatePresence>
+                    {showOptions && (
+                      <motion.div
+                        ref={optionsPanelRef}
+                        className="absolute top-16 right-4 parchment-bg rounded-lg p-4 border-2 border-gold/30 shadow-lg z-20 min-w-[200px]"
+                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="space-y-2">
+                          <button
+                            onClick={handleRemoveFromSession}
+                            className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors"
+                          >
+                            Remove for this session
+                          </button>
+                          <button
+                            onClick={handleDisableGlobally}
+                            className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors"
+                          >
+                            Disable globally
+                          </button>
+                          <button
+                            onClick={handleToggleFavorite}
+                            className="w-full text-left px-3 py-2 text-gold font-body hover:bg-gold/10 rounded transition-colors flex items-center gap-2"
+                          >
+                            {card.isFavorite ? (
+                              <>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                                Unfavorite
+                              </>
+                            ) : (
+                              <>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                                Favorite ⭐
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Content -- overlaid on card front image */}
+                  <div className={`relative z-[1] text-center space-y-6 ${
+                    isBlackDeck ? '' : 'p-8 md:p-12'
+                  }`}>
+                    {card.imageDataUrl && (
+                      <div className="mb-4">
+                        <img
+                          src={card.imageDataUrl}
+                          alt={card.title}
+                          className={`w-full max-h-48 object-contain rounded-lg mx-auto ${
+                            isBlackDeck ? 'border border-gold/30' : 'border border-stone-400/30'
+                          }`}
+                        />
+                      </div>
+                    )}
+                    
+                    {card.isSwapCard && (
+                      <div className={`text-sm font-body uppercase tracking-wider ${
+                        isBlackDeck ? 'text-gold' : 'text-stone-700'
+                      }`}>
+                        {isBlackDeck ? '✨ Swap Card ✨' : '⚔ Swap Card ⚔'}
+                      </div>
+                    )}
+                    
+                    <h2
+                      id="card-modal-title"
+                      className={`text-3xl md:text-4xl font-display ${
+                        isBlackDeck ? 'gold-text' : 'text-stone-900'
+                      }`}
+                    >
+                      {card.title}
+                    </h2>
+                    
+                    <p
+                      id="card-modal-description"
+                      className={`text-lg md:text-xl font-body leading-relaxed ${
+                        isBlackDeck ? 'text-gold' : 'text-stone-800'
+                      }`}
+                    >
+                      {card.description}
+                    </p>
                   </div>
-                )}
-                
-                {card.isSwapCard && (
-                  <div className="text-gold text-sm font-body uppercase tracking-wider">
-                    ✨ Swap Card ✨
-                  </div>
-                )}
-                
-                <h2 id="card-modal-title" className="text-3xl md:text-4xl font-display gold-text">
-                  {card.title}
-                </h2>
-                
-                <p id="card-modal-description" className="text-lg md:text-xl text-gold font-body leading-relaxed">
-                  {card.description}
-                </p>
-              </div>
-            </motion.div>
+                </motion.div>
+              )
+            })()}
           </div>
         </>
       )}
