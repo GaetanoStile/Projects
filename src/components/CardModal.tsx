@@ -167,13 +167,13 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                     boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
                   }}
                 >
-                  {/* Card front image background for non-black decks */}
+                  {/* Card front image -- drives modal size for non-black decks */}
                   {!isBlackDeck && (
                     <img
                       src={cardFrontImage}
                       alt=""
                       aria-hidden="true"
-                      className="absolute inset-0 w-full h-full object-cover rounded-2xl"
+                      className="w-full h-auto rounded-2xl block"
                     />
                   )}
 
@@ -304,9 +304,11 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                     )}
                   </AnimatePresence>
 
-                  {/* Content -- overlaid on card front image */}
-                  <div className={`relative z-[1] text-center space-y-6 ${
-                    isBlackDeck ? '' : 'p-8 md:p-12'
+                  {/* Content -- overlaid on card front image for non-black, normal flow for black */}
+                  <div className={`text-center space-y-6 ${
+                    isBlackDeck
+                      ? 'relative z-[1]'
+                      : 'absolute inset-0 z-[1] flex flex-col items-center justify-center p-8 md:p-12'
                   }`}>
                     {card.imageDataUrl && (
                       <div className="mb-4">
