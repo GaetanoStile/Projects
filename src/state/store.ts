@@ -40,6 +40,7 @@ export interface Settings {
   playerBlueName: string
   includeCustomRed: boolean
   includeCustomBlue: boolean
+  hasSeenHowToPlay: boolean
 }
 
 export interface Preset {
@@ -91,6 +92,7 @@ interface GameActions {
   savePreset: (preset: Omit<Preset, 'id'>) => void
   loadPreset: (presetId: string) => void
   deletePreset: (presetId: string) => void
+  setHasSeenHowToPlay: (value: boolean) => void
 }
 
 const defaultSettings: Settings = {
@@ -98,6 +100,7 @@ const defaultSettings: Settings = {
   playerBlueName: 'Jordan',
   includeCustomRed: true,
   includeCustomBlue: true,
+  hasSeenHowToPlay: false,
 }
 
 // Load settings from localStorage with migration
@@ -111,6 +114,7 @@ const loadSettings = (): Settings => {
         playerBlueName: parsed.playerBlueName || defaultSettings.playerBlueName,
         includeCustomRed: parsed.includeCustomRed !== undefined ? parsed.includeCustomRed : defaultSettings.includeCustomRed,
         includeCustomBlue: parsed.includeCustomBlue !== undefined ? parsed.includeCustomBlue : defaultSettings.includeCustomBlue,
+        hasSeenHowToPlay: parsed.hasSeenHowToPlay === true,
       }
     }
   } catch (err) {
@@ -757,6 +761,10 @@ export const useGameStore = create<GameState & GameActions>()(
         } catch (err) {
           console.warn('Failed to save presets:', err)
         }
+      },
+
+      setHasSeenHowToPlay: (value: boolean) => {
+        get().setSettings({ hasSeenHowToPlay: value })
       },
     }),
     {

@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '@/state/store'
 import DeckGrid from '@/components/DeckGrid'
 import CardModal from '@/components/CardModal'
+import HowToPlayModal from '@/components/HowToPlayModal'
 import Hud from '@/components/Hud'
 import gameplayBackground from '@/assets/gameplay-background.png'
 
@@ -31,6 +32,8 @@ export default function Game() {
     }
   }
 
+  const [showHowToPlay, setShowHowToPlay] = useState(false)
+
   if (!currentPlayer) {
     return null
   }
@@ -48,7 +51,15 @@ export default function Game() {
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-8 md:py-12">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 relative">
+          <button
+            onClick={() => setShowHowToPlay(true)}
+            className="absolute top-0 right-0 w-10 h-10 flex items-center justify-center text-gold/50 hover:text-gold hover:bg-gold/10 transition-colors rounded-full font-display text-lg"
+            title="How to Play"
+            style={{ minWidth: '44px', minHeight: '44px' }}
+          >
+            ?
+          </button>
           <h1 className="text-4xl md:text-6xl font-display gold-text mb-4">
             Couples Game
           </h1>
@@ -98,6 +109,9 @@ export default function Game() {
 
       {/* Card Modal */}
       <CardModal card={selectedCard} isOpen={isModalOpen} onClose={handleCloseModal} />
+
+      {/* How To Play Modal */}
+      <HowToPlayModal isOpen={showHowToPlay} onClose={() => setShowHowToPlay(false)} />
     </div>
   )
 }

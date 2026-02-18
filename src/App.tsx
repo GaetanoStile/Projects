@@ -6,6 +6,7 @@ import Game from './pages/Game'
 import Settings from './pages/Settings'
 import Create from './pages/Create'
 import Admin from './pages/Admin'
+import HowToPlay from './pages/HowToPlay'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Hero />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/how-to-play" element={<HowToPlay />} />
           <Route path="/create" element={<Create />} />
           <Route path="/dice" element={<Dice />} />
           <Route path="/game" element={<Game />} />

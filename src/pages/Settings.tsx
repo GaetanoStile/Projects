@@ -51,7 +51,8 @@ export default function Settings() {
 
   const onSubmit = (data: SettingsFormData) => {
     setSettings(data)
-    navigate('/dice')
+    const hasSeenHowToPlay = useGameStore.getState().settings.hasSeenHowToPlay
+    navigate(hasSeenHowToPlay ? '/dice' : '/how-to-play')
   }
 
   const handleSavePreset = () => {
@@ -304,6 +305,16 @@ export default function Settings() {
             >
               Go to Card Creation
             </motion.button>
+          </div>
+
+          <div className="text-center mt-4">
+            <button
+              type="button"
+              onClick={() => navigate('/how-to-play')}
+              className="text-gold/60 hover:text-gold text-sm font-body underline transition-colors"
+            >
+              View How To Play
+            </button>
           </div>
         </form>
       </motion.div>
