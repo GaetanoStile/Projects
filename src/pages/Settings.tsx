@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
@@ -29,6 +29,12 @@ export default function Settings() {
     cardOverrides
   } = useGameStore()
   
+  useEffect(() => {
+    if (localStorage.getItem('cg.disclaimerAccepted') !== 'true') {
+      navigate('/disclaimer', { replace: true })
+    }
+  }, [navigate])
+
   // Fetch cloud cards when in cloud mode
   useCloudCards()
 

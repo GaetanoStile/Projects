@@ -7,6 +7,7 @@ import Settings from './pages/Settings'
 import Create from './pages/Create'
 import Admin from './pages/Admin'
 import HowToPlay from './pages/HowToPlay'
+import Disclaimer from './pages/Disclaimer'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<Hero />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/how-to-play" element={<HowToPlay />} />
           <Route path="/create" element={<Create />} />

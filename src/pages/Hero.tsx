@@ -48,7 +48,10 @@ export default function Hero() {
 
         <div className="flex flex-col items-center gap-4">
           <motion.button
-            onClick={() => navigate('/settings')}
+            onClick={() => {
+              const accepted = localStorage.getItem('cg.disclaimerAccepted') === 'true'
+              navigate(accepted ? '/settings' : '/disclaimer')
+            }}
             className="px-8 py-4 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display text-xl rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
