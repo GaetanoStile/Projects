@@ -33,8 +33,8 @@ export default function Disclaimer() {
             Important Notice &amp; User Agreement
           </h1>
 
-          <div className="max-h-[55vh] overflow-y-auto pr-2 space-y-5 text-sm md:text-base font-body text-stone-800 leading-relaxed">
-            <p className="font-semibold text-stone-900">
+          <div className="max-h-[55vh] overflow-y-auto pr-2 space-y-5 text-sm md:text-base font-body text-gold/80 leading-relaxed">
+            <p className="font-semibold text-gold">
               This game is intended strictly for adults aged 18 years or older.
             </p>
 
@@ -48,7 +48,7 @@ export default function Disclaimer() {
             </div>
 
             <div>
-              <h2 className="font-display text-lg text-stone-900 mb-2">Health &amp; Safety Notice</h2>
+              <h2 className="font-display text-lg text-gold mb-2">Health &amp; Safety Notice</h2>
               <p>
                 Players should consult with a licensed medical professional before engaging in any
                 sexual or physical activity, especially if they have any medical conditions, injuries,
@@ -60,7 +60,7 @@ export default function Disclaimer() {
             </div>
 
             <div>
-              <h2 className="font-display text-lg text-stone-900 mb-2">Assumption of Risk</h2>
+              <h2 className="font-display text-lg text-gold mb-2">Assumption of Risk</h2>
               <p>
                 By proceeding, you acknowledge that you assume full responsibility for your actions
                 and any outcomes resulting from participating in this game.
@@ -72,19 +72,19 @@ export default function Disclaimer() {
             </div>
 
             <div>
-              <h2 className="font-display text-lg text-stone-900 mb-2">Consent &amp; Communication</h2>
+              <h2 className="font-display text-lg text-gold mb-2">Consent &amp; Communication</h2>
               <p>
                 All activities performed while playing this game must be fully consensual between
                 participating adults. Communication, safety, and mutual respect are required at all times.
               </p>
             </div>
 
-            <p className="font-semibold text-stone-900">
+            <p className="font-semibold text-gold">
               If you do not agree to these terms, you must exit the game.
             </p>
           </div>
 
-          <div className="mt-6 pt-5 border-t border-stone-400/30 space-y-4">
+          <div className="mt-6 pt-5 border-t border-gold/20 space-y-4">
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -93,7 +93,7 @@ export default function Disclaimer() {
                 className="w-5 h-5 mt-0.5 accent-amber-700 flex-shrink-0"
                 id="age-confirm"
               />
-              <span className="text-sm md:text-base font-body text-stone-800">
+              <span className="text-sm md:text-base font-body text-gold/80">
                 I confirm that I am 18 years of age or older.
               </span>
             </label>
@@ -106,7 +106,7 @@ export default function Disclaimer() {
                 className="w-5 h-5 mt-0.5 accent-amber-700 flex-shrink-0"
                 id="terms-accept"
               />
-              <span className="text-sm md:text-base font-body text-stone-800">
+              <span className="text-sm md:text-base font-body text-gold/80">
                 I have read and agree to the terms above.
               </span>
             </label>
