@@ -61,18 +61,6 @@ export default function Hero() {
             Start Game
           </motion.button>
 
-          <motion.button
-            onClick={() => navigate('/create')}
-            className="px-6 py-3 bg-velvet/80 text-gold font-body text-lg rounded-lg hover:bg-velvet transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            style={{
-              minWidth: '200px',
-            }}
-          >
-            Card Manager
-          </motion.button>
-
           {cloudEnabled && (
             <>
               {user ? (
