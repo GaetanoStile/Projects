@@ -2,6 +2,7 @@ import { useGameStore } from '@/state/store'
 
 let cardFlipAudio: HTMLAudioElement | null = null
 let blackDeckAudio: HTMLAudioElement | null = null
+let swapCardAcquiredAudio: HTMLAudioElement | null = null
 
 export function playCardFlipSound() {
   const { settings } = useGameStore.getState()
@@ -25,4 +26,16 @@ export function playBlackDeckAppearSound() {
   }
   blackDeckAudio.currentTime = 0
   blackDeckAudio.play().catch(() => {})
+}
+
+export function playSwapCardAcquiredSound() {
+  const { settings } = useGameStore.getState()
+  if (!settings.soundEnabled) return
+
+  if (!swapCardAcquiredAudio) {
+    swapCardAcquiredAudio = new Audio("/sounds/swapcardaquired.mp3")
+    swapCardAcquiredAudio.volume = 0.5
+  }
+  swapCardAcquiredAudio.currentTime = 0
+  swapCardAcquiredAudio.play().catch(() => {})
 }
