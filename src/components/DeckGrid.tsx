@@ -3,7 +3,7 @@ import { useGameStore } from '@/state/store'
 import CardComponent from './Card'
 
 export default function DeckGrid() {
-  const { currentPlayer, swapCount, usedCardIds, drawFrom, applyCardEffects, mergeDecksForPlayer } = useGameStore()
+  const { currentPlayer, swapInventory, usedCardIds, drawFrom, applyCardEffects, mergeDecksForPlayer } = useGameStore()
   
   // Subscribe to all state that mergeDecksForPlayer depends on so memo recomputes
   const cardOverrides = useGameStore(s => s.cardOverrides)
@@ -12,8 +12,8 @@ export default function DeckGrid() {
   const sessionDisabledCardIds = useGameStore(s => s.sessionDisabledCardIds)
   const settings = useGameStore(s => s.settings)
 
-  // Per-player black deck access: current player needs 2+ swap cards
-  const blackAccessible = currentPlayer ? swapCount[currentPlayer] >= 2 : false
+  // Per-player black deck access: current player needs 2+ swap cards in possession
+  const blackAccessible = currentPlayer ? swapInventory[currentPlayer] >= 2 : false
 
   const availableCards = useMemo(() => {
     if (!currentPlayer) return []

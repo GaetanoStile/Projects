@@ -1,14 +1,14 @@
 import { useGameStore } from '@/state/store'
 
 export default function Hud() {
-  const { currentPlayer, swapCount, swapInventory, settings } = useGameStore()
+  const { currentPlayer, swapInventory, settings } = useGameStore()
 
   if (!currentPlayer) {
     return null
   }
 
-  // Per-player black deck access
-  const blackAccessible = swapCount[currentPlayer] >= 2
+  // Per-player black deck access: based on cards currently held
+  const blackAccessible = swapInventory[currentPlayer] >= 2
 
   return (
     <div className="parchment-bg rounded-lg p-4 md:p-6 glow-warm">

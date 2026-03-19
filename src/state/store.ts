@@ -351,21 +351,20 @@ export const useGameStore = create<GameState & GameActions>()(
         const newInventory = { ...swapInventory }
         newInventory[currentPlayer] -= 1
 
-        // Increment lifetime swap count (used for black deck access tracking)
+        // Increment lifetime swap count
         const newSwapCount = { ...swapCount }
         newSwapCount[currentPlayer] += 1
 
-        // Reshuffle all decks
-        const { reshuffleAllDecks } = get()
-        reshuffleAllDecks()
-
-        // Switch turn to the other player
+        // Commit inventory decrement and turn switch first
         set({
           swapCount: newSwapCount,
           swapInventory: newInventory,
           currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
           isModalOpen: false,
         })
+
+        // Reshuffle after state is committed so persist serializes the correct inventory
+        get().reshuffleAllDecks()
       },
 
       resetGame: () => {
