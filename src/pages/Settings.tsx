@@ -189,6 +189,19 @@ export default function Settings() {
                       Include custom cards for Blue
                     </span>
                   </label>
+
+                  <label htmlFor="soundEnabled" className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      id="soundEnabled"
+                      type="checkbox"
+                      checked={settings.soundEnabled}
+                      onChange={(e) => setSettings({ soundEnabled: e.target.checked })}
+                      className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
+                    />
+                    <span className="text-gold font-body font-semibold">
+                      Sound Effects
+                    </span>
+                  </label>
                 </div>
               </div>
 

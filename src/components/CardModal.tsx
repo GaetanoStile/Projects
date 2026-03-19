@@ -4,6 +4,7 @@ import { Card } from '@/state/store'
 import { useGameStore } from '@/state/store'
 import { useAuthStore } from '@/state/authStore'
 import cardFrontImage from '@/assets/card-front.png'
+import { playCardFlipSound } from '@/lib/sound'
 
 interface CardModalProps {
   card: Card | null
@@ -163,6 +164,7 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.3 }}
+                  onAnimationStart={() => playCardFlipSound()}
                   style={{
                     boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
                   }}

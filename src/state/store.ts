@@ -41,6 +41,7 @@ export interface Settings {
   includeCustomRed: boolean
   includeCustomBlue: boolean
   hasSeenHowToPlay: boolean
+  soundEnabled: boolean
 }
 
 export interface Preset {
@@ -101,6 +102,7 @@ const defaultSettings: Settings = {
   includeCustomRed: true,
   includeCustomBlue: true,
   hasSeenHowToPlay: false,
+  soundEnabled: true,
 }
 
 // Load settings from localStorage with migration
@@ -115,6 +117,7 @@ const loadSettings = (): Settings => {
         includeCustomRed: parsed.includeCustomRed !== undefined ? parsed.includeCustomRed : defaultSettings.includeCustomRed,
         includeCustomBlue: parsed.includeCustomBlue !== undefined ? parsed.includeCustomBlue : defaultSettings.includeCustomBlue,
         hasSeenHowToPlay: parsed.hasSeenHowToPlay === true,
+        soundEnabled: parsed.soundEnabled !== false,
       }
     }
   } catch (err) {
@@ -351,20 +354,21 @@ export const useGameStore = create<GameState & GameActions>()(
         const newInventory = { ...swapInventory }
         newInventory[currentPlayer] -= 1
 
-        // Increment lifetime swap count
+        // Increment lifetime swap count (used for black deck access tracking)
         const newSwapCount = { ...swapCount }
         newSwapCount[currentPlayer] += 1
 
-        // Commit inventory decrement and turn switch first
+        // Reshuffle all decks
+        const { reshuffleAllDecks } = get()
+        reshuffleAllDecks()
+
+        // Switch turn to the other player
         set({
           swapCount: newSwapCount,
           swapInventory: newInventory,
           currentPlayer: currentPlayer === 'red' ? 'blue' : 'red',
           isModalOpen: false,
         })
-
-        // Reshuffle after state is committed so persist serializes the correct inventory
-        get().reshuffleAllDecks()
       },
 
       resetGame: () => {
