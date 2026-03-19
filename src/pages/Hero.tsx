@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import Candle from '@/components/Candle'
 import AuthModal from '@/components/AuthModal'
 import { useAuthStore } from '@/state/authStore'
 import { isCloudEnabled } from '@/lib/config'
+import heroBackground from '@/assets/hero-background.png'
 
 export default function Hero() {
   const navigate = useNavigate()
@@ -17,20 +17,50 @@ export default function Hero() {
   }, [initializeAuth])
 
   return (
-    <div className="candlelit-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Candles */}
-      <div className="absolute top-20 left-10 md:left-20">
-        <Candle size={50} />
-      </div>
-      <div className="absolute top-32 right-10 md:right-20">
-        <Candle size={45} />
-      </div>
-      <div className="absolute bottom-40 left-1/4">
-        <Candle size={40} />
-      </div>
-      <div className="absolute bottom-32 right-1/4">
-        <Candle size={48} />
-      </div>
+    <div
+      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
+      style={{
+        backgroundImage: `url(${heroBackground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Candle flicker overlay - left candle */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: '8%',
+          left: '12%',
+          width: 120,
+          height: 120,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,165,0,0.3) 0%, transparent 70%)',
+        }}
+        animate={{
+          opacity: [0.4, 0.7, 0.5, 0.8, 0.4],
+          scale: [1, 1.05, 0.97, 1.03, 1],
+        }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      {/* Candle flicker overlay - right candle */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: '8%',
+          right: '12%',
+          width: 120,
+          height: 120,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,165,0,0.3) 0%, transparent 70%)',
+        }}
+        animate={{
+          opacity: [0.5, 0.8, 0.4, 0.7, 0.5],
+          scale: [1, 1.03, 0.98, 1.05, 1],
+        }}
+        transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+      />
 
       {/* Content */}
       <motion.div
@@ -95,20 +125,6 @@ export default function Hero() {
           onGuestMode={() => setShowAuthModal(false)}
         />
       </motion.div>
-
-      {/* Rose petals effect (optional decorative elements) */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-4 h-4 opacity-30">
-          <div className="text-gold/30 text-2xl animate-float">🌹</div>
-        </div>
-        <div className="absolute top-1/3 right-1/4 w-4 h-4 opacity-30">
-          <div className="text-gold/30 text-2xl animate-float" style={{ animationDelay: '1s' }}>🌹</div>
-        </div>
-        <div className="absolute bottom-1/4 left-1/3 w-4 h-4 opacity-30">
-          <div className="text-gold/30 text-2xl animate-float" style={{ animationDelay: '2s' }}>🌹</div>
-        </div>
-      </div>
     </div>
   )
 }
-
