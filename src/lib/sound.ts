@@ -1,6 +1,7 @@
 import { useGameStore } from '@/state/store'
 
 let cardFlipAudio: HTMLAudioElement | null = null
+let blackDeckAudio: HTMLAudioElement | null = null
 
 export function playCardFlipSound() {
   const { settings } = useGameStore.getState()
@@ -12,4 +13,16 @@ export function playCardFlipSound() {
   }
   cardFlipAudio.currentTime = 0
   cardFlipAudio.play().catch(() => {})
+}
+
+export function playBlackDeckAppearSound() {
+  const { settings } = useGameStore.getState()
+  if (!settings.soundEnabled) return
+
+  if (!blackDeckAudio) {
+    blackDeckAudio = new Audio("/sounds/blackdeckappear.wav")
+    blackDeckAudio.volume = 0.5
+  }
+  blackDeckAudio.currentTime = 0
+  blackDeckAudio.play().catch(() => {})
 }

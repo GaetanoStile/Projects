@@ -1,6 +1,7 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useGameStore } from '@/state/store'
 import CardComponent from './Card'
+import { playBlackDeckAppearSound } from '@/lib/sound'
 
 export default function DeckGrid() {
   const { currentPlayer, swapInventory, usedCardIds, drawFrom, applyCardEffects, mergeDecksForPlayer } = useGameStore()
@@ -14,6 +15,14 @@ export default function DeckGrid() {
 
   // Per-player black deck access: current player needs 2+ swap cards in possession
   const blackAccessible = currentPlayer ? swapInventory[currentPlayer] >= 2 : false
+
+  const prevBlackAccessible = useRef(false)
+  useEffect(() => {
+    if (blackAccessible && !prevBlackAccessible.current) {
+      playBlackDeckAppearSound()
+    }
+    prevBlackAccessible.current = blackAccessible
+  }, [blackAccessible])
 
   const availableCards = useMemo(() => {
     if (!currentPlayer) return []
