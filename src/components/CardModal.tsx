@@ -157,6 +157,7 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                   aria-modal="true"
                   aria-labelledby="card-modal-title"
                   aria-describedby="card-modal-description"
+                  data-no-button-click-sound
                   className={`rounded-2xl w-full relative pointer-events-auto ${
                     isBlackDeck ? 'parchment-bg glow-warm p-8 md:p-12 max-w-md' : 'max-w-sm md:max-w-md'
                   }`}

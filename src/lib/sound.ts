@@ -55,7 +55,10 @@ export function playButtonClickSound() {
 }
 
 export function playButtonClickSoundFromEvent(e: PointerEvent<HTMLElement>) {
-  const btn = (e.target as HTMLElement).closest('button')
+  const target = e.target as HTMLElement
+  // Card modal: only card-flip / swap sounds — not UI button clicks
+  if (target.closest('[data-no-button-click-sound]')) return
+  const btn = target.closest('button')
   if (!btn) return
   if ((btn as HTMLButtonElement).disabled) return
   playButtonClickSound()
