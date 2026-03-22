@@ -11,6 +11,7 @@ import { getSupabaseClient } from '@/lib/supabase/client'
 import { createCard, deleteCard as deleteCloudCard } from '@/lib/supabase/cards'
 import cardsData from '@/data/cards.json'
 import Candle from '@/components/Candle'
+import { playButtonClickSoundFromEvent } from '@/lib/sound'
 
 const CustomCardSchema = z.object({
   title: z.string().trim().min(2).max(60),
@@ -356,7 +357,10 @@ export default function Create() {
   }
 
   return (
-    <div className="candlelit-bg min-h-screen relative overflow-hidden">
+    <div
+      className="candlelit-bg min-h-screen relative overflow-hidden"
+      onPointerDownCapture={playButtonClickSoundFromEvent}
+    >
       {/* Candles */}
       <div className="absolute top-10 left-5 md:left-10 opacity-30">
         <Candle size={40} />

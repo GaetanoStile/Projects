@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import type { DeckLetter, PlayerColor } from '@/state/store'
+import { playButtonClickSound } from '@/lib/sound'
 
 // Import red deck card back images
 import redDeckA from '@/assets/card-backs/red-deck-a.png'
@@ -56,6 +57,7 @@ export default function Card({
 
   const handleClick = () => {
     if (disabled || !onClick) return
+    playButtonClickSound()
     setIsFlipped(true)
     setTimeout(() => {
       onClick()

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useGameStore } from '@/state/store'
+import { playButtonClickSoundFromEvent } from '@/lib/sound'
 import { useCloudCards } from '@/hooks/useCloudCards'
 import Candle from '@/components/Candle'
 
@@ -98,7 +99,10 @@ export default function Settings() {
   }
 
   return (
-    <div className="candlelit-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden py-12">
+    <div
+      className="candlelit-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden py-12"
+      onPointerDownCapture={playButtonClickSoundFromEvent}
+    >
       {/* Candles */}
       <div className="absolute top-20 left-10 md:left-20">
         <Candle size={50} />
