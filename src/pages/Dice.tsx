@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useGameStore } from '@/state/store'
+import { playDiceRollSound } from '@/lib/sound'
 import Candle from '@/components/Candle'
 
 export default function Dice() {
@@ -14,6 +15,7 @@ export default function Dice() {
   const rollDice = () => {
     if (isRolling) return
 
+    playDiceRollSound()
     setIsRolling(true)
     setResult(null)
     setCanStart(false)

@@ -5,6 +5,7 @@ let cardFlipAudio: HTMLAudioElement | null = null
 let blackDeckAudio: HTMLAudioElement | null = null
 let swapCardAcquiredAudio: HTMLAudioElement | null = null
 let buttonClickAudio: HTMLAudioElement | null = null
+let diceRollAudio: HTMLAudioElement | null = null
 
 export function playCardFlipSound() {
   const { settings } = useGameStore.getState()
@@ -52,6 +53,18 @@ export function playButtonClickSound() {
   }
   buttonClickAudio.currentTime = 0
   buttonClickAudio.play().catch(() => {})
+}
+
+export function playDiceRollSound() {
+  const { settings } = useGameStore.getState()
+  if (!settings.soundEnabled) return
+
+  if (!diceRollAudio) {
+    diceRollAudio = new Audio('/sounds/dice_roll.wav')
+    diceRollAudio.volume = 0.45
+  }
+  diceRollAudio.currentTime = 0
+  diceRollAudio.play().catch(() => {})
 }
 
 export function playButtonClickSoundFromEvent(e: PointerEvent<HTMLElement>) {
