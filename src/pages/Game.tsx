@@ -7,10 +7,23 @@ import HowToPlayModal from '@/components/HowToPlayModal'
 import Hud from '@/components/Hud'
 import gameplayBackground from '@/assets/gameplay-background.png'
 import { playButtonClickSoundFromEvent } from '@/lib/sound'
+import { useGameplayMusic } from '@/hooks/useGameplayMusic'
 
 export default function Game() {
   const navigate = useNavigate()
-  const { currentPlayer, selectedCard, isModalOpen, setIsModalOpen, resetGame, useSwapCard, swapInventory } = useGameStore()
+  const {
+    currentPlayer,
+    selectedCard,
+    isModalOpen,
+    setIsModalOpen,
+    resetGame,
+    useSwapCard,
+    swapInventory,
+    settings,
+    setSettings,
+  } = useGameStore()
+
+  useGameplayMusic(settings.musicEnabled)
 
   useEffect(() => {
     if (!currentPlayer) {
@@ -54,6 +67,18 @@ export default function Game() {
       <div className="relative z-10 container mx-auto px-4 py-8 md:py-12">
         {/* Header */}
         <div className="text-center mb-8 relative">
+          <label
+            className="absolute top-0 left-0 flex items-center gap-2 cursor-pointer text-gold/90 font-body text-sm select-none"
+            style={{ minHeight: '44px' }}
+          >
+            <input
+              type="checkbox"
+              checked={settings.musicEnabled}
+              onChange={(e) => setSettings({ musicEnabled: e.target.checked })}
+              className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
+            />
+            <span className="hidden sm:inline">Music</span>
+          </label>
           <button
             onClick={() => setShowHowToPlay(true)}
             className="absolute top-0 right-0 w-10 h-10 flex items-center justify-center text-gold/50 hover:text-gold hover:bg-gold/10 transition-colors rounded-full font-display text-lg"

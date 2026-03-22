@@ -206,6 +206,19 @@ export default function Settings() {
                       Sound Effects
                     </span>
                   </label>
+
+                  <label htmlFor="musicEnabled" className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      id="musicEnabled"
+                      type="checkbox"
+                      checked={settings.musicEnabled}
+                      onChange={(e) => setSettings({ musicEnabled: e.target.checked })}
+                      className="w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
+                    />
+                    <span className="text-gold font-body font-semibold">
+                      Gameplay music (ambient)
+                    </span>
+                  </label>
                 </div>
               </div>
 

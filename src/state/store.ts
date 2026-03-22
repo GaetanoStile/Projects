@@ -42,6 +42,7 @@ export interface Settings {
   includeCustomBlue: boolean
   hasSeenHowToPlay: boolean
   soundEnabled: boolean
+  musicEnabled: boolean
 }
 
 export interface Preset {
@@ -103,6 +104,7 @@ const defaultSettings: Settings = {
   includeCustomBlue: true,
   hasSeenHowToPlay: false,
   soundEnabled: true,
+  musicEnabled: true,
 }
 
 // Load settings from localStorage with migration
@@ -118,6 +120,7 @@ const loadSettings = (): Settings => {
         includeCustomBlue: parsed.includeCustomBlue !== undefined ? parsed.includeCustomBlue : defaultSettings.includeCustomBlue,
         hasSeenHowToPlay: parsed.hasSeenHowToPlay === true,
         soundEnabled: parsed.soundEnabled !== false,
+        musicEnabled: parsed.musicEnabled !== false,
       }
     }
   } catch (err) {
