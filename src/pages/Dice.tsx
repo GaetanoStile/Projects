@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useGameStore } from '@/state/store'
 import { playDiceRollSound } from '@/lib/sound'
-
-/** Served from [public/dice-background.png](/dice-background.png) so the asset is always resolvable (Vite public root). */
-const DICE_PAGE_BG = '/dice-background.png'
+import Candle from '@/components/Candle'
 
 export default function Dice() {
   const navigate = useNavigate()
@@ -48,19 +46,20 @@ export default function Dice() {
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
-      style={{
-        backgroundImage: `url(${DICE_PAGE_BG})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <div className="candlelit-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Candles */}
+      <div className="absolute top-20 left-10 md:left-20">
+        <Candle size={50} />
+      </div>
+      <div className="absolute top-32 right-10 md:right-20">
+        <Candle size={45} />
+      </div>
+
       <div className="text-center z-10 px-4">
-        <p
-          className="text-lg md:text-xl text-white/95 font-body mb-12 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
-        >
+        <h2 className="text-4xl md:text-6xl font-display gold-text mb-8">
+          Roll the Dice
+        </h2>
+        <p className="text-lg md:text-xl text-white/90 font-body mb-12">
           Highest roller goes first
         </p>
 
@@ -126,7 +125,7 @@ export default function Dice() {
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
-            <div className="text-2xl md:text-3xl font-display gold-text drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+            <div className="text-2xl md:text-3xl font-display gold-text">
               {result % 2 === 0 
                 ? `${settings.playerBlueName} goes first!` 
                 : `${settings.playerRedName} goes first!`}
