@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import AuthModal from '@/components/AuthModal'
 import { useAuthStore } from '@/state/authStore'
 import { isCloudEnabled } from '@/lib/config'
+import { getStartGamePath } from '@/lib/routes'
 import heroBackground from '@/assets/hero-background.png'
 
 export default function Hero() {
@@ -78,10 +79,7 @@ export default function Hero() {
 
         <div className="flex flex-col items-center gap-4">
           <motion.button
-            onClick={() => {
-              const accepted = localStorage.getItem('cg.disclaimerAccepted') === 'true'
-              navigate(accepted ? '/settings' : '/disclaimer')
-            }}
+            onClick={() => navigate(getStartGamePath())}
             className="px-8 py-4 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display text-xl rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

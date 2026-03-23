@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,9 +18,15 @@ interface AuthModalProps {
   isOpen: boolean
   onClose: () => void
   onGuestMode: () => void
+  initialMode?: 'login' | 'signup'
 }
 
-export default function AuthModal({ isOpen, onClose, onGuestMode }: AuthModalProps) {
+export default function AuthModal({
+  isOpen,
+  onClose,
+  onGuestMode,
+  initialMode = 'login',
+}: AuthModalProps) {
   const [isSignUp, setIsSignUp] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -36,6 +42,14 @@ export default function AuthModal({ isOpen, onClose, onGuestMode }: AuthModalPro
   } = useForm<AuthFormData>({
     resolver: zodResolver(AuthSchema),
   })
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    setIsSignUp(initialMode === 'signup')
+    setError(null)
+    reset()
+  }, [initialMode, isOpen, reset])
 
   const onSubmit = async (data: AuthFormData) => {
     setError(null)
