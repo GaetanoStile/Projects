@@ -10,7 +10,7 @@ import heroBackground from '@/assets/hero-background.png'
 export default function Hero() {
   const navigate = useNavigate()
   const [showAuthModal, setShowAuthModal] = useState(false)
-  const { initializeAuth, user } = useAuthStore()
+  const { initializeAuth, user, profile, signOut } = useAuthStore()
   const cloudEnabled = isCloudEnabled()
 
   useEffect(() => {
@@ -95,13 +95,30 @@ export default function Hero() {
           {cloudEnabled && (
             <>
               {user ? (
-                <div className="text-sm text-white/90 font-body">
-                  Logged in as {user.email}
-                  {user.isAdmin && (
-                    <span className="ml-2 px-2 py-1 bg-gold/20 text-gold rounded text-xs">
-                      Admin
-                    </span>
-                  )}
+                <div className="flex flex-col items-center gap-3 text-sm text-white/90 font-body">
+                  <div>
+                    Logged in as {profile?.displayName || user.displayName || user.email}
+                    {profile?.planTier && (
+                      <span className="ml-2 px-2 py-1 bg-gold/20 text-gold rounded text-xs uppercase tracking-[0.2em]">
+                        {profile.planTier}
+                      </span>
+                    )}
+                    {user.isAdmin && (
+                      <span className="ml-2 px-2 py-1 bg-gold/20 text-gold rounded text-xs">
+                        Admin
+                      </span>
+                    )}
+                  </div>
+                  <motion.button
+                    onClick={() => {
+                      void signOut()
+                    }}
+                    className="px-5 py-2 text-white/90 hover:text-white font-body text-sm transition-colors underline"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Log out
+                  </motion.button>
                 </div>
               ) : (
                 <motion.button

@@ -4,9 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface NavbarProps {
   cloudEnabled: boolean
-  userEmail?: string
+  userLabel?: string
+  planTier?: string
   onLogin: () => void
   onSignUp: () => void
+  onLogout: () => void
 }
 
 const navLinks = [
@@ -56,9 +58,11 @@ function NavLink({
 
 export default function Navbar({
   cloudEnabled,
-  userEmail,
+  userLabel,
+  planTier,
   onLogin,
   onSignUp,
+  onLogout,
 }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -77,10 +81,24 @@ export default function Navbar({
 
         <div className="hidden items-center gap-3 lg:flex">
           {cloudEnabled ? (
-            userEmail ? (
-              <div className="rounded-full border border-gold/20 bg-white/5 px-4 py-2 text-sm text-white/85">
-                {userEmail}
-              </div>
+            userLabel ? (
+              <>
+                <div className="rounded-full border border-gold/20 bg-white/5 px-4 py-2 text-sm text-white/85">
+                  {userLabel}
+                  {planTier && (
+                    <span className="ml-2 rounded-full bg-gold/15 px-2 py-0.5 text-[11px] uppercase tracking-[0.2em] text-gold">
+                      {planTier}
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="rounded-full px-4 py-2 text-sm font-body text-white/80 transition hover:bg-white/5 hover:text-white"
+                >
+                  Log Out
+                </button>
+              </>
             ) : (
               <>
                 <button
@@ -145,7 +163,7 @@ export default function Navbar({
                 ))}
               </div>
 
-              {cloudEnabled && !userEmail && (
+              {cloudEnabled && !userLabel && (
                 <div className="flex flex-col gap-3 pt-3">
                   <button
                     type="button"
@@ -170,9 +188,26 @@ export default function Navbar({
                 </div>
               )}
 
-              {userEmail && (
-                <div className="rounded-2xl border border-gold/15 bg-white/5 px-4 py-3 text-sm text-white/80">
-                  Logged in as {userEmail}
+              {userLabel && (
+                <div className="space-y-3">
+                  <div className="rounded-2xl border border-gold/15 bg-white/5 px-4 py-3 text-sm text-white/80">
+                    Logged in as {userLabel}
+                    {planTier && (
+                      <span className="ml-2 rounded-full bg-gold/15 px-2 py-1 text-[11px] uppercase tracking-[0.2em] text-gold">
+                        {planTier}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMenuOpen(false)
+                      onLogout()
+                    }}
+                    className="w-full rounded-full border border-gold/15 px-4 py-2.5 text-white/85"
+                  >
+                    Log Out
+                  </button>
                 </div>
               )}
             </div>

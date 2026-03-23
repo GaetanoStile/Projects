@@ -11,7 +11,9 @@ App-specific user information, linked to Supabase Auth users.
 ```sql
 create table if not exists public.users_profile (
   id uuid primary key references auth.users(id) on delete cascade,
+  email text,
   display_name text,
+  plan_tier text default 'free',
   is_admin boolean default false,
   created_at timestamptz default now()
 );
@@ -19,7 +21,9 @@ create table if not exists public.users_profile (
 
 **Fields:**
 - `id`: UUID, primary key, references `auth.users(id)`
+- `email`: Email address copied from Supabase Auth for convenient app reads
 - `display_name`: Optional display name for the user
+- `plan_tier`: Billing / feature tier (`free` by default)
 - `is_admin`: Boolean flag indicating admin privileges
 - `created_at`: Timestamp of profile creation
 
@@ -69,6 +73,23 @@ create table if not exists public.cards (
 **Migration SQL (for existing databases):**
 
 ```sql
+-- Add account fields required by the app profile model
+alter table public.users_profile
+add column if not exists email text,
+add column if not exists plan_tier text default 'free';
+
+-- Backfill email from Supabase Auth users
+update public.users_profile up
+set email = au.email
+from auth.users au
+where up.id = au.id
+  and (up.email is null or up.email = '');
+
+-- Backfill plan tier for older rows
+update public.users_profile
+set plan_tier = 'free'
+where plan_tier is null;
+
 -- Add new columns for metadata
 ALTER TABLE public.cards
 ADD COLUMN IF NOT EXISTS is_favorite boolean DEFAULT false,
@@ -95,7 +116,7 @@ where id in (
 );
 ```
 
-Alternatively, you can set admin status via the `ADMIN_EMAILS` environment variable, which is checked during authentication.
+Alternatively, you can set admin status via the `VITE_ADMIN_EMAILS` environment variable (or legacy `ADMIN_EMAILS`), which is checked during authentication.
 
 ## Indexes (Recommended)
 
@@ -199,6 +220,8 @@ create policy "Admins can manage global cards"
 ## Migration Notes
 
 - The app will automatically create a `users_profile` row when a user signs up
+- `users_profile.email` should mirror `auth.users.email` for UI/account reads
+- `users_profile.plan_tier` defaults to `free` for all existing and new users
 - Global cards should be seeded manually or via the Admin panel
 - Local cards from V2 can be migrated to cloud via the "Upload to Cloud" button in the Create page
 - The new metadata fields (`is_favorite`, `intensity`, `tags`) are optional and backward compatible

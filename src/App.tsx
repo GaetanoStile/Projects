@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import RequireAuth from './components/auth/RequireAuth'
 import Hero from './pages/Hero'
 import HomePage from './pages/HomePage'
 import Blog from './pages/Blog'
@@ -31,7 +32,14 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/dice" element={<Dice />} />
           <Route path="/game" element={<Game />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/admin"
+            element={
+              <RequireAuth requireAdmin redirectTo="/">
+                <Admin />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </AnimatePresence>
     </BrowserRouter>

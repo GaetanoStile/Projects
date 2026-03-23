@@ -5,7 +5,10 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useGameStore } from '@/state/store'
+import { useAuthStore } from '@/state/authStore'
+import AuthModal from '@/components/AuthModal'
 import { playButtonClickSoundFromEvent } from '@/lib/sound'
+import { isCloudEnabled } from '@/lib/config'
 import { useCloudCards } from '@/hooks/useCloudCards'
 import Candle from '@/components/Candle'
 
@@ -20,6 +23,8 @@ type SettingsFormData = z.infer<typeof SettingsSchema>
 
 export default function Settings() {
   const navigate = useNavigate()
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login')
   const { 
     settings, 
     setSettings, 
@@ -29,6 +34,8 @@ export default function Settings() {
     deletePreset,
     cardOverrides
   } = useGameStore()
+  const { user, profile, isAuthenticated, mode, signOut } = useAuthStore()
+  const cloudEnabled = isCloudEnabled()
   
   useEffect(() => {
     if (localStorage.getItem('cg.disclaimerAccepted') !== 'true') {
@@ -247,6 +254,97 @@ export default function Settings() {
             </div>
           </div>
 
+          {cloudEnabled && (
+            <div className="parchment-bg rounded-2xl p-8 md:p-12 glow-warm mb-8">
+              <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+                <div className="text-left">
+                  <h2 className="text-2xl md:text-3xl font-display gold-text mb-2">
+                    Account
+                  </h2>
+                  <p className="text-gold/80 font-body">
+                    Account mode keeps your identity across refresh and unlocks personal cloud features.
+                  </p>
+                </div>
+
+                {isAuthenticated ? (
+                  <div className="rounded-xl border border-gold/25 bg-white/85 p-5 text-left min-w-[260px]">
+                    <div className="text-xs uppercase tracking-[0.2em] text-gold/70 mb-2">
+                      Signed In
+                    </div>
+                    <div className="text-gold font-display text-xl">
+                      {profile?.displayName || user?.displayName || user?.email}
+                    </div>
+                    <div className="text-sm text-gold/80 mt-1 break-all">
+                      {profile?.email || user?.email}
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      <span className="px-3 py-1 rounded-full bg-gold/15 text-gold text-xs uppercase tracking-[0.18em]">
+                        {profile?.planTier || 'free'}
+                      </span>
+                      <span className="px-3 py-1 rounded-full bg-velvet/10 text-velvet text-xs uppercase tracking-[0.18em]">
+                        {mode === 'cloud' ? 'Account mode' : 'Guest mode'}
+                      </span>
+                      {profile?.isAdmin && (
+                        <span className="px-3 py-1 rounded-full bg-gold/20 text-gold text-xs uppercase tracking-[0.18em]">
+                          Admin
+                        </span>
+                      )}
+                    </div>
+                    <motion.button
+                      type="button"
+                      onClick={() => {
+                        void signOut()
+                      }}
+                      className="mt-5 w-full px-5 py-3 bg-velvet/85 text-gold font-body rounded-lg hover:bg-velvet transition-colors font-semibold"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Log Out
+                    </motion.button>
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-gold/25 bg-white/85 p-5 text-left min-w-[260px]">
+                    <div className="text-xs uppercase tracking-[0.2em] text-gold/70 mb-2">
+                      Guest Mode
+                    </div>
+                    <div className="text-gold font-display text-xl">
+                      Playing locally
+                    </div>
+                    <p className="text-sm text-gold/80 mt-2">
+                      Create an account or log in to keep a persistent identity in the app.
+                    </p>
+                    <div className="mt-5 flex flex-col gap-3">
+                      <motion.button
+                        type="button"
+                        onClick={() => {
+                          setAuthModalMode('signup')
+                          setShowAuthModal(true)
+                        }}
+                        className="w-full px-5 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Sign Up
+                      </motion.button>
+                      <motion.button
+                        type="button"
+                        onClick={() => {
+                          setAuthModalMode('login')
+                          setShowAuthModal(true)
+                        }}
+                        className="w-full px-5 py-3 bg-velvet/85 text-gold font-body rounded-lg hover:bg-velvet transition-colors font-semibold"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Log In
+                      </motion.button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Presets Section */}
           <div className="parchment-bg rounded-2xl p-8 md:p-12 glow-warm mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
@@ -429,6 +527,13 @@ export default function Settings() {
           </>
         )}
       </AnimatePresence>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onGuestMode={() => setShowAuthModal(false)}
+        initialMode={authModalMode}
+      />
     </div>
   )
 }

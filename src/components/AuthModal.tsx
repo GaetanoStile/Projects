@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { isCloudEnabled } from '@/lib/config'
 
 const AuthSchema = z.object({
+  displayName: z.string().trim().max(40).optional().or(z.literal('')),
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 })
@@ -57,7 +58,7 @@ export default function AuthModal({
 
     try {
       const result = isSignUp
-        ? await signUp(data.email, data.password)
+        ? await signUp(data.email, data.password, data.displayName)
         : await signIn(data.email, data.password)
 
       if (result.error) {
@@ -124,6 +125,24 @@ export default function AuthModal({
               </h2>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                {isSignUp && (
+                  <div>
+                    <label htmlFor="auth-display-name" className="block text-gold font-body font-semibold mb-2 text-left">
+                      Display Name
+                    </label>
+                    <input
+                      id="auth-display-name"
+                      type="text"
+                      {...register('displayName')}
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-velvet/50"
+                      placeholder="What should we call you?"
+                    />
+                    {errors.displayName && (
+                      <p className="text-crimson text-sm mt-1 text-left">{errors.displayName.message}</p>
+                    )}
+                  </div>
+                )}
+
                 <div>
                   <label htmlFor="auth-email" className="block text-gold font-body font-semibold mb-2 text-left">
                     Email
@@ -187,14 +206,14 @@ export default function AuthModal({
                 <motion.button
                   type="button"
                   onClick={handleGuestMode}
-                  className="w-full px-6 py-3 bg-velvet/80 text-gold font-body rounded-lg hover:bg-velvet transition-colors font-semibold"
+                  className="w-full px-6 py-3 bg-velvet/70 text-gold font-body rounded-lg hover:bg-velvet transition-colors font-semibold"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   Continue as Guest
                 </motion.button>
                 <p className="text-xs text-gold/70 text-center mt-2">
-                  Play locally without an account
+                  Local-only play without saved account identity
                 </p>
               </div>
             </motion.div>

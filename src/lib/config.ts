@@ -10,7 +10,7 @@ export const isCloudEnabled = (): boolean => {
 }
 
 export const getAdminEmails = (): string[] => {
-  const emails = import.meta.env.ADMIN_EMAILS
+  const emails = import.meta.env.VITE_ADMIN_EMAILS || import.meta.env.ADMIN_EMAILS
   if (!emails) return []
   return emails.split(',').map((email: string) => email.trim()).filter(Boolean)
 }

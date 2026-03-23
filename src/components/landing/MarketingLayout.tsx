@@ -14,7 +14,7 @@ interface MarketingLayoutProps {
 export default function MarketingLayout({ children }: MarketingLayoutProps) {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<AuthMode>('login')
-  const { initializeAuth, user } = useAuthStore()
+  const { initializeAuth, user, profile, signOut } = useAuthStore()
   const cloudEnabled = useMemo(() => isCloudEnabled(), [])
 
   useEffect(() => {
@@ -39,9 +39,13 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
 
       <Navbar
         cloudEnabled={cloudEnabled}
-        userEmail={user?.email}
+        userLabel={profile?.displayName || user?.displayName || user?.email}
+        planTier={profile?.planTier}
         onLogin={() => openAuth('login')}
         onSignUp={() => openAuth('signup')}
+        onLogout={() => {
+          void signOut()
+        }}
       />
 
       <main className="relative z-10">{children}</main>
