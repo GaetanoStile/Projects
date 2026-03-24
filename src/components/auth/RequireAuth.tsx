@@ -12,7 +12,7 @@ interface RequireAuthProps {
 export default function RequireAuth({
   children,
   requireAdmin = false,
-  redirectTo = '/welcome',
+  redirectTo = '/auth',
 }: RequireAuthProps) {
   const { user, mode, isAuthenticated, isAdmin, loading } = useAuthStore()
 

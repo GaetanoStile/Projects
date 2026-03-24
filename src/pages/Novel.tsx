@@ -23,7 +23,7 @@ export default function Novel() {
                 </p>
               </div>
               <Link
-                to="/disclaimer"
+                to="/auth"
                 className="mt-10 inline-flex w-fit rounded-full bg-burgundy px-7 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-parchment shadow-[0_14px_28px_rgba(58,13,18,0.28)] transition hover:bg-velvet"
               >
                 Start Playing

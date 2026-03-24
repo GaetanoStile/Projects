@@ -10,7 +10,7 @@ export default function HomePage() {
 
   return (
     <MarketingLayout>
-      <LandingHero onStartPlaying={() => navigate('/welcome')} />
+      <LandingHero onStartPlaying={() => navigate('/auth')} />
       <Features />
       <BlogSection />
       <NovelSection />

@@ -121,7 +121,7 @@ export default function Navbar({
             )
           ) : (
             <Link
-              to="/disclaimer"
+              to="/auth"
               className="rounded-full bg-gradient-to-r from-gold via-[#f1d27b] to-gold px-5 py-2.5 text-sm font-semibold text-burgundy shadow-glow-gold"
             >
               Start Playing

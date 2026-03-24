@@ -2,11 +2,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import RequireAuth from './components/auth/RequireAuth'
 import Hero from './pages/Hero'
+import Auth from './pages/Auth'
 import HomePage from './pages/HomePage'
 import Blog from './pages/Blog'
 import Novel from './pages/Novel'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
+import TryNow from './pages/TryNow'
 import Dice from './pages/Dice'
 import Game from './pages/Game'
 import Settings from './pages/Settings'
@@ -21,6 +23,8 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/try" element={<TryNow />} />
           <Route path="/welcome" element={<Hero />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/novel" element={<Novel />} />
