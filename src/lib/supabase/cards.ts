@@ -258,3 +258,57 @@ export const deleteGlobalCard = async (
 ): Promise<boolean> => {
   return deleteCard(client, cardId)
 }
+
+/**
+ * Card with creator display name — used in the community library
+ */
+export interface LibraryCard extends Card {
+  creatorName?: string
+}
+
+/**
+ * Fetch all public user cards with creator display names (community library)
+ */
+export const fetchPublicCardsWithCreators = async (
+  client: SupabaseClient | null
+): Promise<LibraryCard[]> => {
+  if (!client) return []
+
+  try {
+    const { data: cardData, error: cardError } = await client
+      .from('cards')
+      .select('*')
+      .eq('visibility', 'public')
+      .not('owner_id', 'is', null)
+      .order('created_at', { ascending: false })
+
+    if (cardError) {
+      console.error('Error fetching public library cards:', cardError)
+      return []
+    }
+
+    if (!cardData || cardData.length === 0) return []
+
+    const ownerIds = [...new Set(cardData.map((c: DatabaseCard) => c.owner_id).filter(Boolean))] as string[]
+
+    let creatorMap = new Map<string, string | null>()
+    if (ownerIds.length > 0) {
+      const { data: profileData } = await client
+        .from('users_profile')
+        .select('id, display_name')
+        .in('id', ownerIds)
+
+      if (profileData) {
+        creatorMap = new Map(profileData.map((p: { id: string; display_name: string | null }) => [p.id, p.display_name]))
+      }
+    }
+
+    return cardData.map((row: DatabaseCard) => ({
+      ...dbCardToCard(row),
+      creatorName: (row.owner_id && creatorMap.get(row.owner_id)) || undefined,
+    }))
+  } catch (error) {
+    console.error('Exception fetching public library cards:', error)
+    return []
+  }
+}

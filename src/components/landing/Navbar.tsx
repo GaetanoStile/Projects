@@ -15,6 +15,7 @@ const navLinks = [
   { label: 'Home', href: '/', isRouterLink: true },
   { label: 'How It Works', href: '/#how-it-works', isRouterLink: false },
   { label: 'Blog', href: '/blog', isRouterLink: true },
+  { label: 'Library', href: '/library', isRouterLink: true },
   { label: 'The Novel', href: '/novel', isRouterLink: true, emphasized: true },
 ] as const
 

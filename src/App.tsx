@@ -16,6 +16,7 @@ import Create from './pages/Create'
 import Admin from './pages/Admin'
 import HowToPlay from './pages/HowToPlay'
 import Disclaimer from './pages/Disclaimer'
+import Library from './pages/Library'
 
 function App() {
   return (
@@ -36,6 +37,14 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/dice" element={<Dice />} />
           <Route path="/game" element={<Game />} />
+          <Route
+            path="/library"
+            element={
+              <RequireAuth redirectTo="/auth">
+                <Library />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/admin"
             element={
