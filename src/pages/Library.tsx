@@ -7,6 +7,7 @@ import { getSupabaseClient } from '@/lib/supabase/client'
 import { fetchPublicCardsWithCreators, createCard, LibraryCard } from '@/lib/supabase/cards'
 import Candle from '@/components/Candle'
 import { playButtonClickSoundFromEvent } from '@/lib/sound'
+import { canAccessFeature, PREMIUM_FEATURES } from '@/lib/features'
 
 export default function Library() {
   const navigate = useNavigate()
@@ -23,7 +24,7 @@ export default function Library() {
   const [filterColor, setFilterColor] = useState<'all' | PlayerColor | 'neutral'>('all')
   const [filterTag, setFilterTag] = useState<'all' | Tag>('all')
 
-  const isPaidUser = planTier !== 'free'
+  const isPaidUser = canAccessFeature(planTier, PREMIUM_FEATURES.COMMUNITY_LIBRARY)
 
   useEffect(() => {
     if (!isPaidUser) {

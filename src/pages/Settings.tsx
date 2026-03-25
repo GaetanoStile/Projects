@@ -12,6 +12,7 @@ import { playButtonClickSoundFromEvent } from '@/lib/sound'
 import { isCloudEnabled } from '@/lib/config'
 import { useCloudCards } from '@/hooks/useCloudCards'
 import Candle from '@/components/Candle'
+import { isPaidPlan, FEATURE_LABELS, PREMIUM_FEATURES } from '@/lib/features'
 
 const SettingsSchema = z.object({
   playerRedName: z.string().trim().min(1).max(24),
@@ -35,7 +36,7 @@ export default function Settings() {
     deletePreset,
     cardOverrides
   } = useGameStore()
-  const { user, profile, isAuthenticated, mode, signOut } = useAuthStore()
+  const { user, profile, isAuthenticated, mode, planTier, signOut } = useAuthStore()
   const { activeSession, checkForActiveSession, loadSession } = useSessionStore()
   const cloudEnabled = isCloudEnabled()
   
@@ -371,6 +372,71 @@ export default function Settings() {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Plan Section — only shown when cloud/account mode is enabled */}
+          {cloudEnabled && isAuthenticated && (
+            <div className="parchment-bg rounded-2xl p-8 md:p-12 glow-warm mb-8">
+              <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+                <div className="text-left">
+                  <h2 className="text-2xl md:text-3xl font-display gold-text mb-2">
+                    Your Plan
+                  </h2>
+                  <p className="text-gold/80 font-body">
+                    Premium features unlock exclusive experiences for you and your partner.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-gold/25 bg-white/85 p-5 text-left min-w-[260px]">
+                  {/* Current tier pill */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <span className="text-xs uppercase tracking-[0.2em] text-gold/70">Current Plan</span>
+                    {isPaidPlan(planTier) ? (
+                      <span className="px-3 py-1 rounded-full bg-emerald-600/20 text-emerald-700 text-xs font-display uppercase tracking-[0.18em] font-semibold">
+                        Paid
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 rounded-full bg-gold/15 text-gold text-xs font-display uppercase tracking-[0.18em] font-semibold">
+                        Free
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Feature list */}
+                  <ul className="space-y-3 mb-5">
+                    {(Object.values(PREMIUM_FEATURES) as Array<keyof typeof FEATURE_LABELS>).map(feature => (
+                      <li key={feature} className="flex items-center gap-3">
+                        {isPaidPlan(planTier) ? (
+                          <span className="text-emerald-600 text-base leading-none flex-shrink-0">✓</span>
+                        ) : (
+                          <span className="text-gold/50 text-base leading-none flex-shrink-0">🔒</span>
+                        )}
+                        <span className={`font-body text-sm ${isPaidPlan(planTier) ? 'text-gold' : 'text-gold/60'}`}>
+                          {FEATURE_LABELS[feature]}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Upgrade CTA — free users only */}
+                  {!isPaidPlan(planTier) && (
+                    <div className="rounded-lg border border-gold/40 bg-gradient-to-br from-gold/10 to-gold/5 p-4 text-center">
+                      <p className="text-gold font-body text-sm mb-3 font-semibold">
+                        Upgrade to unlock premium features
+                      </p>
+                      <button
+                        type="button"
+                        disabled
+                        className="w-full px-5 py-3 bg-gradient-to-r from-gold to-gold/70 text-velvet font-display rounded-lg opacity-70 cursor-not-allowed text-sm"
+                        title="Payment coming soon"
+                      >
+                        Upgrade — Coming Soon
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
