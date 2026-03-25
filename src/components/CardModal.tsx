@@ -254,7 +254,7 @@ export default function CardModal({ card, isOpen, onClose }: CardModalProps) {
                     {showOptions && (
                       <motion.div
                         ref={optionsPanelRef}
-                        className="absolute top-16 right-4 parchment-bg rounded-lg p-4 border-2 border-gold/30 shadow-lg z-20 min-w-[200px]"
+                        className="absolute top-16 right-4 bg-[#1c0a0e] rounded-lg p-4 border-2 border-gold/60 shadow-2xl z-20 min-w-[200px]"
                         initial={{ opacity: 0, scale: 0.95, y: -10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -10 }}
