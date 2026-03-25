@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useGameStore } from '@/state/store'
 import { useAuthStore } from '@/state/authStore'
+import { useSessionStore } from '@/state/sessionStore'
 import AuthModal from '@/components/AuthModal'
 import { playButtonClickSoundFromEvent } from '@/lib/sound'
 import { isCloudEnabled } from '@/lib/config'
@@ -35,6 +36,7 @@ export default function Settings() {
     cardOverrides
   } = useGameStore()
   const { user, profile, isAuthenticated, mode, signOut } = useAuthStore()
+  const { activeSession, checkForActiveSession, loadSession } = useSessionStore()
   const cloudEnabled = isCloudEnabled()
   
   useEffect(() => {
@@ -42,6 +44,12 @@ export default function Settings() {
       navigate('/disclaimer', { replace: true })
     }
   }, [navigate])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      void checkForActiveSession()
+    }
+  }, [isAuthenticated, checkForActiveSession])
 
   // Fetch cloud cards when in cloud mode
   useCloudCards()
@@ -134,6 +142,28 @@ export default function Settings() {
         <h1 className="text-4xl md:text-6xl font-display gold-text mb-8">
           Game Settings
         </h1>
+
+        {/* Resume banner — shown only when a logged-in user has an unfinished session */}
+        {isAuthenticated && activeSession && (
+          <div className="mb-6 flex items-center justify-between gap-4 rounded-xl border border-gold/30 bg-gold/10 px-5 py-3 text-left">
+            <div>
+              <p className="text-sm font-body font-semibold text-gold">You have an unfinished game</p>
+              <p className="text-xs text-gold/70 font-body mt-0.5">
+                {activeSession.player_red_name} &amp; {activeSession.player_blue_name} &mdash; {activeSession.used_card_ids.length} cards drawn
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                loadSession(activeSession)
+                navigate('/game')
+              }}
+              className="shrink-0 rounded-lg bg-gold px-4 py-2 text-sm font-display text-velvet hover:bg-gold/90 transition-colors"
+            >
+              Resume &rarr;
+            </button>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="parchment-bg rounded-2xl p-8 md:p-12 glow-warm mb-8">

@@ -102,6 +102,63 @@ ADD COLUMN IF NOT EXISTS tags text[] DEFAULT '{}';
 - Custom cards (`owner_id = auth.uid()`): Readable and writable only by the owner
 - Admins can create/update/delete global cards
 
+### `public.game_sessions`
+
+Stores in-progress and completed game sessions for logged-in users.
+
+```sql
+create table public.game_sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  player_red_name text not null default '',
+  player_blue_name text not null default '',
+  current_player text not null default 'red',
+  starting_player text,
+  used_card_ids text[] default '{}',
+  swap_count_red integer default 0,
+  swap_count_blue integer default 0,
+  swap_inventory_red integer default 0,
+  swap_inventory_blue integer default 0,
+  black_unlocked_red boolean default false,
+  black_unlocked_blue boolean default false,
+  selected_mode text default 'standard',
+  session_disabled_card_ids text[] default '{}',
+  is_completed boolean default false,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table public.game_sessions enable row level security;
+
+create policy "Users can manage own sessions"
+  on public.game_sessions
+  for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+-- Index for efficient active session lookup
+create index if not exists idx_game_sessions_user_active
+  on public.game_sessions(user_id, updated_at desc)
+  where is_completed = false;
+```
+
+**Fields:**
+- `id`: UUID primary key
+- `user_id`: References `auth.users(id)`; row deleted when user is deleted
+- `player_red_name` / `player_blue_name`: Player names at time of save
+- `current_player`: Whose turn it is (`'red'` or `'blue'`)
+- `starting_player`: Who started the game (`'red'` or `'blue'`)
+- `used_card_ids`: Array of card IDs already drawn this session
+- `swap_count_red/blue`: Lifetime swap cards used per player
+- `swap_inventory_red/blue`: Swap cards currently held per player
+- `black_unlocked_red/blue`: Derived from `swap_inventory >= 2`; stored for fast reads
+- `selected_mode`: Custom card inclusion mode — `'both'`, `'red_only'`, `'blue_only'`, or `'none'`
+- `session_disabled_card_ids`: Cards temporarily removed for this session only
+- `is_completed`: Set to `true` when the user explicitly ends the game
+- `created_at` / `updated_at`: Timestamps; `updated_at` is refreshed on every save
+
+**RLS:** Users can only read and write their own session rows.
+
 ## Admin Setup
 
 To grant admin privileges to users, update the `users_profile` table:

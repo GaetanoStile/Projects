@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '@/state/store'
+import { useSessionStore } from '@/state/sessionStore'
+import { useAuthStore } from '@/state/authStore'
 import DeckGrid from '@/components/DeckGrid'
 import CardModal from '@/components/CardModal'
 import HowToPlayModal from '@/components/HowToPlayModal'
@@ -8,6 +10,8 @@ import Hud from '@/components/Hud'
 import gameplayBackground from '@/assets/gameplay-background.png'
 import { playButtonClickSoundFromEvent } from '@/lib/sound'
 import { useGameplayMusic } from '@/hooks/useGameplayMusic'
+
+type SaveStatus = 'idle' | 'saving' | 'saved'
 
 export default function Game() {
   const navigate = useNavigate()
@@ -23,6 +27,13 @@ export default function Game() {
     setSettings,
   } = useGameStore()
 
+  const { saveCurrentSession, markSessionComplete, isSaving } = useSessionStore()
+  const { isAuthenticated } = useAuthStore()
+
+  const [showHowToPlay, setShowHowToPlay] = useState(false)
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
+  const savedDisplayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   useGameplayMusic(settings.musicEnabled)
 
   useEffect(() => {
@@ -31,26 +42,51 @@ export default function Game() {
     }
   }, [currentPlayer, navigate])
 
+  const showSaved = () => {
+    setSaveStatus('saved')
+    if (savedDisplayTimerRef.current) clearTimeout(savedDisplayTimerRef.current)
+    savedDisplayTimerRef.current = setTimeout(() => setSaveStatus('idle'), 2000)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (savedDisplayTimerRef.current) clearTimeout(savedDisplayTimerRef.current)
+    }
+  }, [])
+
   const handleCloseModal = () => {
     setIsModalOpen(false)
   }
 
-  const handleUseSwapCard = () => {
+  const handleUseSwapCard = async () => {
     useSwapCard()
+    if (isAuthenticated) {
+      setSaveStatus('saving')
+      await saveCurrentSession()
+      showSaved()
+    }
   }
 
-  const handleEndGame = () => {
+  const handleEndGame = async () => {
     if (confirm('Are you sure you want to end the game?')) {
+      if (isAuthenticated) {
+        await markSessionComplete()
+      }
       resetGame()
       navigate('/')
     }
   }
 
-  const [showHowToPlay, setShowHowToPlay] = useState(false)
-
   if (!currentPlayer) {
     return null
   }
+
+  const savedLabel =
+    saveStatus === 'saving' || isSaving
+      ? 'Saving…'
+      : saveStatus === 'saved'
+      ? 'Saved'
+      : null
 
   return (
     <div
@@ -79,6 +115,17 @@ export default function Game() {
             />
             <span className="hidden sm:inline">Music</span>
           </label>
+
+          {/* Save indicator */}
+          {isAuthenticated && savedLabel && (
+            <span
+              className="absolute top-0 left-16 text-xs text-gold/50 font-body flex items-center"
+              style={{ minHeight: '44px' }}
+            >
+              {savedLabel}
+            </span>
+          )}
+
           <button
             onClick={() => setShowHowToPlay(true)}
             className="absolute top-0 right-0 w-10 h-10 flex items-center justify-center text-gold/50 hover:text-gold hover:bg-gold/10 transition-colors rounded-full font-display text-lg"
@@ -142,4 +189,3 @@ export default function Game() {
     </div>
   )
 }
-

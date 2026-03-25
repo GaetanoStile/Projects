@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import cardsData from '@/data/cards.json'
 import { useAuthStore } from './authStore'
+import type { GameSessionRow } from '@/lib/supabase/sessions'
 
 export type DeckLetter = 'A' | 'B' | 'C' | 'D' | 'black'
 export type PlayerColor = 'red' | 'blue' | 'any'
@@ -95,6 +96,7 @@ interface GameActions {
   loadPreset: (presetId: string) => void
   deletePreset: (presetId: string) => void
   setHasSeenHowToPlay: (value: boolean) => void
+  loadSessionIntoStore: (session: GameSessionRow) => void
 }
 
 const defaultSettings: Settings = {
@@ -771,6 +773,30 @@ export const useGameStore = create<GameState & GameActions>()(
 
       setHasSeenHowToPlay: (value: boolean) => {
         get().setSettings({ hasSeenHowToPlay: value })
+      },
+
+      loadSessionIntoStore: (session: GameSessionRow) => {
+        const { settings } = get()
+        const restoredSettings = {
+          ...settings,
+          playerRedName: session.player_red_name,
+          playerBlueName: session.player_blue_name,
+        }
+
+        set({
+          currentPlayer: session.current_player,
+          startingPlayer: session.starting_player,
+          swapCount: { red: session.swap_count_red, blue: session.swap_count_blue },
+          swapInventory: { red: session.swap_inventory_red, blue: session.swap_inventory_blue },
+          usedCardIds: new Set(session.used_card_ids),
+          sessionDisabledCardIds: new Set(session.session_disabled_card_ids),
+          settings: restoredSettings,
+          selectedCard: null,
+          isModalOpen: false,
+        })
+
+        // Rebuild shuffled deck order so remaining cards are available to draw
+        get().reshuffleAllDecks()
       },
     }),
     {
