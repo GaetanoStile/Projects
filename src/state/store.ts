@@ -36,6 +36,7 @@ export interface Card {
   isEnabled?: boolean // defaults to true if undefined
   isFavorite?: boolean // defaults to false if undefined
   tags?: Tag[] // defaults to [] if undefined
+  visibility?: 'private' | 'public' // defaults to 'private' for custom cards
 }
 
 export interface Settings {

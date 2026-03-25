@@ -19,6 +19,7 @@ export interface DatabaseCard {
   tags: string[] | null
   image_url: string | null
   created_at: string
+  visibility: 'private' | 'public' | null
 }
 
 /**
@@ -38,6 +39,7 @@ const dbCardToCard = (dbCard: DatabaseCard): Card => ({
     ? dbCard.tags.filter((tag): tag is Tag => AVAILABLE_TAGS.includes(tag as Tag))
     : undefined,
   imageDataUrl: dbCard.image_url || undefined,
+  visibility: dbCard.visibility ?? 'private',
 })
 
 /**
@@ -56,6 +58,7 @@ const cardToDbCard = (card: Card, ownerId: string | null = null): Omit<DatabaseC
   intensity: null,
   tags: card.tags && card.tags.length > 0 ? (card.tags as string[]) : null,
   image_url: card.imageDataUrl || null,
+  visibility: card.visibility ?? 'private',
 })
 
 /**

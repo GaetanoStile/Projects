@@ -20,6 +20,7 @@ const CustomCardSchema = z.object({
   deck: z.enum(['A', 'B', 'C', 'D']),
   isSwapCard: z.boolean().optional().default(false),
   imageDataUrl: z.string().url().optional().or(z.literal('')),
+  visibility: z.enum(['private', 'public']).default('private'),
 })
 
 const EditCardSchema = z.object({
@@ -31,6 +32,7 @@ const EditCardSchema = z.object({
   isEnabled: z.boolean().optional().default(true),
   isFavorite: z.boolean().optional().default(false),
   tags: z.array(z.string()).optional().default([]),
+  visibility: z.enum(['private', 'public']).default('private'),
 })
 
 type CustomCardFormData = z.infer<typeof CustomCardSchema>
@@ -66,6 +68,7 @@ export default function Create() {
   const [filterColor, setFilterColor] = useState<'all' | PlayerColor | 'neutral'>('all')
   const [filterEnabled, setFilterEnabled] = useState<'all' | 'enabled' | 'disabled'>('all')
   const [filterTag, setFilterTag] = useState<'all' | Tag>('all')
+  const [filterVisibility, setFilterVisibility] = useState<'all' | 'private' | 'public'>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
   const {
@@ -84,6 +87,7 @@ export default function Create() {
       deck: 'A',
       isSwapCard: false,
       imageDataUrl: '',
+      visibility: 'private',
     },
   })
 
@@ -112,6 +116,7 @@ export default function Create() {
       isCustom: true,
       isEnabled: true,
       imageDataUrl: data.imageDataUrl || undefined,
+      visibility: data.visibility ?? 'private',
     }
 
     // Cloud mode: create in Supabase
@@ -169,6 +174,7 @@ export default function Create() {
       isEnabled: card.isEnabled !== false,
       isFavorite: card.isFavorite || false,
       tags: card.tags || [],
+      visibility: card.visibility ?? 'private',
     })
     setShowEditModal(true)
   }
@@ -185,6 +191,7 @@ export default function Create() {
       isEnabled: data.isEnabled !== false,
       isFavorite: data.isFavorite || false,
       tags: data.tags && data.tags.length > 0 ? data.tags as Tag[] : undefined,
+      visibility: data.visibility ?? 'private',
     }
 
     await updateCard(editingCard.id, updates)
@@ -305,14 +312,18 @@ export default function Create() {
       const tagMatch = 
         filterTag === 'all' || 
         (card.tags || []).includes(filterTag)
+      const visibilityMatch =
+        filterVisibility === 'all' ||
+        !card.isCustom ||
+        (card.visibility ?? 'private') === filterVisibility
       const searchMatch = 
         !searchQuery ||
         card.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         card.description.toLowerCase().includes(searchQuery.toLowerCase())
       
-      return deckMatch && colorMatch && enabledMatch && tagMatch && searchMatch
+      return deckMatch && colorMatch && enabledMatch && tagMatch && visibilityMatch && searchMatch
     })
-  }, [getAllCards, filterDeck, filterColor, filterEnabled, filterTag, searchQuery])
+  }, [getAllCards, filterDeck, filterColor, filterEnabled, filterTag, filterVisibility, searchQuery])
 
   // Custom cards for "Custom Only" tab
   const allCustomCards = useMemo(() => {
@@ -328,9 +339,10 @@ export default function Create() {
     return allCustomCards.filter(card => {
       const colorMatch = filterColor === 'all' || card.playerColor === filterColor
       const deckMatch = filterDeck === 'all' || card.deck === filterDeck
-      return colorMatch && deckMatch
+      const visibilityMatch = filterVisibility === 'all' || (card.visibility ?? 'private') === filterVisibility
+      return colorMatch && deckMatch && visibilityMatch
     })
-  }, [allCustomCards, filterColor, filterDeck])
+  }, [allCustomCards, filterColor, filterDeck, filterVisibility])
 
   const hasLocalOnlyCards = useMemo(() => {
     if (mode !== 'cloud') return false
@@ -502,6 +514,23 @@ export default function Create() {
                     <option value="C">Deck C</option>
                     <option value="D">Deck D</option>
                   </select>
+                </div>
+
+                <div>
+                  <label htmlFor="cardVisibility" className="block text-gold font-body font-semibold mb-2 text-left">
+                    Visibility
+                  </label>
+                  <select
+                    id="cardVisibility"
+                    {...register('visibility')}
+                    className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                  >
+                    <option value="private">Private — only you</option>
+                    <option value="public">Public — community library</option>
+                  </select>
+                  <p className="text-gold/60 font-body text-xs mt-1 text-left">
+                    Private cards are only visible to you. Public cards may appear in the community library.
+                  </p>
                 </div>
 
                 <div>
@@ -734,6 +763,11 @@ export default function Create() {
                               ✨ Swap
                             </span>
                           )}
+                          <span className={`px-2 py-1 text-white text-xs font-body rounded ${
+                            card.visibility === 'public' ? 'bg-green-700' : 'bg-gray-600'
+                          }`}>
+                            {card.visibility === 'public' ? 'Public' : 'Private'}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -766,7 +800,7 @@ export default function Create() {
                 </div>
 
                 {/* Filters */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
                   <div>
                     <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Deck
@@ -831,6 +865,20 @@ export default function Create() {
                   </div>
                   <div>
                     <label className="block text-gold font-body font-semibold mb-2 text-sm">
+                      Visibility
+                    </label>
+                    <select
+                      value={filterVisibility}
+                      onChange={(e) => setFilterVisibility(e.target.value as 'all' | 'private' | 'public')}
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold"
+                    >
+                      <option value="all">All</option>
+                      <option value="private">Private</option>
+                      <option value="public">Public</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-gold font-body font-semibold mb-2 text-sm">
                       Search
                     </label>
                     <input
@@ -855,13 +903,14 @@ export default function Create() {
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Title</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Description</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Tags</th>
+                        <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Visibility</th>
                         <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredAllCards.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="text-center py-12 text-gold font-body">
+                          <td colSpan={9} className="text-center py-12 text-gold font-body">
                             No cards found matching filters
                           </td>
                         </tr>
@@ -935,6 +984,17 @@ export default function Create() {
                                   </span>
                                 ))}
                               </div>
+                            </td>
+                            <td className="py-3 px-4">
+                              {card.isCustom && (
+                                <span className={`px-2 py-1 text-xs font-body rounded ${
+                                  card.visibility === 'public'
+                                    ? 'bg-green-700 text-white'
+                                    : 'bg-gray-600 text-white'
+                                }`}>
+                                  {card.visibility === 'public' ? 'Public' : 'Private'}
+                                </span>
+                              )}
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex gap-2">
@@ -1160,6 +1220,25 @@ export default function Create() {
                           <option value="neutral">Neutral</option>
                         </select>
                       </div>
+
+                      {editingCard.isCustom && (
+                        <div>
+                          <label htmlFor="edit-visibility" className="block text-gold font-body font-semibold mb-2 text-left">
+                            Visibility
+                          </label>
+                          <select
+                            id="edit-visibility"
+                            {...editForm.register('visibility')}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gold/30 bg-white/90 text-gold font-body focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                          >
+                            <option value="private">Private — only you</option>
+                            <option value="public">Public — community library</option>
+                          </select>
+                          <p className="text-gold/60 font-body text-xs mt-1 text-left">
+                            Private cards are only visible to you. Public cards may appear in the community library.
+                          </p>
+                        </div>
+                      )}
 
                       <div>
                         <label className="block text-gold font-body font-semibold mb-2 text-left">

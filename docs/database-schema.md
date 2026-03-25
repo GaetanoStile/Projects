@@ -50,6 +50,7 @@ create table if not exists public.cards (
   intensity text check (intensity in ('soft', 'medium', 'hot', 'wild')) default 'medium',
   tags text[] default '{}',
   image_url text,
+  visibility text check (visibility in ('private', 'public')) default 'private',
   created_at timestamptz default now()
 );
 ```
@@ -68,6 +69,7 @@ create table if not exists public.cards (
 - `intensity`: Intensity level - must be one of: 'soft', 'medium', 'hot', 'wild' (defaults to 'medium')
 - `tags`: Array of tags (defaults to empty array). Valid tags: 'kissing', 'massage', 'teasing', 'oral', 'toys', 'domination', 'submission', 'romantic', 'roleplay'
 - `image_url`: Optional image URL (data URL or Supabase Storage URL)
+- `visibility`: `'private'` (only owner can see) or `'public'` (visible in community library). Defaults to `'private'`. Only applies to custom cards (`owner_id is not null`).
 - `created_at`: Timestamp of card creation
 
 **Migration SQL (for existing databases):**
@@ -272,6 +274,11 @@ create policy "Admins can manage global cards"
       where id = auth.uid() and is_admin = true
     )
   );
+
+-- Allow all authenticated users to read public user cards (community library)
+create policy "Anyone can read public user cards"
+  on public.cards for select
+  using (visibility = 'public' and owner_id is not null);
 ```
 
 ## `user_favorite_cards` Table
