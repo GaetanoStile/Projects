@@ -36,7 +36,7 @@ const EditCardSchema = z.object({
 type CustomCardFormData = z.infer<typeof CustomCardSchema>
 type EditCardFormData = z.infer<typeof EditCardSchema>
 
-type TabType = 'custom' | 'all'
+type TabType = 'custom' | 'all' | 'favorites'
 
 export default function Create() {
   const navigate = useNavigate()
@@ -49,7 +49,9 @@ export default function Create() {
     updateCard,
     setCardEnabled,
     resetToDefaultDeck,
-    cardOverrides
+    cardOverrides,
+    favoriteCardIds,
+    toggleFavorite,
   } = useGameStore()
   const { mode, user, isAdmin } = useAuthStore()
   const [activeTab, setActiveTab] = useState<TabType>('all')
@@ -195,7 +197,6 @@ export default function Create() {
   }
 
   const handleToggleFavorite = async (cardId: string) => {
-    const { toggleFavorite } = useGameStore.getState()
     await toggleFavorite(cardId)
   }
 
@@ -599,6 +600,24 @@ export default function Create() {
               >
                 All Cards
               </button>
+              <button
+                onClick={() => setActiveTab('favorites')}
+                className={`px-6 py-3 font-display text-lg transition-colors flex items-center gap-2 ${
+                  activeTab === 'favorites'
+                    ? 'text-gold border-b-2 border-gold'
+                    : 'text-gold/70 hover:text-gold'
+                }`}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="inline">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                Favorites
+                {favoriteCardIds.size > 0 && (
+                  <span className="ml-1 px-2 py-0.5 text-xs bg-gold/20 text-gold rounded-full">
+                    {favoriteCardIds.size}
+                  </span>
+                )}
+              </button>
             </div>
 
             {/* Custom Only Tab */}
@@ -862,9 +881,9 @@ export default function Create() {
                               <button
                                 onClick={() => handleToggleFavorite(card.id)}
                                 className="text-gold hover:text-gold/70 transition-colors"
-                                title={card.isFavorite ? 'Unfavorite' : 'Favorite'}
+                                title={favoriteCardIds.has(card.id) ? 'Unfavorite' : 'Favorite'}
                               >
-                                {card.isFavorite ? (
+                                {favoriteCardIds.has(card.id) ? (
                                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                   </svg>
@@ -943,6 +962,89 @@ export default function Create() {
                     </tbody>
                   </table>
                 </div>
+              </div>
+            )}
+
+            {/* Favorites Tab */}
+            {activeTab === 'favorites' && (
+              <div>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+                  <h2 className="text-3xl md:text-4xl font-display gold-text flex items-center gap-3">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="text-gold">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                    Favorites
+                  </h2>
+                  <p className="text-gold/70 font-body text-sm">
+                    {favoriteCardIds.size} card{favoriteCardIds.size !== 1 ? 's' : ''} favorited
+                  </p>
+                </div>
+
+                {favoriteCardIds.size === 0 ? (
+                  <div className="text-center py-16">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gold/30 mx-auto mb-4">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                    <p className="text-gold/60 font-body text-lg mb-2">No favorites yet</p>
+                    <p className="text-gold/40 font-body text-sm">Star a card during gameplay or in the All Cards tab</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-gold/30">
+                          <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">⭐</th>
+                          <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Deck</th>
+                          <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Performer</th>
+                          <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Title</th>
+                          <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Description</th>
+                          <th className="text-left py-3 px-4 text-gold font-display font-semibold bg-gold/30">Type</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {getAllCards
+                          .filter(card => favoriteCardIds.has(card.id))
+                          .map((card) => (
+                            <tr key={card.id} className="border-b border-gold/20 hover:bg-gold/5">
+                              <td className="py-3 px-4">
+                                <button
+                                  onClick={() => handleToggleFavorite(card.id)}
+                                  className="text-gold hover:text-gold/70 transition-colors"
+                                  title="Unfavorite"
+                                >
+                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                  </svg>
+                                </button>
+                              </td>
+                              <td className="py-3 px-4 text-gold font-body font-semibold">{card.deck}</td>
+                              <td className="py-3 px-4 text-gold font-body">
+                                {card.playerColor === 'red' ? 'Red' : card.playerColor === 'blue' ? 'Blue' : card.playerColor === 'any' ? 'Any' : 'Neutral'}
+                              </td>
+                              <td className="py-3 px-4">
+                                <button
+                                  onClick={() => handleEdit(card)}
+                                  className="text-gold font-display font-semibold hover:text-velvet transition-colors text-left"
+                                >
+                                  {card.title}
+                                </button>
+                              </td>
+                              <td className="py-3 px-4">
+                                <p className="text-gold font-body text-sm max-w-md">{card.description}</p>
+                              </td>
+                              <td className="py-3 px-4">
+                                {card.isCustom ? (
+                                  <span className="px-2 py-1 bg-blue-600 text-white text-xs font-body rounded">Custom</span>
+                                ) : (
+                                  <span className="px-2 py-1 bg-gray-600 text-white text-xs font-body rounded">Base</span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
           </div>

@@ -3,6 +3,8 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import cardsData from '@/data/cards.json'
 import { useAuthStore } from './authStore'
 import type { GameSessionRow } from '@/lib/supabase/sessions'
+import { getSupabaseClient } from '@/lib/supabase/client'
+import { fetchUserFavoriteIds, addFavorite, removeFavorite } from '@/lib/supabase/favorites'
 
 export type DeckLetter = 'A' | 'B' | 'C' | 'D' | 'black'
 export type PlayerColor = 'red' | 'blue' | 'any'
@@ -69,6 +71,7 @@ interface GameState {
   cardOverrides: Record<string, Partial<Card>> // Stores edits and enabled state for base cards (local mode)
   sessionDisabledCardIds: Set<string> // NOT persisted, resets on game reset/end
   presets: Preset[] // Persisted in localStorage
+  favoriteCardIds: Set<string> // NOT persisted — rebuilt from DB (cloud) or cardOverrides (guest) on load
 }
 
 interface GameActions {
@@ -92,6 +95,7 @@ interface GameActions {
   resetToDefaultDeck: () => void
   removeCardFromSession: (id: string) => void
   toggleFavorite: (id: string) => Promise<void>
+  loadFavoritesForUser: () => Promise<void>
   savePreset: (preset: Omit<Preset, 'id'>) => void
   loadPreset: (presetId: string) => void
   deletePreset: (presetId: string) => void
@@ -249,6 +253,7 @@ const initialState: GameState = {
   cardOverrides: loadCardOverrides(),
   sessionDisabledCardIds: new Set<string>(),
   presets: loadPresets(),
+  favoriteCardIds: new Set<string>(),
 }
 
 export const useGameStore = create<GameState & GameActions>()(
@@ -673,32 +678,56 @@ export const useGameStore = create<GameState & GameActions>()(
         set({ sessionDisabledCardIds: newSessionDisabled })
       },
 
-      toggleFavorite: async (id: string) => {
-        const { customCards, cardOverrides, cloudCards } = get()
+      toggleFavorite: async (cardId: string) => {
         const authStore = useAuthStore.getState()
-        const mode = authStore.mode
+        const { favoriteCardIds } = get()
+        const isFav = favoriteCardIds.has(cardId)
 
-        // Find current favorite state
-        let currentFavorite = false
-        const isCustomCard = customCards.some(c => c.id === id) || 
-                            (mode === 'cloud' && cloudCards.user.some(c => c.id === id))
-
-        if (isCustomCard) {
-          const card = customCards.find(c => c.id === id) || 
-                      (mode === 'cloud' ? cloudCards.user.find(c => c.id === id) : null)
-          currentFavorite = card?.isFavorite === true
+        if (authStore.isAuthenticated && authStore.user) {
+          const { client } = getSupabaseClient()
+          if (client) {
+            const userId = authStore.user.id
+            const ok = isFav
+              ? await removeFavorite(client, userId, cardId)
+              : await addFavorite(client, userId, cardId)
+            if (!ok) return
+          }
         } else {
-          const baseCard = mode === 'cloud' 
-            ? cloudCards.global.find(c => c.id === id)
-            : (cardsData as Card[]).find(c => c.id === id)
-          const override = cardOverrides[id]
-          currentFavorite = override?.isFavorite !== undefined 
-            ? override.isFavorite === true 
-            : (baseCard?.isFavorite === true)
+          // Guest fallback: persist via cardOverrides isFavorite field
+          const { cardOverrides } = get()
+          const existing = cardOverrides[cardId] ?? {}
+          const updated = { ...existing, isFavorite: !isFav }
+          const next = { ...cardOverrides, [cardId]: updated }
+          set({ cardOverrides: next })
+          try { localStorage.setItem('cardOverrides', JSON.stringify(next)) } catch { /* ignore */ }
         }
 
-        // Toggle favorite
-        await get().updateCard(id, { isFavorite: !currentFavorite })
+        const next = new Set(favoriteCardIds)
+        if (isFav) next.delete(cardId)
+        else next.add(cardId)
+        set({ favoriteCardIds: next })
+      },
+
+      loadFavoritesForUser: async () => {
+        const authStore = useAuthStore.getState()
+
+        if (authStore.isAuthenticated && authStore.user) {
+          const { client } = getSupabaseClient()
+          if (client) {
+            const ids = await fetchUserFavoriteIds(client, authStore.user.id)
+            set({ favoriteCardIds: new Set(ids) })
+            return
+          }
+        }
+
+        // Guest fallback: read isFavorite from cardOverrides
+        const { cardOverrides } = get()
+        const guestFavs = new Set(
+          Object.entries(cardOverrides)
+            .filter(([, v]) => v.isFavorite === true)
+            .map(([k]) => k)
+        )
+        set({ favoriteCardIds: guestFavs })
       },
 
       savePreset: (preset: Omit<Preset, 'id'>) => {

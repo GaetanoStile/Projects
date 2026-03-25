@@ -10,6 +10,7 @@ import Hud from '@/components/Hud'
 import gameplayBackground from '@/assets/gameplay-background.png'
 import { playButtonClickSoundFromEvent } from '@/lib/sound'
 import { useGameplayMusic } from '@/hooks/useGameplayMusic'
+import { useFavorites } from '@/hooks/useFavorites'
 
 type SaveStatus = 'idle' | 'saving' | 'saved'
 
@@ -35,6 +36,7 @@ export default function Game() {
   const savedDisplayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useGameplayMusic(settings.musicEnabled)
+  useFavorites()
 
   useEffect(() => {
     if (!currentPlayer) {

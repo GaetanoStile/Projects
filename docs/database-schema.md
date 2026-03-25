@@ -274,6 +274,38 @@ create policy "Admins can manage global cards"
   );
 ```
 
+## `user_favorite_cards` Table
+
+Stores per-user favorite card associations (join table).
+
+```sql
+create table public.user_favorite_cards (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  card_id text not null,
+  created_at timestamptz default now(),
+  unique(user_id, card_id)
+);
+
+alter table public.user_favorite_cards enable row level security;
+
+create policy "Users can manage own favorites"
+  on public.user_favorite_cards
+  for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+create index if not exists idx_user_favorite_cards_user
+  on public.user_favorite_cards(user_id);
+```
+
+| Column | Type | Notes |
+|--------|------|-------|
+| id | uuid | Primary key |
+| user_id | uuid | References auth.users |
+| card_id | text | ID of the favorited card (base or custom) |
+| created_at | timestamptz | When the card was favorited |
+
 ## Migration Notes
 
 - The app will automatically create a `users_profile` row when a user signs up
