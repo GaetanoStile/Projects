@@ -17,6 +17,8 @@ import Admin from './pages/Admin'
 import HowToPlay from './pages/HowToPlay'
 import Disclaimer from './pages/Disclaimer'
 import Library from './pages/Library'
+import Beta from './pages/Beta'
+import Collaborate from './pages/Collaborate'
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/beta" element={<Beta />} />
+          <Route path="/collaborate" element={<Collaborate />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/how-to-play" element={<HowToPlay />} />
           <Route path="/create" element={<Create />} />
