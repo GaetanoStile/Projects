@@ -19,6 +19,8 @@ import Disclaimer from './pages/Disclaimer'
 import Library from './pages/Library'
 import Beta from './pages/Beta'
 import Collaborate from './pages/Collaborate'
+import Pricing from './pages/Pricing'
+import CheckoutSuccess from './pages/CheckoutSuccess'
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
           <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/beta" element={<Beta />} />
           <Route path="/collaborate" element={<Collaborate />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/success" element={<CheckoutSuccess />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/how-to-play" element={<HowToPlay />} />
           <Route path="/create" element={<Create />} />

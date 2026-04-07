@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -426,14 +426,12 @@ export default function Settings() {
                       <p className="text-gold font-body text-sm mb-3 font-semibold">
                         Upgrade to unlock premium features
                       </p>
-                      <button
-                        type="button"
-                        disabled
-                        className="w-full px-5 py-3 bg-gradient-to-r from-gold to-gold/70 text-velvet font-display rounded-lg opacity-70 cursor-not-allowed text-sm"
-                        title="Payment coming soon"
+                      <Link
+                        to="/pricing"
+                        className="block w-full px-5 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all text-sm"
                       >
-                        Upgrade — Coming Soon
-                      </button>
+                        Unlock Premium
+                      </Link>
                     </div>
                   )}
                 </div>
