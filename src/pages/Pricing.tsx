@@ -139,10 +139,16 @@ export default function Pricing() {
               </ul>
 
               {alreadyPaid ? (
-                <div className="text-center py-3">
+                <div className="text-center py-3 space-y-4">
                   <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600/20 text-emerald-700 rounded-lg font-body text-sm font-semibold">
                     <CheckIcon /> Active Plan
                   </span>
+                  <Link
+                    to="/library"
+                    className="block w-full px-6 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display text-sm rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
+                  >
+                    Browse Community Library
+                  </Link>
                 </div>
               ) : (
                 <div>

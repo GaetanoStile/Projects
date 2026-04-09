@@ -420,6 +420,16 @@ export default function Settings() {
                     ))}
                   </ul>
 
+                  {/* Paid user — Library link */}
+                  {isPaidPlan(planTier) && (
+                    <Link
+                      to="/library"
+                      className="block w-full px-5 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all text-sm text-center"
+                    >
+                      Browse Community Library
+                    </Link>
+                  )}
+
                   {/* Upgrade CTA — free users only */}
                   {!isPaidPlan(planTier) && (
                     <div className="rounded-lg border border-gold/40 bg-gradient-to-br from-gold/10 to-gold/5 p-4 text-center">

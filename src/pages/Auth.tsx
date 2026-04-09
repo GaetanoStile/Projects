@@ -40,6 +40,20 @@ export default function Auth() {
                 Guest mode is still available if you want to explore first.
               </div>
             </div>
+
+            {/* Premium upsell */}
+            <div className="mt-8 rounded-2xl border border-gold/20 bg-gold/[0.06] px-6 py-5">
+              <p className="font-display text-lg gold-text mb-2">Upgrade to Premium</p>
+              <p className="text-sm text-white/60 font-body mb-4">
+                Unlock the Community Library, import shared cards, and get access to premium content.
+              </p>
+              <Link
+                to="/pricing"
+                className="inline-flex items-center gap-2 text-sm font-display text-gold hover:text-gold/80 transition"
+              >
+                View Plans &rarr;
+              </Link>
+            </div>
           </motion.div>
 
           <motion.div
