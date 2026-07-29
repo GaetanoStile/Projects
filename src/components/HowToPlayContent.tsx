@@ -56,7 +56,7 @@ export default function HowToPlayContent() {
             </ul>
           </li>
           <li>
-            When you have enough Swap Cards, the{' '}
+            When you hold <strong className="text-gold">2 or more Swap Cards</strong>, the{' '}
             <strong className="text-gold">Black deck</strong> becomes available.
           </li>
         </ul>

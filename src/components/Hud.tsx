@@ -10,25 +10,48 @@ export default function Hud() {
   // Per-player black deck access: based on cards currently held
   const blackAccessible = swapInventory[currentPlayer] >= 2
 
+  // currentPlayer draws from decks = Performer; the other player is Blindfolded (Caller)
+  const performerName =
+    currentPlayer === 'red' ? settings.playerRedName : settings.playerBlueName
+  const blindfoldedName =
+    currentPlayer === 'red' ? settings.playerBlueName : settings.playerRedName
+  // Blindfolded chip stays prominent; color matches the blindfolded player's side
+  const blindfoldedAccent =
+    currentPlayer === 'red'
+      ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white'
+      : 'bg-gradient-to-r from-red-600 to-red-800 text-white'
+  const performerAccent =
+    currentPlayer === 'red'
+      ? 'bg-red-900/40 text-red-100 border border-red-400/30'
+      : 'bg-blue-900/40 text-blue-100 border border-blue-400/30'
+
   return (
     <div className="parchment-bg rounded-lg p-4 md:p-6 glow-warm">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Current Player Chip */}
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-body text-gold uppercase tracking-wider font-semibold">Current Turn:</span>
-          <div
-            className={`px-4 py-2 rounded-full font-display text-lg ${
-              currentPlayer === 'red'
-                ? 'bg-gradient-to-r from-red-600 to-red-800 text-white'
-                : 'bg-gradient-to-r from-blue-600 to-blue-800 text-white'
-            }`}
-            style={{
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-            }}
-          >
-            {currentPlayer === 'red' 
-              ? `${settings.playerRedName} (Red)` 
-              : `${settings.playerBlueName} (Blue)`}
+        {/* Roles: Blindfolded (Caller) + Performer */}
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-body text-gold uppercase tracking-wider font-semibold">
+              Blindfolded:
+            </span>
+            <div
+              className={`px-4 py-2 rounded-full font-display text-lg ${blindfoldedAccent}`}
+              style={{
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              {blindfoldedName}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-body text-gold/70 uppercase tracking-wider font-semibold">
+              Performer:
+            </span>
+            <div
+              className={`px-4 py-2 rounded-full font-display text-base ${performerAccent}`}
+            >
+              {performerName}
+            </div>
           </div>
         </div>
 
@@ -63,4 +86,3 @@ export default function Hud() {
     </div>
   )
 }
-
