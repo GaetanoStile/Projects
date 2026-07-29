@@ -140,8 +140,13 @@ export default function Game() {
             Couples Game
           </h1>
           <p className="text-lg md:text-xl text-white/90 font-body">
-            {(currentPlayer === 'red' ? settings.playerBlueName : settings.playerRedName)} is
-            blindfolded — call a deck
+            <span className="text-gold font-semibold">
+              {currentPlayer === 'red' ? settings.playerBlueName : settings.playerRedName}
+            </span>{' '}
+            is blindfolded — call a deck.{" "}
+            <span className="text-white/70">
+              {currentPlayer === 'red' ? settings.playerRedName : settings.playerBlueName} draws.
+            </span>
           </p>
         </div>
 
