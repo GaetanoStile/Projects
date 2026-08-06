@@ -82,6 +82,21 @@ export default function Card({
     <motion.div
       className="card-perspective cursor-pointer"
       onClick={handleClick}
+      role="button"
+      tabIndex={disabled ? -1 : 0}
+      aria-disabled={disabled}
+      aria-label={
+        isBlack
+          ? `Draw from black deck${remainingCount !== undefined ? `, ${remainingCount} remaining` : ''}`
+          : `Draw from deck ${letter}${remainingCount !== undefined ? `, ${remainingCount} remaining` : ''}`
+      }
+      onKeyDown={(e) => {
+        if (disabled) return
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handleClick()
+        }
+      }}
       whileHover={!disabled ? { scale: 1.05 } : {}}
       whileTap={!disabled ? { scale: 0.95 } : {}}
       style={{

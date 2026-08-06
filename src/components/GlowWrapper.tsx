@@ -1,5 +1,5 @@
 import { motion, type HTMLMotionProps } from 'framer-motion'
-import { type ReactNode } from 'react'
+import { type CSSProperties, type ReactNode } from 'react'
 
 interface GlowWrapperProps {
   children: ReactNode
@@ -12,7 +12,7 @@ interface GlowWrapperProps {
   as?: 'div' | 'button'
   onClick?: () => void
   disabled?: boolean
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 export default function GlowWrapper({

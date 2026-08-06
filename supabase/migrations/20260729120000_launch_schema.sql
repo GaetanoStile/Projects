@@ -2,6 +2,18 @@
 -- Idempotent where possible (IF NOT EXISTS / DROP POLICY IF EXISTS)
 
 -- ---------------------------------------------------------------------------
+-- users_profile (required before cards admin policies)
+-- ---------------------------------------------------------------------------
+create table if not exists public.users_profile (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text,
+  display_name text,
+  plan_tier text default 'free',
+  is_admin boolean default false,
+  created_at timestamptz default now()
+);
+
+-- ---------------------------------------------------------------------------
 -- cards
 -- ---------------------------------------------------------------------------
 create table if not exists public.cards (
@@ -128,14 +140,15 @@ create index if not exists idx_game_sessions_user_active
   where is_completed = false;
 
 -- ---------------------------------------------------------------------------
--- users_profile RLS (may already exist)
+-- users_profile columns + RLS (may already exist on older DBs)
 -- ---------------------------------------------------------------------------
-alter table public.users_profile enable row level security;
-
 alter table public.users_profile add column if not exists email text;
 alter table public.users_profile add column if not exists plan_tier text default 'free';
 alter table public.users_profile add column if not exists is_admin boolean default false;
 alter table public.users_profile add column if not exists display_name text;
+alter table public.users_profile add column if not exists created_at timestamptz default now();
+
+alter table public.users_profile enable row level security;
 
 drop policy if exists "Users can read own profile" on public.users_profile;
 create policy "Users can read own profile"

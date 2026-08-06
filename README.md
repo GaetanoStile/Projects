@@ -1,80 +1,45 @@
-# Couples Game - V1
+# Couples Game
 
-A romantic card-based web application for couples to play together.
+Romantic card game for couples — React + TypeScript + Vite, Tailwind, Framer Motion, Zustand, Supabase, Stripe. Deployed on Vercel.
 
-## Features
+## Quick start
 
-- **Hero Page**: Elegant candlelit introduction
-- **Dice Roll**: Determine starting player
-- **Game Play**: Draw cards from personalized decks (A-D) with swap mechanics
-- **Black Deck**: Unlocks when a player collects 3 swap cards
-- **Local Storage**: Game state persists between sessions
-
-## Tech Stack
-
-- React 18 + TypeScript
-- Vite
-- Tailwind CSS
-- Framer Motion (animations)
-- Zustand (state management)
-- React Router
-
-## Setup
-
-1. Install dependencies:
 ```bash
 npm install
-```
-
-2. Start development server:
-```bash
+cp .env.example .env.local   # add Supabase / Stripe keys as needed
 npm run dev
 ```
 
-3. Build for production:
-```bash
-npm run build
-```
+Guest mode works without Supabase. Account features need `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
 
-## Project Structure
+## Scripts
 
-```
-/src
-  /assets       - Visual assets (textures, SVGs)
-  /components   - React components (Candle, Card, CardModal, DeckGrid, Hud)
-  /data         - Card data (cards.json)
-  /pages        - Page components (Hero, Dice, Game)
-  /state        - Zustand store (game state management)
-  /styles       - Global CSS styles
-```
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Local dev server |
+| `npm run build` | Typecheck + production build |
+| `npm run preview` | Preview production build |
+| `npm run lint` | ESLint |
 
-## Game Rules
+## Core flow
 
-1. Roll dice to determine starting player (even = blue/male, odd = red/female)
-2. Current player's decks (A-D) are displayed
-3. Draw cards from decks - each card has an action to perform
-4. Swap cards can be found in any deck - collect 3 to unlock the black deck
-5. Black deck contains special cards available to both players
-6. Cards never repeat within a session
+Marketing home → Auth / Try Now → Disclaimer → Settings → How to Play → Dice → Game
 
-## Performance
+- Decks **A–D** plus **Black** (unlocks with **2+ swap cards** in hand)
+- Swap cards go to inventory; using one ends the turn and switches roles
+- Card Manager (`/create`), presets, favorites, optional cloud sync
+- Premium: Community Library (`/library`) via Stripe subscription
 
-- Animation durations capped (flip: 0.42-0.45s, modal: 0.28-0.32s)
-- Assets optimized (<300KB combined)
-- CSS gradients used for backgrounds
-- `will-change` only on animated elements
+## Project status
 
-## Mobile Support
+See **[PROJECT_STATUS.md](./PROJECT_STATUS.md)** for beta readiness, known issues, and risks.
 
-- Touch-friendly tap targets (≥44px)
-- Responsive layout
-- Modal scroll lock on mobile
-- Portrait-optimized
+## Deployment
 
-## Future Enhancements (V3+)
+See **[docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)** for Vercel env vars, Supabase redirects, Stripe webhooks, and troubleshooting.
 
-- Supabase authentication
-- Custom card creation
-- Admin panel
-- Multi-session support
-- Remote play
+Database details: **[docs/database-schema.md](./docs/database-schema.md)**.
+
+## Tech stack
+
+React 18, TypeScript, Vite 5, Tailwind, Framer Motion, Zustand, React Router, Supabase Auth + Postgres, Stripe Checkout (Vercel serverless `api/`).

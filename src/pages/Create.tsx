@@ -1,5 +1,5 @@
 // Card Manager: View, edit, enable/disable all game cards
-import { useState, useMemo } from 'react'
+import { useState, useMemo, type ChangeEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
@@ -242,7 +242,7 @@ export default function Create() {
     }
   }
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const reader = new FileReader()

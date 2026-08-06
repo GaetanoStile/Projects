@@ -22,19 +22,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/src/assets/noise.png');
-  background-size: 200px 200px;
+  /* CSS grain — avoids missing /src/assets/noise.png requests in production */
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
   opacity: 0.08;
   pointer-events: none;
   z-index: 0;
-}
-
-/* Fallback if noise.png doesn't exist - use CSS pattern */
-@supports not (background-image: url('/src/assets/noise.png')) {
-  .candlelit-bg::before {
-    background-image: 
-      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
-  }
 }
 
 /* Velvet Table Surface */
@@ -63,19 +56,9 @@
   text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
 }
 
-/* Parchment Background */
+/* Parchment Background — CSS only (parchment.jpg not shipped) */
 .parchment-bg {
-  background: linear-gradient(135deg, #f4e4bc 0%, #e8d5a3 100%);
-  background-image: url('/src/assets/parchment.jpg');
-  background-size: cover;
-  background-blend-mode: overlay;
-}
-
-/* Fallback if parchment.jpg doesn't exist */
-@supports not (background-image: url('/src/assets/parchment.jpg')) {
-  .parchment-bg {
-    background: linear-gradient(135deg, #f4e4bc 0%, #e8d5a3 50%, #f0d9a0 100%);
-  }
+  background: linear-gradient(135deg, #f4e4bc 0%, #e8d5a3 50%, #f0d9a0 100%);
 }
 
 /* Warm Glow Shadow */

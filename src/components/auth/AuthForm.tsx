@@ -29,6 +29,7 @@ export default function AuthForm({
 }: AuthFormProps) {
   const [isSignUp, setIsSignUp] = useState(initialMode === 'signup')
   const [error, setError] = useState<string | null>(null)
+  const [info, setInfo] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { signUp, signIn } = useAuthStore()
   const navigate = useNavigate()
@@ -45,11 +46,13 @@ export default function AuthForm({
   useEffect(() => {
     setIsSignUp(initialMode === 'signup')
     setError(null)
+    setInfo(null)
     reset()
   }, [initialMode, reset])
 
   const onSubmit = async (data: AuthFormData) => {
     setError(null)
+    setInfo(null)
     setIsSubmitting(true)
 
     try {
@@ -59,6 +62,13 @@ export default function AuthForm({
 
       if (result.error) {
         setError(result.error)
+        return
+      }
+
+      if (result.message) {
+        setInfo(result.message)
+        setIsSignUp(false)
+        reset()
         return
       }
 
@@ -130,8 +140,14 @@ export default function AuthForm({
         </div>
 
         {error && (
-          <div className="p-3 bg-crimson/20 border border-crimson/50 rounded-lg">
+          <div className="p-3 bg-crimson/20 border border-crimson/50 rounded-lg" role="alert">
             <p className="text-crimson text-sm text-center">{error}</p>
+          </div>
+        )}
+
+        {info && (
+          <div className="p-3 bg-gold/15 border border-gold/40 rounded-lg" role="status">
+            <p className="text-gold text-sm text-center">{info}</p>
           </div>
         )}
 

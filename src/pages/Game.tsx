@@ -22,7 +22,7 @@ export default function Game() {
     isModalOpen,
     setIsModalOpen,
     resetGame,
-    useSwapCard,
+    useSwapCard: consumeSwapCard,
     swapInventory,
     settings,
     setSettings,
@@ -61,7 +61,7 @@ export default function Game() {
   }
 
   const handleUseSwapCard = async () => {
-    useSwapCard()
+    consumeSwapCard()
     if (isAuthenticated) {
       setSaveStatus('saving')
       await saveCurrentSession()
@@ -129,9 +129,11 @@ export default function Game() {
           )}
 
           <button
+            type="button"
             onClick={() => setShowHowToPlay(true)}
             className="absolute top-0 right-0 w-10 h-10 flex items-center justify-center text-gold/50 hover:text-gold hover:bg-gold/10 transition-colors rounded-full font-display text-lg"
             title="How to Play"
+            aria-label="How to Play"
             style={{ minWidth: '44px', minHeight: '44px' }}
           >
             ?
@@ -156,7 +158,7 @@ export default function Game() {
         </div>
 
         {/* Card Table Surface */}
-        <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-8 md:p-12 mb-8">
+        <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-4 sm:p-8 md:p-12 mb-8">
           <DeckGrid />
         </div>
 
