@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { SUBSTACK_URL } from '@/lib/routes'
 
 const journalEntries = [
   {
@@ -33,10 +33,18 @@ export default function BlogSection() {
           <div className="max-w-2xl">
             <p className="mb-3 text-sm uppercase tracking-[0.35em] text-gold/80">From The Journal</p>
             <h2 className="font-display text-4xl text-white sm:text-5xl">Stories, mood, and intimate inspiration.</h2>
+            <p className="mt-4 text-base leading-7 text-white/70 font-body max-w-xl">
+              Follow Couples Game on Substack for essays, behind-the-scenes notes, and beta updates.
+            </p>
           </div>
-          <Link to="/blog" className="text-sm font-semibold uppercase tracking-[0.28em] text-gold transition hover:text-[#f1d27b]">
-            Visit the blog
-          </Link>
+          <a
+            href={SUBSTACK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-gold to-gold/80 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-velvet transition hover:from-gold/90 hover:to-gold/70"
+          >
+            Read on Substack
+          </a>
         </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -58,13 +66,15 @@ export default function BlogSection() {
               <div className="p-6">
                 <h3 className="font-display text-2xl text-white">{entry.title}</h3>
                 <p className="mt-3 text-sm leading-7 text-white/72">{entry.description}</p>
-                <Link
-                  to="/blog"
+                <a
+                  href={SUBSTACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-gold transition hover:text-[#f1d27b]"
                 >
-                  Read More
+                  Read on Substack
                   <span aria-hidden="true">→</span>
-                </Link>
+                </a>
               </div>
             </motion.article>
           ))}
