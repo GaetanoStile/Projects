@@ -5,6 +5,7 @@ import { useAuthStore } from './authStore'
 import type { GameSessionRow } from '@/lib/supabase/sessions'
 import { getSupabaseClient } from '@/lib/supabase/client'
 import { fetchUserFavoriteIds, addFavorite, removeFavorite } from '@/lib/supabase/favorites'
+import { cardPassesTagFilter } from '@/lib/cardTags'
 
 export type DeckLetter = 'A' | 'B' | 'C' | 'D' | 'black'
 export type PlayerColor = 'red' | 'blue' | 'any'
@@ -16,10 +17,11 @@ export const AVAILABLE_TAGS = [
   'teasing',
   'oral',
   'toys',
+  'positions',
   'domination',
   'submission',
   'romantic',
-  'roleplay'
+  'roleplay',
 ] as const
 
 export type Tag = typeof AVAILABLE_TAGS[number]
@@ -47,6 +49,8 @@ export interface Settings {
   hasSeenHowToPlay: boolean
   soundEnabled: boolean
   musicEnabled: boolean
+  /** Tag categories turned off for gameplay — cards with any disabled tag are excluded. */
+  disabledTags: Tag[]
 }
 
 export interface Preset {
@@ -84,6 +88,7 @@ interface GameActions {
   setSelectedCard: (card: Card | null) => void
   setIsModalOpen: (open: boolean) => void
   setSettings: (settings: Partial<Settings>) => void
+  toggleTagForGameplay: (tag: Tag, enabled: boolean) => void
   addCustomCard: (card: Card) => void
   deleteCustomCard: (id: string) => void
   clearCustomCards: () => void
@@ -112,6 +117,7 @@ const defaultSettings: Settings = {
   hasSeenHowToPlay: false,
   soundEnabled: true,
   musicEnabled: true,
+  disabledTags: [],
 }
 
 // Load settings from localStorage with migration
@@ -128,6 +134,11 @@ const loadSettings = (): Settings => {
         hasSeenHowToPlay: parsed.hasSeenHowToPlay === true,
         soundEnabled: parsed.soundEnabled !== false,
         musicEnabled: parsed.musicEnabled !== false,
+        disabledTags: Array.isArray(parsed.disabledTags)
+          ? parsed.disabledTags.filter((t: unknown): t is Tag =>
+              typeof t === 'string' && (AVAILABLE_TAGS as readonly string[]).includes(t),
+            )
+          : defaultSettings.disabledTags,
       }
     }
   } catch (err) {
@@ -422,6 +433,17 @@ export const useGameStore = create<GameState & GameActions>()(
         }
       },
 
+      toggleTagForGameplay: (tag: Tag, enabled: boolean) => {
+        const { settings } = get()
+        const disabled = new Set(settings.disabledTags ?? [])
+        if (enabled) {
+          disabled.delete(tag)
+        } else {
+          disabled.add(tag)
+        }
+        get().setSettings({ disabledTags: Array.from(disabled) })
+      },
+
       addCustomCard: (card: Card) => {
         const { customCards } = get()
         const newCustomCards = [...customCards, card]
@@ -504,8 +526,14 @@ export const useGameStore = create<GameState & GameActions>()(
         
         // Filter out session-disabled cards
         const sessionEnabledCards = enabledCards.filter(card => !sessionDisabledCardIds.has(card.id))
-        
-        return sessionEnabledCards
+
+        // Filter out cards whose tags are disabled for this couple
+        const disabledTags = settings.disabledTags ?? []
+        const tagFilteredCards = sessionEnabledCards.filter(card =>
+          cardPassesTagFilter(card, disabledTags),
+        )
+
+        return tagFilteredCards
       },
 
       reshuffleAllDecks: () => {

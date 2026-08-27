@@ -1,189 +1,2177 @@
 [
-  {"id": "a-1", "title": "Soft Kiss", "description": "Softly kiss your partner's cheeks and nibble on their earlobes.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-2", "title": "Eskimo Kiss", "description": "Eskimo kiss your partner. Rub your nose against theirs and tease them by bringing your lips close but never touching.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-3", "title": "Neck Attack", "description": "Kiss your partner's neck, starting at the shoulders and kissing/licking your way up and around.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-4", "title": "Kiss Me Softly", "description": "Give your partner a soft kiss, pause, and repeat until they call another card.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-5", "title": "Have a Taste", "description": "Feed your partner something sweet from your mouth, then kiss them.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-6", "title": "Passionate Kiss", "description": "Kiss your partner intensely, touch their face, enjoy a make-out session, then give them room to pick another card.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-7", "title": "Sweet Lips", "description": "Put something sweet on your partner's lips and lick it off slowly.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-8", "title": "Vampire Kiss", "description": "Leave your mark with a love bite somewhere on their body.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-9", "title": "A New Kiss", "description": "Kiss your partner somewhere you've never kissed before (or a favorite spot). Spend time caressing that area with your tongue and kisses.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-10", "title": "Compliments", "description": "Give compliments and, after each one, kiss them in a different spot.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-11", "title": "Nibbles", "description": "Nibble your partner's ear. If they make no sound, they get to do it back to you.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-12", "title": "Taste Test", "description": "Feed your partner something sweet and ask them to guess. If they're right, perform oral for 20 seconds.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-13", "title": "Sip a Drink", "description": "Sip a drink, then pass it to your partner through a kiss. Lick up any accidental drips.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-14", "title": "Neck Massage", "description": "Massage your partner's neck with oil, starting at shoulders and moving up.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-15", "title": "Ice Kiss", "description": "Place an ice cube in your mouth and kiss your partner, passing the cube back and forth until it melts.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-16", "title": "Inverted Kiss", "description": "Flip your partner so their head is closest to you; kiss them, then continue kissing down their whole body.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-17", "title": "The Lip Biter", "description": "Bite your partner's lip while kissing, massaging their lips with your teeth and tongue.", "deck": "A", "playerColor": "blue", "isSwapCard": false},
-  {"id": "a-18", "title": "Swap Card", "description": "Swap card: the blindfolded player can switch positions with their partner anytime and, while holding this card, may also draw from the Black deck.", "deck": "A", "playerColor": "blue", "isSwapCard": true},
-  {"id": "a-19", "title": "Swap Card", "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.", "deck": "A", "playerColor": "blue", "isSwapCard": true},
-  {"id": "e-1", "title": "Soft Kiss", "description": "Softly kiss your partner's cheeks and nibble on their earlobes.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-2", "title": "Eskimo Kiss", "description": "Eskimo kiss your partner. Rub your nose against theirs and tease them by bringing your lips close but never touching.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-3", "title": "Neck Attack", "description": "Kiss your partner's neck, starting at the shoulders and kissing/licking your way up and around.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-4", "title": "Kiss Me Softly", "description": "Give your partner a soft kiss, pause, and repeat until they call another card.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-5", "title": "Have a Taste", "description": "Feed your partner something sweet from your mouth, then kiss them.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-6", "title": "Passionate Kiss", "description": "Kiss your partner intensely, touch their face, enjoy a make-out session, then give them room to pick another card.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-7", "title": "Sweet Lips", "description": "Put something sweet on your partner's lips and lick it off slowly.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-8", "title": "Vampire Kiss", "description": "Leave your mark with a love bite somewhere on their body.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-9", "title": "A New Kiss", "description": "Kiss your partner somewhere you've never kissed before (or a favorite spot). Spend time caressing that area with your tongue and kisses.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-10", "title": "Compliments", "description": "Give compliments and, after each one, kiss them in a different spot.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-11", "title": "Nibbles", "description": "Nibble your partner's ear. If they make no sound, they get to do it back to you.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-12", "title": "Taste Test", "description": "Feed your partner something sweet and ask them to guess. If they're right, perform oral for 20 seconds.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-13", "title": "Sip a Drink", "description": "Sip a drink, then pass it to your partner through a kiss. Lick up any accidental drips.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-14", "title": "Neck Massage", "description": "Massage your partner's neck with oil, starting at shoulders and moving up.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-15", "title": "Ice Kiss", "description": "Place an ice cube in your mouth and kiss your partner, passing the cube back and forth until it melts.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-16", "title": "Inverted Kiss", "description": "Flip your partner so their head is closest to you; kiss them, then continue kissing down their whole body.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-17", "title": "The Lip Biter", "description": "Bite your partner's lip while kissing, massaging their lips with your teeth and tongue.", "deck": "A", "playerColor": "red", "isSwapCard": false},
-  {"id": "e-18", "title": "Swap Card", "description": "Swap card: the blindfolded player can switch positions with their partner anytime and, while holding this card, may also draw from the Black deck.", "deck": "A", "playerColor": "red", "isSwapCard": true},
-  {"id": "e-19", "title": "Swap Card", "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.", "deck": "A", "playerColor": "red", "isSwapCard": true},
-  {"id": "b-1", "title": "Hair Pull or Back Scratch", "description": "Gently pull their hair or use your nails to scratch slowly up their back while making out.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-2", "title": "Chest Massage", "description": "Massage their chest while kissing them.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-3", "title": "Feather Sensation", "description": "Use a feather/cloth/blanket to caress between their legs and up to their chest.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-4", "title": "In-Between Kiss", "description": "Bring your hips to their face and have them perform oral while you slowly move your hips.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-5", "title": "Slow Dance", "description": "Slow dance to a song, caressing and touching them everywhere as you move together.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-6", "title": "Simulate", "description": "With feather, fabric, or gentle touch, caress bare chest, sides, nipples, legs, inner thighs, and private areas.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-7", "title": "Oil Up", "description": "Undress your partner as you go and give a massage with oil, starting high on the neck and working down.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-8", "title": "Inner Kiss", "description": "Kiss their inner thighs and close to their privates, teasing them.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-9", "title": "Scratch Post", "description": "Lay them on their stomach and gently claw down their whole body with nails or an object.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-10", "title": "Spank It", "description": "Put them on all fours or over your lap and gently spank. If they don't call another card quickly, slowly increase intensity.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-11", "title": "Striptease", "description": "Remove their blindfold and sit them up. Slowly strip dance; if already naked, give a lap dance.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-12", "title": "Point and Kiss", "description": "Guide their hand to point at areas on their body; kiss each spot and remove clothes that get in the way.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-13", "title": "Chest Play", "description": "Use a vibrator or your tongue on nipples, chest, and stomach.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-14", "title": "Big Spoon", "description": "Place them on their side and spoon them from behind, kissing their neck while caressing all over.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-15", "title": "Something Sweet", "description": "Drizzle something sweet on their chest or inner thighs and lick it off slowly.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-16", "title": "Ice Kiss", "description": "Kiss a spot, then rub an ice cube over it; warm it back up with your tongue.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-17", "title": "Guess What", "description": "Spell a short word with your tongue on a body part. If they guess correctly, perform oral 10 seconds; if wrong, spank them twice.", "deck": "B", "playerColor": "blue", "isSwapCard": false},
-  {"id": "b-18", "title": "Bind Them Swap", "description": "Place them kneeling, hands behind back, and tie with what you have. Kiss them all over. This is also a Swap card (same swap effect).", "deck": "B", "playerColor": "blue", "isSwapCard": true},
-  {"id": "b-19", "title": "Swap Card", "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.", "deck": "B", "playerColor": "blue", "isSwapCard": true},
-  {"id": "f-1", "title": "Hair Pull or Back Scratch", "description": "Gently pull their hair or use nails to scratch slowly up their back while making out.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-2", "title": "Chest Massage", "description": "Massage their chest while kissing them.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-3", "title": "Feather Sensation", "description": "Use a feather/cloth/blanket to caress between their legs and up to their chest.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-4", "title": "In-Between Kiss", "description": "Bring your hips to their face and have them perform oral as you slowly move your hips.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-5", "title": "Slow Dance", "description": "Slow dance to a song, touching them everywhere as you move together.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-6", "title": "Simulate", "description": "With feather, fabric, or gentle touch, caress bare chest, sides, nipples, legs, inner thighs, and privates.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-7", "title": "Oil Up", "description": "Undress your partner as you go and give them a massage with oil from neck downward.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-8", "title": "Inner Kiss", "description": "Kiss their inner thighs and close to their privates, teasing them.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-9", "title": "Scratch Post", "description": "Lay them on their stomach and gently claw down their whole body.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-10", "title": "Spank It", "description": "Put them on all fours or over your lap and gently spank; if they don't call another card quickly, slowly hit harder.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-11", "title": "Striptease", "description": "Remove their blindfold, sit them up, and slowly strip dance; if already naked, give a lap dance.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-12", "title": "Point and Kiss", "description": "Have them point to areas on their body; kiss each area and remove clothes in the way.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-13", "title": "Chest Play", "description": "Use a vibrator or your tongue on nipples, chest, and stomach.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-14", "title": "Big Spoon", "description": "Place them on their side and spoon from behind, kissing their neck while caressing.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-15", "title": "Something Sweet", "description": "Drizzle something sweet on their chest or inner thighs and lick it off slowly.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-16", "title": "Ice Kiss", "description": "Kiss a spot, rub an ice cube over it, then warm it with your tongue.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-17", "title": "Guess What", "description": "Spell a short word with your tongue on their body. If they guess right, perform oral 10 seconds; if wrong, spank twice.", "deck": "B", "playerColor": "red", "isSwapCard": false},
-  {"id": "f-18", "title": "Bind Them Swap", "description": "Place them kneeling, hands tied behind back; kiss them all over in random spots. This is also a Swap card (same swap effect).", "deck": "B", "playerColor": "red", "isSwapCard": true},
-  {"id": "f-19", "title": "Swap Card", "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.", "deck": "B", "playerColor": "red", "isSwapCard": true},
-  {"id": "c-1", "title": "Lick It", "description": "Place something sweet around privates and have partner lick it off.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-2", "title": "Thrust and Hip", "description": "While you perform oral on them, have them gently thrust their hips; you can be under them as they kneel over you.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-3", "title": "Twerk", "description": "Partner lying down; you kneel over their hips facing their feet, remove blindfold, attempt to dance/twerk over them while they touch your ass.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-4", "title": "Body Shot", "description": "Pour a shot on belly or chest and lick/drink it off.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-5", "title": "Dice Time", "description": "Roll a die, multiply result by 5, perform oral for that many seconds.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-6", "title": "Hips Close", "description": "Lay her flat, bring hips close to her face, position near her mouth and slowly thrust as she opens.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-7", "title": "Vibing", "description": "Use a vibrator to massage outside of her pussy, lips, and around until she tells you where she likes it.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-8", "title": "Handy Class", "description": "Have her rub herself; then slide your hand under hers and copy her motion.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-9", "title": "69", "description": "Get into 69 position (on side or stacked), both partners performing oral at the same time.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-10", "title": "Chill", "description": "Place ice cube in your mouth and perform oral, alternating warm tongue and cold ice sensations.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-11", "title": "Vibing Seat", "description": "Use a vibrator or vibrating ring and press yourself against her clit, grinding slowly.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-12", "title": "From Behind", "description": "Place her on stomach; kiss from neck down between her legs, lift hips, perform oral from behind, using fingers and clit massage.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-13", "title": "Point and Lick", "description": "Have them point to any spot around their privates; lick and kiss that spot.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-14", "title": "Spiderman", "description": "Head at edge of bed; bring hips to their mouth and have them perform oral (spider-man style).", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-15", "title": "Spread", "description": "Lay her flat, spread her legs, lick her clit and finger her with a \"come here\" motion on upper wall.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-16", "title": "Finger Skills", "description": "Lay next to her and finger her, massaging top wall and slowly circling down and around.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-17", "title": "Vibe Make-Out", "description": "Use a vibrator on her while making out, rubbing and licking her nipples.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-18", "title": "Grinding", "description": "With her laying flat, face her feet, bring hips over hers and thrust your penis on her pussy.", "deck": "C", "playerColor": "blue", "isSwapCard": false},
-  {"id": "c-19", "title": "Swap Card", "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.", "deck": "C", "playerColor": "blue", "isSwapCard": true},
-  {"id": "g-1", "title": "Lick It", "description": "Place something sweet around privates and have partner lick it off.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-2", "title": "Saddle Up", "description": "Kneel over your partner's head, slowly rock back and forth while they perform oral; use hand on chest/stomach for balance.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-3", "title": "Twerk", "description": "Partner lying down; you kneel over their hips facing their feet, remove blindfold, attempt to dance/twerk over them while they touch your ass.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-4", "title": "Body Shot", "description": "Pour a shot on belly or chest and lick/drink it off.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-5", "title": "Dice Time", "description": "Roll a die, multiply result by 5, perform oral for that many seconds.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-6", "title": "Hips Close", "description": "Lay him flat, bring hips over his face, lower onto his mouth and move slowly back and forth.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-7", "title": "Vibing", "description": "Slowly rub vibrator around his penis, especially around the tip.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-8", "title": "Handy Class", "description": "Have him stroke himself; then take over and mimic his motion.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-9", "title": "69", "description": "Get into 69 position (on side or stacked), both partners performing oral at the same time.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-10", "title": "Chill", "description": "Place ice cube in your mouth and perform oral, alternating warm tongue and cold ice sensations.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-11", "title": "Vibing Seat", "description": "Have him hold vibrator (hand or mouth) while you lower yourself onto it and ride it.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-12", "title": "From Behind", "description": "Place him on stomach; kiss down his body, have him lift hips, and jerk him from behind.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-13", "title": "Point and Lick", "description": "Have them point to any spot around their privates; lick and kiss that spot.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-14", "title": "Spiderman", "description": "Head at edge of bed; bring hips to their mouth and have them perform oral (spider-man style).", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-15", "title": "Blow", "description": "Lay him flat; give him a blow job, massaging balls and touching chest/stomach.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-16", "title": "Head Massage", "description": "Lick and kiss just the head of his penis.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-17", "title": "Grinding", "description": "Lay him flat; grind your pussy on his penis or grind on his leg while kissing him.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-18", "title": "Watch Me", "description": "Remove his blindfold; kneel over him and masturbate while he watches.", "deck": "C", "playerColor": "red", "isSwapCard": false},
-  {"id": "g-19", "title": "Swap Card", "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.", "deck": "C", "playerColor": "red", "isSwapCard": true},
-  {"id": "d-1", "title": "Swap Card", "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.", "deck": "D", "playerColor": "blue", "isSwapCard": true},
-  {"id": "d-2", "title": "Reach Around Her", "description": "Have her kneel on the bed. Position behind her also kneeling, let her lean on you. Reach around between her legs and rub her in a circular motion. Use the free hand to freely feel her.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-3", "title": "Flat Iron Up", "description": "Place her belly down with a pillow under her hips to prop up her hips. Sit facing her hips, bring one arm up over her and under to rub clit and the other bring between her legs and finger and massage her g spot.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-4", "title": "Running Man", "description": "Lay her on her side with the lower leg slightly straight and the top leg bent up above her hips. Bring her hips to the edge of the bed. Now kneel on the floor by her hips and begin to eat her out switching from licking up and down and side to side.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-5", "title": "Pretzel", "description": "Lay her flat then curl her legs up toward her shoulders, have her hug her legs and place a pillow below her hips, then focus on her clit licking and sucking.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-6", "title": "Downward Tease", "description": "Position her on her knees in downward dog. Hips up and head down. Kneel behind her and bring her hips to the right height then tease her, gliding yourself hard between her legs without entering.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-7", "title": "Telescope", "description": "Place her on the edge of the bed facedown with her legs on the floor. Scoop under, place her thighs on your shoulders so her hips are right in your face allowing you to indulge and lick away.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-8", "title": "Hole in One", "description": "Place her on the bed flat facing up. Straddle her chest area right under her shoulders. Let her hands guide your hips. Thrust in her mouth kneeling over her head, let her guide your pace.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-9", "title": "Sideway 69", "description": "Place her sideways on the bed. Place your head by her hips and her head by yours. Wrap your arms under and around her hips and perform on each other.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-10", "title": "Clapping Dragon", "description": "Have her lay flat facing up with a pillow under her hips. Kneel aside her facing her hips. Use the two middle fingers to enter her and bring them up and down focusing on the front wall g spot. Use the other hand to apply downward pressure to her pelvic region.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-11", "title": "Rim Me", "description": "Her position is face down with her hips slightly up on a pillow. Open her cheeks and lick around the rim. Rub her clit with your thumb using a reach around.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-12", "title": "Upside Edge", "description": "Lay her face up with her head slightly over the edge of the bed. Standing, bring your hips to her face and thrust following her signaled pace and depth.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-13", "title": "Toy With Me", "description": "Lay her face up with her legs spread apart, pillow under her hips. Kneel between her legs. Hold her legs open and use yourself to tease her gliding on the outside between her legs.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-14", "title": "Buzz", "description": "Using a toy, have her lay face up and place the toy in her hands then guide her between her legs. Now let her move freely. Bring your head in and lick, tracing close to her toy following the same pattern.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-15", "title": "Standing Throne", "description": "Have her stand with legs slightly apart. Kneel down in front of her and place her hands on your head. Bring your head between her legs and lick and suck.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-16", "title": "Passionately Play", "description": "Lay next to her and begin making out. Lay her head on your bottom arm embracing her. Bring your top free arm between her legs using your fingers to go in and out with the come-here motion rubbing the front wall g spot.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-17", "title": "A Spot", "description": "Have her face down and enter her with your fingers rubbing the back wall slightly deep applying pressure.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-18", "title": "Classroom", "description": "Laying her before you legs spread, dive between her legs. Now have her point to a spot where she wants you to lick and using her fingers guide the rhythm as well.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "d-19", "title": "The Clock", "description": "Have her lay down on her back facing up. Finger her using one finger massaging the upper walls then move to 3 o'clock, then 6 o'clock, then 9 o'clock and back to 12. Find out which feels the best for her and go back to that position.", "deck": "D", "playerColor": "blue", "isSwapCard": false},
-  {"id": "h-1", "title": "Swap Card", "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.", "deck": "D", "playerColor": "red", "isSwapCard": true},
-  {"id": "h-2", "title": "Grind and Tease", "description": "Saddle up over his hips, have him erect between your legs then tease him by just rubbing yourself with his erect member on your vulva back and forth not letting him enter yet.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-3", "title": "Kneeling Lend", "description": "Have him kneel, now kneel behind him pressing your body against his. Then reach around between his legs and caress him, start slow and build up intensity.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-4", "title": "Surrender", "description": "Have him lie down facing up and have him raise both his arms. Place his arms now over his head. Now start at his head and work your way down his body kissing from his mouth to neck to chest to stomach to hips teasing him the closer you get to between his legs.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-5", "title": "Extra Hand", "description": "Have him sit up and you can remove his blindfold for this card. Take ahold of his dominant hand, caress and lick and suck his fingers. Then use his hand to caress your own body and then pleasure yourself using his hand.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-6", "title": "Slow 6-9", "description": "Lay him flat facing up and remove the blindfold for this card. Now kneeling over his lower legs facing away from him rock your hips side to side. Slowly and carefully crawl your way backwards to 69 position. Use your mouth and pleasure him until he calls for the next card.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-7", "title": "Aggressive Wall", "description": "Help him to his feet and walk him close to a wall standing. Now carefully shove him to lean on the wall. Begin to kiss his neck while pressing him against the wall, while jerking him with your hand.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-8", "title": "The Plank Challenge", "description": "Have him still blindfolded get into the push-up position on the floor, or kneeling push-up position. Now slide under him close to his hips. Begin to give him a blow job and have him lower his hips. Adjust as needed.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-9", "title": "Double Trouble", "description": "Position him seated with his legs out on the bed. Now facing him straddle his hips and sink your butt into the space between his legs. Remove his blindfold and place it on yourself just for this card. With one hand begin to pleasure yourself, and with the other grab ahold of his and begin to pleasure him.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-10", "title": "Guided Play", "description": "Have him lay back slightly propped up. While facing away from him, either lay on him or right next to him so that his arms and hands can reach you. Take your hands over his and guide them around your body teasing him as you get closer between your legs. Now guide him in pleasuring you showing him how you like it. Moan slightly as he hits the right spots.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-11", "title": "Downward Tease", "description": "Position him kneeling on the bed. Now position yourself on all fours with your head down. Have his hands placed on your hips. Reach up between your legs and grab his member and use it to rub only the outside of your vagina teasing him, never letting him enter.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-12", "title": "Favorite Seat", "description": "Lay him flat facing up with enough space away from the headboard. Now straddle his head and tell him to lick as you slowly rock. Hold the headboard or place your hands on the wall.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-13", "title": "Boss Lady", "description": "Have him kneel on the floor near the bed or chair facing away. Stand in front of him and place your hips in his face. Step one leg up on the bed or chair and tell him to lick. Grab his head and guide him to your favorite spots.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-14", "title": "Full Control", "description": "Tie his hands behind his back and if you have extra rope tie it from his hands to his ankles so he is kneeling with both sets of limbs secured behind him. Act a little rough: pull his hair, kiss him aggressively, grab his neck, scratch your nails into his chest and stomach. Now you have full control -- choose: give him a lubed-up hand job, or straddle him and have sex facing him or away.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-15", "title": "Booty Love", "description": "Have him kneel at the foot of the bed. Position yourself laying face down with a pillow under your hips. Place his hands on your hips and elevate your butt up. Bring his hand in between your cheeks. Lube yourself up and then using his hand show him how to rub in a circular motion.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-16", "title": "Hide and Go Buzz", "description": "While blindfolded have him stand at the foot of the bed. If you have a sex toy of your choosing turn it on and hand it to him. Tell him to wait. Now find a spot on the bed and lay in a position of your choosing. Tell him to come find you. Give him 10 seconds to find a place where that toy can give you pleasure.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-17", "title": "Mutual Buzz", "description": "Have him lay slightly propped up with some pillows then straddle his hips facing him. Take your favorite vibe toy and place it between your hips and his. Use your hips to grind gently while it's on, massaging both you and him in the right areas.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-18", "title": "69 Vibes", "description": "Lay him flat facing up, then straddle his head facing his hips. Bring your head over his hips. Now use a vibe toy to massage between his legs along with your mouth.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "h-19", "title": "Perfect Seat", "description": "Lay him sideways on the bed with his head hanging off slightly. If this is not possible, straddle his head kneeling on the bed. Standing over him, straddle his head and slowly lower your hips. Tell him to lick. Stay upright, massage his chest and rock your hips.", "deck": "D", "playerColor": "red", "isSwapCard": false},
-  {"id": "black-missionary", "title": "Missionary", "description": "Man on top; classic face-to-face position. Option: small pillow under hips.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-her-mission", "title": "Her Mission", "description": "Woman on top (standard cowgirl).", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-double-up", "title": "Double Up", "description": "Woman lying on top of his hips, facing upward as he thrusts from below.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-froggy", "title": "Froggy", "description": "Man on bottom, woman over him facing his feet while he thrusts up.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-rising-hips", "title": "Rising Hips", "description": "Man on top; lifts her hips while she hooks her legs around him.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-side-straddle", "title": "Side Straddle", "description": "She's on top, seated sideways while he holds her.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-standing-behind", "title": "Standing from Behind", "description": "She leans on a support while he enters from behind standing.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-flat-iron", "title": "Flat Iron", "description": "She lies flat on her stomach (optional pillow under hips) while he thrusts from behind.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-standing-face-to-face", "title": "Standing Face to Face", "description": "Both standing; he lifts one of her legs and thrusts (can brace her against wall).", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-her-69", "title": "Her 69", "description": "She's on top while both are in a 69.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-spooning", "title": "Spooning", "description": "He is big spoon as he enters from behind, using his hand to stimulate her.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-side-angle", "title": "Side Angle", "description": "Start in missionary, then roll to one side to change angle.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-doggy", "title": "Doggy", "description": "She's on all fours while he thrusts from behind; experiment with hip motions.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-cowgirl", "title": "Cowgirl", "description": "She rides on top, controlling movement.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-split", "title": "Split", "description": "He straddles one of her legs and enters at an angle.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-missionary-raised-hips", "title": "Missionary Raised Hips", "description": "Missionary with pillow lifting her hips.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-running-man", "title": "Running Man", "description": "She lies on her side with one leg up while he enters from above.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-in-control", "title": "In Control", "description": "She kneels while he goes down on her; she guides his head.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-legs-up", "title": "Legs Up", "description": "She's on bottom while he holds her legs up as he thrusts.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-lotus", "title": "Lotus", "description": "Both sit up as she straddles him; close, wrapped position.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-feet-on-chest", "title": "Feet on Chest", "description": "He's on top while she places her feet against his chest.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-sideways-lazy-doggy", "title": "Sideways Lazy Doggy", "description": "Both on their sides in a doggy-style orientation.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-open-show", "title": "Open Show", "description": "She's on top with her feet near his shoulders, opening herself to him.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-downward-lick", "title": "Downward Lick", "description": "She's in downward-dog position while he licks from behind.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-at-attention", "title": "At Attention", "description": "He stands while she kneels and gives him a blowjob.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-lap-dance", "title": "Lap Dance", "description": "He sits on a chair/couch while she sits/straddles him and grinds (lap dance).", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-hot-seat", "title": "Hot Seat", "description": "She sits on his lap facing away while he's seated.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-sideways-lick", "title": "Sideways Lick", "description": "Knees together to one side while he licks her.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-bizarro", "title": "Bizarro", "description": "Both lying sideways, facing opposite directions while she holds his legs.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-workout", "title": "Workout", "description": "He picks her up standing (lift position).", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-on-the-edge", "title": "On the Edge", "description": "Her hips at the edge of the bed while he stands and enters.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-bend-over", "title": "Bend Over", "description": "She bends over a bed or table while he thrusts from behind.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-reverse-cowgirl", "title": "Reverse Cowgirl", "description": "She rides on top facing his feet.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-magic-chair", "title": "Magic Chair", "description": "He sits up while she sits on him facing away; he grabs her and thrusts from below.", "deck": "black", "playerColor": "any", "isSwapCard": false},
-  {"id": "black-dinner-plate", "title": "Dinner Plate", "description": "She sits her hips on his chest and leans back on his legs.", "deck": "black", "playerColor": "any", "isSwapCard": false}
+  {
+    "id": "a-1",
+    "title": "Soft Kiss",
+    "description": "Softly kiss your partner's cheeks and nibble on their earlobes.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "a-2",
+    "title": "Eskimo Kiss",
+    "description": "Eskimo kiss your partner. Rub your nose against theirs and tease them by bringing your lips close but never touching.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "a-3",
+    "title": "Neck Attack",
+    "description": "Kiss your partner's neck, starting at the shoulders and kissing/licking your way up and around.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "a-4",
+    "title": "Kiss Me Softly",
+    "description": "Give your partner a soft kiss, pause, and repeat until they call another card.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "a-5",
+    "title": "Have a Taste",
+    "description": "Feed your partner something sweet from your mouth, then kiss them.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "a-6",
+    "title": "Passionate Kiss",
+    "description": "Kiss your partner intensely, touch their face, enjoy a make-out session, then give them room to pick another card.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "a-7",
+    "title": "Sweet Lips",
+    "description": "Put something sweet on your partner's lips and lick it off slowly.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "a-8",
+    "title": "Vampire Kiss",
+    "description": "Leave your mark with a love bite somewhere on their body.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "a-9",
+    "title": "A New Kiss",
+    "description": "Kiss your partner somewhere you've never kissed before (or a favorite spot). Spend time caressing that area with your tongue and kisses.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "a-10",
+    "title": "Compliments",
+    "description": "Give compliments and, after each one, kiss them in a different spot.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "a-11",
+    "title": "Nibbles",
+    "description": "Nibble your partner's ear. If they make no sound, they get to do it back to you.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "a-12",
+    "title": "Taste Test",
+    "description": "Feed your partner something sweet and ask them to guess. If they're right, perform oral for 20 seconds.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "a-13",
+    "title": "Sip a Drink",
+    "description": "Sip a drink, then pass it to your partner through a kiss. Lick up any accidental drips.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "a-14",
+    "title": "Neck Massage",
+    "description": "Massage your partner's neck with oil, starting at shoulders and moving up.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "massage",
+      "kissing"
+    ]
+  },
+  {
+    "id": "a-15",
+    "title": "Ice Kiss",
+    "description": "Place an ice cube in your mouth and kiss your partner, passing the cube back and forth until it melts.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "a-16",
+    "title": "Inverted Kiss",
+    "description": "Flip your partner so their head is closest to you; kiss them, then continue kissing down their whole body.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "a-17",
+    "title": "The Lip Biter",
+    "description": "Bite your partner's lip while kissing, massaging their lips with your teeth and tongue.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "a-18",
+    "title": "Swap Card",
+    "description": "Swap card: the blindfolded player can switch positions with their partner anytime and, while holding this card, may also draw from the Black deck.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": true
+  },
+  {
+    "id": "a-19",
+    "title": "Swap Card",
+    "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.",
+    "deck": "A",
+    "playerColor": "blue",
+    "isSwapCard": true
+  },
+  {
+    "id": "e-1",
+    "title": "Soft Kiss",
+    "description": "Softly kiss your partner's cheeks and nibble on their earlobes.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "e-2",
+    "title": "Eskimo Kiss",
+    "description": "Eskimo kiss your partner. Rub your nose against theirs and tease them by bringing your lips close but never touching.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "e-3",
+    "title": "Neck Attack",
+    "description": "Kiss your partner's neck, starting at the shoulders and kissing/licking your way up and around.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "e-4",
+    "title": "Kiss Me Softly",
+    "description": "Give your partner a soft kiss, pause, and repeat until they call another card.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "e-5",
+    "title": "Have a Taste",
+    "description": "Feed your partner something sweet from your mouth, then kiss them.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "e-6",
+    "title": "Passionate Kiss",
+    "description": "Kiss your partner intensely, touch their face, enjoy a make-out session, then give them room to pick another card.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "e-7",
+    "title": "Sweet Lips",
+    "description": "Put something sweet on your partner's lips and lick it off slowly.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "e-8",
+    "title": "Vampire Kiss",
+    "description": "Leave your mark with a love bite somewhere on their body.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "e-9",
+    "title": "A New Kiss",
+    "description": "Kiss your partner somewhere you've never kissed before (or a favorite spot). Spend time caressing that area with your tongue and kisses.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "e-10",
+    "title": "Compliments",
+    "description": "Give compliments and, after each one, kiss them in a different spot.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "e-11",
+    "title": "Nibbles",
+    "description": "Nibble your partner's ear. If they make no sound, they get to do it back to you.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "e-12",
+    "title": "Taste Test",
+    "description": "Feed your partner something sweet and ask them to guess. If they're right, perform oral for 20 seconds.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "e-13",
+    "title": "Sip a Drink",
+    "description": "Sip a drink, then pass it to your partner through a kiss. Lick up any accidental drips.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "e-14",
+    "title": "Neck Massage",
+    "description": "Massage your partner's neck with oil, starting at shoulders and moving up.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "massage",
+      "kissing"
+    ]
+  },
+  {
+    "id": "e-15",
+    "title": "Ice Kiss",
+    "description": "Place an ice cube in your mouth and kiss your partner, passing the cube back and forth until it melts.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "e-16",
+    "title": "Inverted Kiss",
+    "description": "Flip your partner so their head is closest to you; kiss them, then continue kissing down their whole body.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "e-17",
+    "title": "The Lip Biter",
+    "description": "Bite your partner's lip while kissing, massaging their lips with your teeth and tongue.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "e-18",
+    "title": "Swap Card",
+    "description": "Swap card: the blindfolded player can switch positions with their partner anytime and, while holding this card, may also draw from the Black deck.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": true
+  },
+  {
+    "id": "e-19",
+    "title": "Swap Card",
+    "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.",
+    "deck": "A",
+    "playerColor": "red",
+    "isSwapCard": true
+  },
+  {
+    "id": "b-1",
+    "title": "Hair Pull or Back Scratch",
+    "description": "Gently pull their hair or use your nails to scratch slowly up their back while making out.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "massage",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-2",
+    "title": "Chest Massage",
+    "description": "Massage their chest while kissing them.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "massage",
+      "kissing"
+    ]
+  },
+  {
+    "id": "b-3",
+    "title": "Feather Sensation",
+    "description": "Use a feather/cloth/blanket to caress between their legs and up to their chest.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "massage"
+    ]
+  },
+  {
+    "id": "b-4",
+    "title": "In-Between Kiss",
+    "description": "Bring your hips to their face and have them perform oral while you slowly move your hips.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-5",
+    "title": "Slow Dance",
+    "description": "Slow dance to a song, caressing and touching them everywhere as you move together.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "romantic",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-6",
+    "title": "Simulate",
+    "description": "With feather, fabric, or gentle touch, caress bare chest, sides, nipples, legs, inner thighs, and private areas.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "massage"
+    ]
+  },
+  {
+    "id": "b-7",
+    "title": "Oil Up",
+    "description": "Undress your partner as you go and give a massage with oil, starting high on the neck and working down.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "massage"
+    ]
+  },
+  {
+    "id": "b-8",
+    "title": "Inner Kiss",
+    "description": "Kiss their inner thighs and close to their privates, teasing them.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-9",
+    "title": "Scratch Post",
+    "description": "Lay them on their stomach and gently claw down their whole body with nails or an object.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "domination"
+    ]
+  },
+  {
+    "id": "b-10",
+    "title": "Spank It",
+    "description": "Put them on all fours or over your lap and gently spank. If they don't call another card quickly, slowly increase intensity.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "domination",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-11",
+    "title": "Striptease",
+    "description": "Remove their blindfold and sit them up. Slowly strip dance; if already naked, give a lap dance.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "roleplay",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-12",
+    "title": "Point and Kiss",
+    "description": "Guide their hand to point at areas on their body; kiss each spot and remove clothes that get in the way.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-13",
+    "title": "Chest Play",
+    "description": "Use a vibrator or your tongue on nipples, chest, and stomach.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-14",
+    "title": "Big Spoon",
+    "description": "Place them on their side and spoon them from behind, kissing their neck while caressing all over.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "romantic",
+      "massage"
+    ]
+  },
+  {
+    "id": "b-15",
+    "title": "Something Sweet",
+    "description": "Drizzle something sweet on their chest or inner thighs and lick it off slowly.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "b-16",
+    "title": "Ice Kiss",
+    "description": "Kiss a spot, then rub an ice cube over it; warm it back up with your tongue.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "kissing"
+    ]
+  },
+  {
+    "id": "b-17",
+    "title": "Guess What",
+    "description": "Spell a short word with your tongue on a body part. If they guess correctly, perform oral 10 seconds; if wrong, spank them twice.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing",
+      "domination"
+    ]
+  },
+  {
+    "id": "b-18",
+    "title": "Bind Them Swap",
+    "description": "Place them kneeling, hands behind back, and tie with what you have. Kiss them all over. This is also a Swap card (same swap effect).",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": true
+  },
+  {
+    "id": "b-19",
+    "title": "Swap Card",
+    "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.",
+    "deck": "B",
+    "playerColor": "blue",
+    "isSwapCard": true
+  },
+  {
+    "id": "f-1",
+    "title": "Hair Pull or Back Scratch",
+    "description": "Gently pull their hair or use nails to scratch slowly up their back while making out.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "massage",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-2",
+    "title": "Chest Massage",
+    "description": "Massage their chest while kissing them.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "massage",
+      "kissing"
+    ]
+  },
+  {
+    "id": "f-3",
+    "title": "Feather Sensation",
+    "description": "Use a feather/cloth/blanket to caress between their legs and up to their chest.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "massage"
+    ]
+  },
+  {
+    "id": "f-4",
+    "title": "In-Between Kiss",
+    "description": "Bring your hips to their face and have them perform oral as you slowly move your hips.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-5",
+    "title": "Slow Dance",
+    "description": "Slow dance to a song, touching them everywhere as you move together.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "romantic",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-6",
+    "title": "Simulate",
+    "description": "With feather, fabric, or gentle touch, caress bare chest, sides, nipples, legs, inner thighs, and privates.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "massage"
+    ]
+  },
+  {
+    "id": "f-7",
+    "title": "Oil Up",
+    "description": "Undress your partner as you go and give them a massage with oil from neck downward.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "massage"
+    ]
+  },
+  {
+    "id": "f-8",
+    "title": "Inner Kiss",
+    "description": "Kiss their inner thighs and close to their privates, teasing them.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-9",
+    "title": "Scratch Post",
+    "description": "Lay them on their stomach and gently claw down their whole body.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "domination"
+    ]
+  },
+  {
+    "id": "f-10",
+    "title": "Spank It",
+    "description": "Put them on all fours or over your lap and gently spank; if they don't call another card quickly, slowly hit harder.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "domination",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-11",
+    "title": "Striptease",
+    "description": "Remove their blindfold, sit them up, and slowly strip dance; if already naked, give a lap dance.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "roleplay",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-12",
+    "title": "Point and Kiss",
+    "description": "Have them point to areas on their body; kiss each area and remove clothes in the way.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "kissing",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-13",
+    "title": "Chest Play",
+    "description": "Use a vibrator or your tongue on nipples, chest, and stomach.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-14",
+    "title": "Big Spoon",
+    "description": "Place them on their side and spoon from behind, kissing their neck while caressing.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "romantic",
+      "massage"
+    ]
+  },
+  {
+    "id": "f-15",
+    "title": "Something Sweet",
+    "description": "Drizzle something sweet on their chest or inner thighs and lick it off slowly.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "f-16",
+    "title": "Ice Kiss",
+    "description": "Kiss a spot, rub an ice cube over it, then warm it with your tongue.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "kissing"
+    ]
+  },
+  {
+    "id": "f-17",
+    "title": "Guess What",
+    "description": "Spell a short word with your tongue on their body. If they guess right, perform oral 10 seconds; if wrong, spank twice.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing",
+      "domination"
+    ]
+  },
+  {
+    "id": "f-18",
+    "title": "Bind Them Swap",
+    "description": "Place them kneeling, hands tied behind back; kiss them all over in random spots. This is also a Swap card (same swap effect).",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": true
+  },
+  {
+    "id": "f-19",
+    "title": "Swap Card",
+    "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.",
+    "deck": "B",
+    "playerColor": "red",
+    "isSwapCard": true
+  },
+  {
+    "id": "c-1",
+    "title": "Lick It",
+    "description": "Place something sweet around privates and have partner lick it off.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-2",
+    "title": "Thrust and Hip",
+    "description": "While you perform oral on them, have them gently thrust their hips; you can be under them as they kneel over you.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "c-3",
+    "title": "Twerk",
+    "description": "Partner lying down; you kneel over their hips facing their feet, remove blindfold, attempt to dance/twerk over them while they touch your ass.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "roleplay",
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-4",
+    "title": "Body Shot",
+    "description": "Pour a shot on belly or chest and lick/drink it off.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-5",
+    "title": "Dice Time",
+    "description": "Roll a die, multiply result by 5, perform oral for that many seconds.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral"
+    ]
+  },
+  {
+    "id": "c-6",
+    "title": "Hips Close",
+    "description": "Lay her flat, bring hips close to her face, position near her mouth and slowly thrust as she opens.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "c-7",
+    "title": "Vibing",
+    "description": "Use a vibrator to massage outside of her pussy, lips, and around until she tells you where she likes it.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-8",
+    "title": "Handy Class",
+    "description": "Have her rub herself; then slide your hand under hers and copy her motion.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-9",
+    "title": "69",
+    "description": "Get into 69 position (on side or stacked), both partners performing oral at the same time.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "c-10",
+    "title": "Chill",
+    "description": "Place ice cube in your mouth and perform oral, alternating warm tongue and cold ice sensations.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-11",
+    "title": "Vibing Seat",
+    "description": "Use a vibrator or vibrating ring and press yourself against her clit, grinding slowly.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-12",
+    "title": "From Behind",
+    "description": "Place her on stomach; kiss from neck down between her legs, lift hips, perform oral from behind, using fingers and clit massage.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "c-13",
+    "title": "Point and Lick",
+    "description": "Have them point to any spot around their privates; lick and kiss that spot.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-14",
+    "title": "Spiderman",
+    "description": "Head at edge of bed; bring hips to their mouth and have them perform oral (spider-man style).",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "c-15",
+    "title": "Spread",
+    "description": "Lay her flat, spread her legs, lick her clit and finger her with a \"come here\" motion on upper wall.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral"
+    ]
+  },
+  {
+    "id": "c-16",
+    "title": "Finger Skills",
+    "description": "Lay next to her and finger her, massaging top wall and slowly circling down and around.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "c-17",
+    "title": "Vibe Make-Out",
+    "description": "Use a vibrator on her while making out, rubbing and licking her nipples.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "oral"
+    ]
+  },
+  {
+    "id": "c-18",
+    "title": "Grinding",
+    "description": "With her laying flat, face her feet, bring hips over hers and thrust your penis on her pussy.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "positions"
+    ]
+  },
+  {
+    "id": "c-19",
+    "title": "Swap Card",
+    "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.",
+    "deck": "C",
+    "playerColor": "blue",
+    "isSwapCard": true
+  },
+  {
+    "id": "g-1",
+    "title": "Lick It",
+    "description": "Place something sweet around privates and have partner lick it off.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-2",
+    "title": "Saddle Up",
+    "description": "Kneel over your partner's head, slowly rock back and forth while they perform oral; use hand on chest/stomach for balance.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "g-3",
+    "title": "Twerk",
+    "description": "Partner lying down; you kneel over their hips facing their feet, remove blindfold, attempt to dance/twerk over them while they touch your ass.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "roleplay",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-4",
+    "title": "Body Shot",
+    "description": "Pour a shot on belly or chest and lick/drink it off.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-5",
+    "title": "Dice Time",
+    "description": "Roll a die, multiply result by 5, perform oral for that many seconds.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral"
+    ]
+  },
+  {
+    "id": "g-6",
+    "title": "Hips Close",
+    "description": "Lay him flat, bring hips over his face, lower onto his mouth and move slowly back and forth.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "g-7",
+    "title": "Vibing",
+    "description": "Slowly rub vibrator around his penis, especially around the tip.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-8",
+    "title": "Handy Class",
+    "description": "Have him stroke himself; then take over and mimic his motion.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-9",
+    "title": "69",
+    "description": "Get into 69 position (on side or stacked), both partners performing oral at the same time.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "g-10",
+    "title": "Chill",
+    "description": "Place ice cube in your mouth and perform oral, alternating warm tongue and cold ice sensations.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-11",
+    "title": "Vibing Seat",
+    "description": "Have him hold vibrator (hand or mouth) while you lower yourself onto it and ride it.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-12",
+    "title": "From Behind",
+    "description": "Place him on stomach; kiss down his body, have him lift hips, and jerk him from behind.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "g-13",
+    "title": "Point and Lick",
+    "description": "Have them point to any spot around their privates; lick and kiss that spot.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-14",
+    "title": "Spiderman",
+    "description": "Head at edge of bed; bring hips to their mouth and have them perform oral (spider-man style).",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "g-15",
+    "title": "Blow",
+    "description": "Lay him flat; give him a blow job, massaging balls and touching chest/stomach.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral"
+    ]
+  },
+  {
+    "id": "g-16",
+    "title": "Head Massage",
+    "description": "Lick and kiss just the head of his penis.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-17",
+    "title": "Grinding",
+    "description": "Lay him flat; grind your pussy on his penis or grind on his leg while kissing him.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "positions"
+    ]
+  },
+  {
+    "id": "g-18",
+    "title": "Watch Me",
+    "description": "Remove his blindfold; kneel over him and masturbate while he watches.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "roleplay",
+      "teasing"
+    ]
+  },
+  {
+    "id": "g-19",
+    "title": "Swap Card",
+    "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.",
+    "deck": "C",
+    "playerColor": "red",
+    "isSwapCard": true
+  },
+  {
+    "id": "d-1",
+    "title": "Swap Card",
+    "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": true
+  },
+  {
+    "id": "d-2",
+    "title": "Reach Around Her",
+    "description": "Have her kneel on the bed. Position behind her also kneeling, let her lean on you. Reach around between her legs and rub her in a circular motion. Use the free hand to freely feel her.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-3",
+    "title": "Flat Iron Up",
+    "description": "Place her belly down with a pillow under her hips to prop up her hips. Sit facing her hips, bring one arm up over her and under to rub clit and the other bring between her legs and finger and massage her g spot.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-4",
+    "title": "Running Man",
+    "description": "Lay her on her side with the lower leg slightly straight and the top leg bent up above her hips. Bring her hips to the edge of the bed. Now kneel on the floor by her hips and begin to eat her out switching from licking up and down and side to side.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-5",
+    "title": "Pretzel",
+    "description": "Lay her flat then curl her legs up toward her shoulders, have her hug her legs and place a pillow below her hips, then focus on her clit licking and sucking.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-6",
+    "title": "Downward Tease",
+    "description": "Position her on her knees in downward dog. Hips up and head down. Kneel behind her and bring her hips to the right height then tease her, gliding yourself hard between her legs without entering.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-7",
+    "title": "Telescope",
+    "description": "Place her on the edge of the bed facedown with her legs on the floor. Scoop under, place her thighs on your shoulders so her hips are right in your face allowing you to indulge and lick away.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-8",
+    "title": "Hole in One",
+    "description": "Place her on the bed flat facing up. Straddle her chest area right under her shoulders. Let her hands guide your hips. Thrust in her mouth kneeling over her head, let her guide your pace.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-9",
+    "title": "Sideway 69",
+    "description": "Place her sideways on the bed. Place your head by her hips and her head by yours. Wrap your arms under and around her hips and perform on each other.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-10",
+    "title": "Clapping Dragon",
+    "description": "Have her lay flat facing up with a pillow under her hips. Kneel aside her facing her hips. Use the two middle fingers to enter her and bring them up and down focusing on the front wall g spot. Use the other hand to apply downward pressure to her pelvic region.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-11",
+    "title": "Rim Me",
+    "description": "Her position is face down with her hips slightly up on a pillow. Open her cheeks and lick around the rim. Rub her clit with your thumb using a reach around.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-12",
+    "title": "Upside Edge",
+    "description": "Lay her face up with her head slightly over the edge of the bed. Standing, bring your hips to her face and thrust following her signaled pace and depth.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-13",
+    "title": "Toy With Me",
+    "description": "Lay her face up with her legs spread apart, pillow under her hips. Kneel between her legs. Hold her legs open and use yourself to tease her gliding on the outside between her legs.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "positions"
+    ]
+  },
+  {
+    "id": "d-14",
+    "title": "Buzz",
+    "description": "Using a toy, have her lay face up and place the toy in her hands then guide her between her legs. Now let her move freely. Bring your head in and lick, tracing close to her toy following the same pattern.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "oral"
+    ]
+  },
+  {
+    "id": "d-15",
+    "title": "Standing Throne",
+    "description": "Have her stand with legs slightly apart. Kneel down in front of her and place her hands on your head. Bring your head between her legs and lick and suck.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "domination"
+    ]
+  },
+  {
+    "id": "d-16",
+    "title": "Passionately Play",
+    "description": "Lay next to her and begin making out. Lay her head on your bottom arm embracing her. Bring your top free arm between her legs using your fingers to go in and out with the come-here motion rubbing the front wall g spot.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "romantic",
+      "oral"
+    ]
+  },
+  {
+    "id": "d-17",
+    "title": "A Spot",
+    "description": "Have her face down and enter her with your fingers rubbing the back wall slightly deep applying pressure.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral"
+    ]
+  },
+  {
+    "id": "d-18",
+    "title": "Classroom",
+    "description": "Laying her before you legs spread, dive between her legs. Now have her point to a spot where she wants you to lick and using her fingers guide the rhythm as well.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "submission"
+    ]
+  },
+  {
+    "id": "d-19",
+    "title": "The Clock",
+    "description": "Have her lay down on her back facing up. Finger her using one finger massaging the upper walls then move to 3 o'clock, then 6 o'clock, then 9 o'clock and back to 12. Find out which feels the best for her and go back to that position.",
+    "deck": "D",
+    "playerColor": "blue",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "teasing"
+    ]
+  },
+  {
+    "id": "h-1",
+    "title": "Swap Card",
+    "description": "Blindfolded player can switch positions with partner anytime and, when holding two or more swap cards, may also draw from the Black deck.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": true
+  },
+  {
+    "id": "h-2",
+    "title": "Grind and Tease",
+    "description": "Saddle up over his hips, have him erect between your legs then tease him by just rubbing yourself with his erect member on your vulva back and forth not letting him enter yet.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "positions"
+    ]
+  },
+  {
+    "id": "h-3",
+    "title": "Kneeling Lend",
+    "description": "Have him kneel, now kneel behind him pressing your body against his. Then reach around between his legs and caress him, start slow and build up intensity.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "submission"
+    ]
+  },
+  {
+    "id": "h-4",
+    "title": "Surrender",
+    "description": "Have him lie down facing up and have him raise both his arms. Place his arms now over his head. Now start at his head and work your way down his body kissing from his mouth to neck to chest to stomach to hips teasing him the closer you get to between his legs.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "submission",
+      "teasing",
+      "romantic"
+    ]
+  },
+  {
+    "id": "h-5",
+    "title": "Extra Hand",
+    "description": "Have him sit up and you can remove his blindfold for this card. Take ahold of his dominant hand, caress and lick and suck his fingers. Then use his hand to caress your own body and then pleasure yourself using his hand.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "domination",
+      "teasing"
+    ]
+  },
+  {
+    "id": "h-6",
+    "title": "Slow 6-9",
+    "description": "Lay him flat facing up and remove the blindfold for this card. Now kneeling over his lower legs facing away from him rock your hips side to side. Slowly and carefully crawl your way backwards to 69 position. Use your mouth and pleasure him until he calls for the next card.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "h-7",
+    "title": "Aggressive Wall",
+    "description": "Help him to his feet and walk him close to a wall standing. Now carefully shove him to lean on the wall. Begin to kiss his neck while pressing him against the wall, while jerking him with your hand.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "domination",
+      "oral"
+    ]
+  },
+  {
+    "id": "h-8",
+    "title": "The Plank Challenge",
+    "description": "Have him still blindfolded get into the push-up position on the floor, or kneeling push-up position. Now slide under him close to his hips. Begin to give him a blow job and have him lower his hips. Adjust as needed.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "roleplay"
+    ]
+  },
+  {
+    "id": "h-9",
+    "title": "Double Trouble",
+    "description": "Position him seated with his legs out on the bed. Now facing him straddle his hips and sink your butt into the space between his legs. Remove his blindfold and place it on yourself just for this card. With one hand begin to pleasure yourself, and with the other grab ahold of his and begin to pleasure him.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "oral"
+    ]
+  },
+  {
+    "id": "h-10",
+    "title": "Guided Play",
+    "description": "Have him lay back slightly propped up. While facing away from him, either lay on him or right next to him so that his arms and hands can reach you. Take your hands over his and guide them around your body teasing him as you get closer between your legs. Now guide him in pleasuring you showing him how you like it. Moan slightly as he hits the right spots.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "submission",
+      "teasing"
+    ]
+  },
+  {
+    "id": "h-11",
+    "title": "Downward Tease",
+    "description": "Position him kneeling on the bed. Now position yourself on all fours with your head down. Have his hands placed on your hips. Reach up between your legs and grab his member and use it to rub only the outside of your vagina teasing him, never letting him enter.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "domination",
+      "positions"
+    ]
+  },
+  {
+    "id": "h-12",
+    "title": "Favorite Seat",
+    "description": "Lay him flat facing up with enough space away from the headboard. Now straddle his head and tell him to lick as you slowly rock. Hold the headboard or place your hands on the wall.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "domination",
+      "positions"
+    ]
+  },
+  {
+    "id": "h-13",
+    "title": "Boss Lady",
+    "description": "Have him kneel on the floor near the bed or chair facing away. Stand in front of him and place your hips in his face. Step one leg up on the bed or chair and tell him to lick. Grab his head and guide him to your favorite spots.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "domination",
+      "oral"
+    ]
+  },
+  {
+    "id": "h-14",
+    "title": "Full Control",
+    "description": "Tie his hands behind his back and if you have extra rope tie it from his hands to his ankles so he is kneeling with both sets of limbs secured behind him. Act a little rough: pull his hair, kiss him aggressively, grab his neck, scratch your nails into his chest and stomach. Now you have full control -- choose: give him a lubed-up hand job, or straddle him and have sex facing him or away.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "domination",
+      "submission",
+      "positions",
+      "toys"
+    ]
+  },
+  {
+    "id": "h-15",
+    "title": "Booty Love",
+    "description": "Have him kneel at the foot of the bed. Position yourself laying face down with a pillow under your hips. Place his hands on your hips and elevate your butt up. Bring his hand in between your cheeks. Lube yourself up and then using his hand show him how to rub in a circular motion.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "teasing",
+      "toys"
+    ]
+  },
+  {
+    "id": "h-16",
+    "title": "Hide and Go Buzz",
+    "description": "While blindfolded have him stand at the foot of the bed. If you have a sex toy of your choosing turn it on and hand it to him. Tell him to wait. Now find a spot on the bed and lay in a position of your choosing. Tell him to come find you. Give him 10 seconds to find a place where that toy can give you pleasure.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "roleplay",
+      "toys"
+    ]
+  },
+  {
+    "id": "h-17",
+    "title": "Mutual Buzz",
+    "description": "Have him lay slightly propped up with some pillows then straddle his hips facing him. Take your favorite vibe toy and place it between your hips and his. Use your hips to grind gently while it's on, massaging both you and him in the right areas.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "toys",
+      "teasing"
+    ]
+  },
+  {
+    "id": "h-18",
+    "title": "69 Vibes",
+    "description": "Lay him flat facing up, then straddle his head facing his hips. Bring your head over his hips. Now use a vibe toy to massage between his legs along with your mouth.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "toys",
+      "positions"
+    ]
+  },
+  {
+    "id": "h-19",
+    "title": "Perfect Seat",
+    "description": "Lay him sideways on the bed with his head hanging off slightly. If this is not possible, straddle his head kneeling on the bed. Standing over him, straddle his head and slowly lower your hips. Tell him to lick. Stay upright, massage his chest and rock your hips.",
+    "deck": "D",
+    "playerColor": "red",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "domination",
+      "positions"
+    ]
+  },
+  {
+    "id": "black-missionary",
+    "title": "Missionary",
+    "description": "Man on top; classic face-to-face position. Option: small pillow under hips.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-her-mission",
+    "title": "Her Mission",
+    "description": "Woman on top (standard cowgirl).",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-double-up",
+    "title": "Double Up",
+    "description": "Woman lying on top of his hips, facing upward as he thrusts from below.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-froggy",
+    "title": "Froggy",
+    "description": "Man on bottom, woman over him facing his feet while he thrusts up.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-rising-hips",
+    "title": "Rising Hips",
+    "description": "Man on top; lifts her hips while she hooks her legs around him.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-side-straddle",
+    "title": "Side Straddle",
+    "description": "She's on top, seated sideways while he holds her.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-standing-behind",
+    "title": "Standing from Behind",
+    "description": "She leans on a support while he enters from behind standing.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-flat-iron",
+    "title": "Flat Iron",
+    "description": "She lies flat on her stomach (optional pillow under hips) while he thrusts from behind.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-standing-face-to-face",
+    "title": "Standing Face to Face",
+    "description": "Both standing; he lifts one of her legs and thrusts (can brace her against wall).",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-her-69",
+    "title": "Her 69",
+    "description": "She's on top while both are in a 69.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "black-spooning",
+    "title": "Spooning",
+    "description": "He is big spoon as he enters from behind, using his hand to stimulate her.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions",
+      "romantic"
+    ]
+  },
+  {
+    "id": "black-side-angle",
+    "title": "Side Angle",
+    "description": "Start in missionary, then roll to one side to change angle.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-doggy",
+    "title": "Doggy",
+    "description": "She's on all fours while he thrusts from behind; experiment with hip motions.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-cowgirl",
+    "title": "Cowgirl",
+    "description": "She rides on top, controlling movement.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-split",
+    "title": "Split",
+    "description": "He straddles one of her legs and enters at an angle.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-missionary-raised-hips",
+    "title": "Missionary Raised Hips",
+    "description": "Missionary with pillow lifting her hips.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-running-man",
+    "title": "Running Man",
+    "description": "She lies on her side with one leg up while he enters from above.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-in-control",
+    "title": "In Control",
+    "description": "She kneels while he goes down on her; she guides his head.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "domination",
+      "positions"
+    ]
+  },
+  {
+    "id": "black-legs-up",
+    "title": "Legs Up",
+    "description": "She's on bottom while he holds her legs up as he thrusts.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-lotus",
+    "title": "Lotus",
+    "description": "Both sit up as she straddles him; close, wrapped position.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions",
+      "romantic"
+    ]
+  },
+  {
+    "id": "black-feet-on-chest",
+    "title": "Feet on Chest",
+    "description": "He's on top while she places her feet against his chest.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-sideways-lazy-doggy",
+    "title": "Sideways Lazy Doggy",
+    "description": "Both on their sides in a doggy-style orientation.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-open-show",
+    "title": "Open Show",
+    "description": "She's on top with her feet near his shoulders, opening herself to him.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-downward-lick",
+    "title": "Downward Lick",
+    "description": "She's in downward-dog position while he licks from behind.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "black-at-attention",
+    "title": "At Attention",
+    "description": "He stands while she kneels and gives him a blowjob.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "black-lap-dance",
+    "title": "Lap Dance",
+    "description": "He sits on a chair/couch while she sits/straddles him and grinds (lap dance).",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "roleplay",
+      "teasing",
+      "positions"
+    ]
+  },
+  {
+    "id": "black-hot-seat",
+    "title": "Hot Seat",
+    "description": "She sits on his lap facing away while he's seated.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-sideways-lick",
+    "title": "Sideways Lick",
+    "description": "Knees together to one side while he licks her.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  },
+  {
+    "id": "black-bizarro",
+    "title": "Bizarro",
+    "description": "Both lying sideways, facing opposite directions while she holds his legs.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-workout",
+    "title": "Workout",
+    "description": "He picks her up standing (lift position).",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-on-the-edge",
+    "title": "On the Edge",
+    "description": "Her hips at the edge of the bed while he stands and enters.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-bend-over",
+    "title": "Bend Over",
+    "description": "She bends over a bed or table while he thrusts from behind.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-reverse-cowgirl",
+    "title": "Reverse Cowgirl",
+    "description": "She rides on top facing his feet.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-magic-chair",
+    "title": "Magic Chair",
+    "description": "He sits up while she sits on him facing away; he grabs her and thrusts from below.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "positions"
+    ]
+  },
+  {
+    "id": "black-dinner-plate",
+    "title": "Dinner Plate",
+    "description": "She sits her hips on his chest and leans back on his legs.",
+    "deck": "black",
+    "playerColor": "any",
+    "isSwapCard": false,
+    "tags": [
+      "oral",
+      "positions"
+    ]
+  }
 ]

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useGameStore, Card, DeckLetter, PlayerColor, AVAILABLE_TAGS, Tag } from '@/state/store'
+import { TAG_GROUPS, TAG_META, countCardsByTag, getTagsForCard } from '@/lib/cardTags'
 import { useAuthStore } from '@/state/authStore'
 import { getSupabaseClient } from '@/lib/supabase/client'
 import { createCard, deleteCard as deleteCloudCard } from '@/lib/supabase/cards'
@@ -21,6 +22,7 @@ const CustomCardSchema = z.object({
   isSwapCard: z.boolean().optional().default(false),
   imageDataUrl: z.string().url().optional().or(z.literal('')),
   visibility: z.enum(['private', 'public']).default('private'),
+  tags: z.array(z.string()).optional().default([]),
 })
 
 const EditCardSchema = z.object({
@@ -54,6 +56,8 @@ export default function Create() {
     cardOverrides,
     favoriteCardIds,
     toggleFavorite,
+    settings,
+    toggleTagForGameplay,
   } = useGameStore()
   const { mode, user, isAdmin } = useAuthStore()
   const [activeTab, setActiveTab] = useState<TabType>('all')
@@ -88,6 +92,7 @@ export default function Create() {
       isSwapCard: false,
       imageDataUrl: '',
       visibility: 'private',
+      tags: [],
     },
   })
 
@@ -104,6 +109,7 @@ export default function Create() {
   })
 
   const isSwapCard = watch('isSwapCard')
+  const createTags = watch('tags') || []
 
   const onSubmit = async (data: CustomCardFormData) => {
     const newCard: Card = {
@@ -117,6 +123,7 @@ export default function Create() {
       isEnabled: true,
       imageDataUrl: data.imageDataUrl || undefined,
       visibility: data.visibility ?? 'private',
+      tags: data.tags && data.tags.length > 0 ? data.tags as Tag[] : undefined,
     }
 
     // Cloud mode: create in Supabase
@@ -173,7 +180,7 @@ export default function Create() {
       isSwapCard: card.isSwapCard || false,
       isEnabled: card.isEnabled !== false,
       isFavorite: card.isFavorite || false,
-      tags: card.tags || [],
+      tags: getTagsForCard(card),
       visibility: card.visibility ?? 'private',
     })
     setShowEditModal(true)
@@ -300,6 +307,13 @@ export default function Create() {
     }))
   }, [mode, cloudCards, customCards, cardOverrides])
 
+  const tagCounts = useMemo(() => countCardsByTag(getAllCards), [getAllCards])
+
+  const disabledTagSet = useMemo(
+    () => new Set(settings.disabledTags ?? []),
+    [settings.disabledTags],
+  )
+
   // Filtered cards for "All Cards" tab
   const filteredAllCards = useMemo(() => {
     return getAllCards.filter(card => {
@@ -311,7 +325,7 @@ export default function Create() {
         (filterEnabled === 'disabled' && card.isEnabled === false)
       const tagMatch = 
         filterTag === 'all' || 
-        (card.tags || []).includes(filterTag)
+        getTagsForCard(card).includes(filterTag)
       const visibilityMatch =
         filterVisibility === 'all' ||
         !card.isCustom ||
@@ -442,6 +456,60 @@ export default function Create() {
             </motion.div>
           )}
 
+          {/* Tag preferences — control which categories appear during gameplay */}
+          <div className="mb-12 parchment-bg rounded-2xl p-8 md:p-12 glow-warm">
+            <h2 className="text-2xl md:text-3xl font-display gold-text mb-2">
+              Card Categories
+            </h2>
+            <p className="text-gold/80 font-body mb-6">
+              Turn off any category you do not want drawn during a game. Swap cards are always included.
+            </p>
+
+            <div className="space-y-8">
+              {TAG_GROUPS.map(group => (
+                <div key={group.id}>
+                  <h3 className="text-lg font-display text-gold mb-3 border-b border-gold/20 pb-2">
+                    {group.label}
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {AVAILABLE_TAGS.filter(tag => TAG_META[tag].group === group.id).map(tag => {
+                      const enabled = !disabledTagSet.has(tag)
+                      const meta = TAG_META[tag]
+                      return (
+                        <label
+                          key={tag}
+                          className={`flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${
+                            enabled
+                              ? 'border-gold/40 bg-white/90'
+                              : 'border-gold/20 bg-white/50 opacity-75'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={enabled}
+                            onChange={(e) => toggleTagForGameplay(tag, e.target.checked)}
+                            className="mt-1 w-5 h-5 text-gold border-gold/30 rounded focus:ring-gold/20"
+                          />
+                          <span className="flex-1">
+                            <span className="block text-gold font-body font-semibold">
+                              {meta.label}
+                              <span className="ml-2 text-xs font-normal text-gold/60">
+                                ({tagCounts[tag]} cards)
+                              </span>
+                            </span>
+                            <span className="block text-sm text-velvet/70 mt-1">
+                              {meta.description}
+                            </span>
+                          </span>
+                        </label>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Create Custom Card Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="mb-12">
             <div className="parchment-bg rounded-2xl p-8 md:p-12 glow-warm">
@@ -570,6 +638,36 @@ export default function Create() {
                   <label htmlFor="isSwapCard" className="text-gold font-body font-semibold cursor-pointer">
                     This is a swap card
                   </label>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-gold font-body font-semibold mb-2">
+                    Tags
+                  </label>
+                  <p className="text-sm text-gold/70 font-body mb-3">
+                    Choose categories so this card respects your gameplay filters.
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {AVAILABLE_TAGS.map(tag => {
+                      const isSelected = createTags.includes(tag)
+                      return (
+                        <label key={tag} className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={(e) => {
+                              const newTags = e.target.checked
+                                ? [...createTags, tag]
+                                : createTags.filter(t => t !== tag)
+                              setValue('tags', newTags)
+                            }}
+                            className="w-4 h-4 text-gold border-gold/30 rounded focus:ring-gold/20"
+                          />
+                          <span className="text-gold font-body text-sm">{TAG_META[tag].label}</span>
+                        </label>
+                      )
+                    })}
+                  </div>
                 </div>
               </div>
 
@@ -859,7 +957,7 @@ export default function Create() {
                     >
                       <option value="all">All</option>
                       {AVAILABLE_TAGS.map(tag => (
-                        <option key={tag} value={tag}>{tag}</option>
+                        <option key={tag} value={tag}>{TAG_META[tag].label}</option>
                       ))}
                     </select>
                   </div>
@@ -978,9 +1076,9 @@ export default function Create() {
                                     Base
                                   </span>
                                 )}
-                                {(card.tags || []).map(tag => (
+                                {getTagsForCard(card).map(tag => (
                                   <span key={tag} className="px-2 py-1 bg-purple-600 text-white text-xs font-body rounded">
-                                    {tag}
+                                    {TAG_META[tag].label}
                                   </span>
                                 ))}
                               </div>
@@ -1244,7 +1342,7 @@ export default function Create() {
                         <label className="block text-gold font-body font-semibold mb-2 text-left">
                           Tags
                         </label>
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                           {AVAILABLE_TAGS.map(tag => {
                             const currentTags = editForm.watch('tags') || []
                             const isSelected = currentTags.includes(tag)
@@ -1261,7 +1359,7 @@ export default function Create() {
                                   }}
                                   className="w-4 h-4 text-gold border-gold/30 rounded focus:ring-gold/20"
                                 />
-                                <span className="text-gold font-body text-sm">{tag}</span>
+                                <span className="text-gold font-body text-sm">{TAG_META[tag].label}</span>
                               </label>
                             )
                           })}
