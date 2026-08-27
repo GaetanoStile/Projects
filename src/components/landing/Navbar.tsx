@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { SUBSTACK_URL } from '@/lib/routes'
 
 interface NavbarProps {
   cloudEnabled: boolean
@@ -15,6 +16,7 @@ const navLinks = [
   { label: 'Home', href: '/', isRouterLink: true },
   { label: 'How It Works', href: '/#how-it-works', isRouterLink: false },
   { label: 'Blog', href: '/blog', isRouterLink: true },
+  { label: 'Substack', href: SUBSTACK_URL, isRouterLink: false, external: true },
   { label: 'Library', href: '/library', isRouterLink: true },
   { label: 'The Novel', href: '/novel', isRouterLink: true, emphasized: true },
 ] as const
@@ -24,12 +26,14 @@ function NavLink({
   href,
   emphasized,
   isRouterLink,
+  external,
   onClick,
 }: {
   label: string
   href: string
   emphasized?: boolean
   isRouterLink: boolean
+  external?: boolean
   onClick?: () => void
 }) {
   const className = `group relative inline-flex items-center justify-center text-sm font-body transition-colors ${
@@ -50,7 +54,14 @@ function NavLink({
   }
 
   return (
-    <a href={href} className={className} onClick={onClick}>
+    <a
+      href={href}
+      className={className}
+      onClick={onClick}
+      {...(external
+        ? { target: '_blank', rel: 'noopener noreferrer' }
+        : {})}
+    >
       {label}
       {underline}
     </a>

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import MarketingLayout from '@/components/landing/MarketingLayout'
+import { SUBSTACK_URL } from '@/lib/routes'
 
 const posts = [
   {
@@ -34,7 +35,16 @@ export default function Blog() {
             <h1 className="font-display text-5xl text-white sm:text-6xl">Stories that keep the mood alive.</h1>
             <p className="mt-5 text-lg leading-8 text-white/72">
               Thoughts on romance, design, desire, and the playful rituals that inspired Couples Game.
+              New essays and beta notes live on our Substack.
             </p>
+            <a
+              href={SUBSTACK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-gold to-gold/80 px-7 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-velvet transition hover:from-gold/90 hover:to-gold/70"
+            >
+              Visit our Substack
+            </a>
           </motion.div>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -53,12 +63,14 @@ export default function Blog() {
                 </div>
                 <h2 className="font-display text-3xl text-white">{post.title}</h2>
                 <p className="mt-4 text-sm leading-7 text-white/72">{post.description}</p>
-                <button
-                  type="button"
-                  className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-gold transition hover:text-[#f1d27b]"
+                <a
+                  href={SUBSTACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex text-sm font-semibold uppercase tracking-[0.18em] text-gold transition hover:text-[#f1d27b]"
                 >
-                  Read More
-                </button>
+                  Read on Substack →
+                </a>
               </motion.article>
             ))}
           </div>

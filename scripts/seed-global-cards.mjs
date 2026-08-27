@@ -29,23 +29,44 @@ const rows = cards.map((c) => ({
   owner_id: null,
 }))
 
+const authHeaders = { apikey: key, Authorization: 'Bearer ' + key }
+
 const countRes = await fetch(url + '/rest/v1/cards?select=id&owner_id=is.null&limit=1', {
-  headers: { apikey: key, Authorization: 'Bearer ' + key, Prefer: 'count=exact' },
+  headers: { ...authHeaders, Prefer: 'count=exact' },
 })
+if (!countRes.ok) {
+  console.log('COUNT_FAIL', countRes.status, await countRes.text())
+  process.exit(1)
+}
 const range = countRes.headers.get('content-range') || ''
-const total = Number(range.split('/')[1] || '0')
-if (total > 0) {
+const total = Number(range.split('/')[1])
+if (!Number.isFinite(total)) {
+  console.log('COUNT_PARSE_FAIL', range)
+  process.exit(1)
+}
+if (total >= rows.length) {
   console.log('ALREADY_SEEDED', total)
   process.exit(0)
 }
+if (total > 0) {
+  const clearRes = await fetch(url + '/rest/v1/cards?owner_id=is.null', {
+    method: 'DELETE',
+    headers: authHeaders,
+  })
+  if (!clearRes.ok) {
+    console.log('CLEAR_FAIL', clearRes.status, await clearRes.text())
+    process.exit(1)
+  }
+  console.log('CLEARED_PARTIAL', total)
+}
+
 let inserted = 0
 for (let i = 0; i < rows.length; i += 50) {
   const batch = rows.slice(i, i + 50)
   const r = await fetch(url + '/rest/v1/cards', {
     method: 'POST',
     headers: {
-      apikey: key,
-      Authorization: 'Bearer ' + key,
+      ...authHeaders,
       'Content-Type': 'application/json',
       Prefer: 'return=minimal',
     },

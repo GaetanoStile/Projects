@@ -34,6 +34,8 @@ interface AuthState {
 
 interface AuthResult {
   error: string | null
+  /** Non-error status (e.g. confirm-email instructions after signup) */
+  message?: string | null
 }
 
 interface AuthActions {
@@ -140,16 +142,24 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         set({ loading: true })
 
         try {
+          const emailRedirectTo =
+            typeof window !== 'undefined'
+              ? `${window.location.origin}/auth`
+              : undefined
+
           const { data, error } = await client.auth.signUp({
             email,
             password,
-            options: displayName?.trim()
-              ? {
-                  data: {
-                    display_name: displayName.trim(),
-                  },
-                }
-              : undefined,
+            options: {
+              emailRedirectTo,
+              ...(displayName?.trim()
+                ? {
+                    data: {
+                      display_name: displayName.trim(),
+                    },
+                  }
+                : {}),
+            },
           })
 
           if (error) {
@@ -160,8 +170,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           if (!data.session) {
             set({ loading: false })
             return {
-              error:
-                'Account created. Please confirm your email if required, then log in to continue.',
+              error: null,
+              message:
+                'Account created. Check your email to confirm, then log in to continue.',
             }
           }
 

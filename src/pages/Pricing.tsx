@@ -46,8 +46,14 @@ export default function Pricing() {
 
   const handleUpgrade = async () => {
     setError(null)
+
+    if (!user?.id) {
+      setError('Please log in before upgrading so Premium can be linked to your account.')
+      return
+    }
+
     setLoading(true)
-    const err = await redirectToCheckout(user?.id)
+    const err = await redirectToCheckout(user.id)
     if (err) {
       setError(err)
       setLoading(false)
@@ -149,6 +155,18 @@ export default function Pricing() {
                   >
                     Browse Community Library
                   </Link>
+                </div>
+              ) : !user ? (
+                <div>
+                  <Link
+                    to="/auth"
+                    className="block w-full text-center px-6 py-3 bg-gradient-to-r from-gold to-gold/80 text-velvet font-display rounded-lg glow-gold hover:from-gold/90 hover:to-gold/70 transition-all"
+                  >
+                    Log in to Unlock Premium
+                  </Link>
+                  <p className="text-velvet/40 font-body text-xs text-center mt-3">
+                    Premium must be linked to an account.
+                  </p>
                 </div>
               ) : (
                 <div>
